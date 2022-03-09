@@ -7,6 +7,7 @@ import Order from "../Order";
 import ProductList from "../ProductList";
 import Transaction from "../Transaction";
 import Customer from "../Customer";
+import Carousel from "../Carousel";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route exact path="/transaction" element={<Transaction />} />
           <Route exact path="/customer" element={<Customer />} />
 
+          <Route exact path="/carousel" element={<Carousel />} />
         </Routes>
       </main>
     </div>

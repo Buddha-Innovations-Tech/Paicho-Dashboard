@@ -1,0 +1,80 @@
+.carouselwrapper {
+  background-color: #e5e5e5;
+  padding: 20px 12px 20px 40px;
+  &__title {
+    font-family: "Quicksand";
+    color: #383e50;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  &__background {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 4px;
+    &__content {
+      &--heading {
+        font-family: "Quicksand";
+        font-weight: 700;
+        font-size: 18px;
+        color: #383e50;
+      }
+      &--para {
+        font-family: "Lato";
+        font-weight: 400;
+        font-size: 12px;
+        color: #495058;
+      }
+    }
+    &__btn {
+      &--add {
+        @include btn(#005aab);
+      }
+
+      &--discard {
+        @include btn(#fff);
+        border: 1px solid #ff0c0c;
+        color: #ff0b0b;
+        margin-right: 18px;
+      }
+
+      &--cancel {
+        @include btn(#fff);
+        color: #495058;
+        border: 1px solid #e0e0e0;
+        padding: 12px 21px 11px 20px;
+      }
+      &--delete {
+        @include btn(#c23e3e);
+        color: #fff;
+        padding: 12px 21px 11px 20px;
+      }
+    }
+  }
+}
+
+.modal-content {
+  width: 700px !important;
+}
+.edit__body {
+  padding: 21px 27px 27px 27px !important;
+}
+div.title {
+  font-weight: 700;
+  font-size: 18px;
+  color: #383e50;
+  border-bottom: 1px solid #d0d0d0 !important;
+}
+
+.addproductwrapper__background--dragdroptitle {
+  margin-top: 0px;
+}
+
+.drapanddrop-content .treeicon {
+  margin: 0;
+}
+
+.drapanddrop-content {
+  padding: 65px 252px;
+  text-align: center;
+}
