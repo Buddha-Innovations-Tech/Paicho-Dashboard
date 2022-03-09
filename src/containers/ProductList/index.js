@@ -62,14 +62,7 @@ const productList = [
 const ProductList = () => {
     const [items,setItems]=useState(productList);
 
-    const filterItem = (stockItem,stockItem1,stockItem2)=>{
-        console.log(filterItem)
-        const updatedItems=productList.filter((curElm)=>{
-            return curElm.stock===stockItem;
-            
-        })
-        setItems(updatedItems)
-    }
+    const [filterTerm, setFilterTerm] = useState('Stock')
   return (
     <>
       <Row className="gx-0">
@@ -104,7 +97,7 @@ const ProductList = () => {
                     </select>
                   </div>
                   <div>
-                    <select id="subcategory" onChange={e => filterItem('In Stock','Out of Stock','Archived')} name="subcategory">
+                    <select id="subcategory" onChange={e => setFilterTerm(e.target.value)} name="subcategory">
                       <option selected>
                         Stock
                       </option>
@@ -128,7 +121,7 @@ const ProductList = () => {
                 </Row>
               </div>
               <div>
-                {items.map((curElm,index) => {
+                { filterTerm==='Stock'? items.map((curElm,index) => {
                   return (
                     <Row className="productlistwrapper__productlistwrapper--listitem" key={index}>
                       <Col md={1}>
@@ -170,7 +163,47 @@ const ProductList = () => {
                       <Col md={2}><button className="editbtn">Edit</button></Col>
                     </Row>
                   );
-                })}
+                }):
+               items.filter(i => i.stock===filterTerm).map(i => <Row className="productlistwrapper__productlistwrapper--listitem" key={i.id}>
+               <Col md={1}>
+                 <p>{i.id}</p>
+               </Col>
+               <Col md={3}>
+                 <div className="d-flex ms-5 align-items-center">
+                   <img src={i.image} alt="" />
+                   <p className="ms-2 mt-3">{i.name}</p>
+                 </div>
+               </Col>
+               <Col md={2}>
+                 <p>{i.category}</p>
+               </Col>
+               <Col md={1}>
+                 <p>{i.price}</p>
+               </Col>
+               <Col md={1}>
+                 <p>{i.discount}</p>
+               </Col>
+               <Col md={2}>
+                 <p  style={{
+                         color:
+                           i.stock === "In stock"
+                             ? "#3D6703"
+                             : i.stock === "Out of Stock"
+                             ? "#FF3A00"
+                             : "#920000",
+                         background:
+                           i.stock === "In Stock"
+                             ? "#DDEEC5"
+                             : i.stock === "Out of Stock"
+                             ? "#FFEBE6"
+                             : "#F4E6E6",
+                         borderRadius: "28px",
+                         padding:"5px 10px",
+                         textAlign: "center"}}>{i.stock}</p>
+               </Col>
+               <Col md={2}><button className="editbtn">Edit</button></Col>
+             </Row>)
+                }
               </div>
             </div>
             <div className="mt-5">

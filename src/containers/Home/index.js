@@ -159,8 +159,10 @@ const Home = () => {
                     </div>
                     <p className="revenuewrapper__total">Rs 40,20,000</p>
                   </div>
+                  <div className="mt-3">
                   <HomePieChart/>
-                  <p className="revenuewrapper__piechartconclusion">Sell is 70% more than last Month</p>
+                  <p className="revenuewrapper__piechartconclusion mt-2">Sell is 70% more than last Month</p>
+                  </div>
                 </div>
               </Col>
             </Row>

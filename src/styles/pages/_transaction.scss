@@ -1,0 +1,26 @@
+.transactionwrapper {
+    background-color: #e5e5e5;
+    padding: 20px 12px 20px 40px;
+    &__title {
+      color: #383e50;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    &__background {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 4px;
+      &--transactionheading{
+        border-bottom: 1px solid #E5E5E5;
+        padding-bottom: 20px;
+      }
+    }
+    .transactionlistheading{
+        text-align: left !important;
+        padding-left: 20px;
+    }
+    .transactionlistleft{
+        text-align: left !important;
+        padding-left: 20px;
+    }
+}
