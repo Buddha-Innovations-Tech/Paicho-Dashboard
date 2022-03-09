@@ -1,0 +1,14 @@
+.categorylist{
+    .serial-num{
+        padding-left: 15px;
+    }
+    p{
+        margin-bottom: 0;
+        color: #495058;
+        font-size: 13px;
+        font-weight: 400;
+    }
+    button{
+        @include btn(#005AAB);
+    }
+}

@@ -9,7 +9,7 @@ body {
   margin: 0;
   font-weight: $font-regular;
   background: #f8f8f8;
-  font-family: "Lato", sans-serif !important;
+  font-family: 'Quicksand', sans-serif;
 }
 h1,
 .h1,
@@ -24,7 +24,7 @@ h5,
 h6,
 .h6 {
   margin-top: 0;
-  margin-bottom: 0.1rem;
+  // margin-bottom: 0.1rem;
   color: color(text-dark);
   line-height: 150%;
 }
@@ -46,6 +46,7 @@ h4 {
 
 p {
   margin-top: 0;
+  margin-bottom: 0;
   line-height: 170%;
   font-weight: $font-regular;
   font-size: $text-md;

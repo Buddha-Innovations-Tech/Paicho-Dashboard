@@ -1,0 +1,22 @@
+.drapanddrop-content{
+    border: 1px dashed #888888;
+    margin: 0 auto;
+    border-radius: 4px;
+    padding: 60px 120px;
+    .treeicon{
+        font-size: 45px;
+        color: #888888;
+        margin: 0 0 10px 80px;
+    }
+    p{
+        color: #888888;
+        font-size: 12px;
+        font-weight: 400;
+        font-family: "lato","sans-serif";
+        text-align: center;
+    }
+}
+.dragdroppadding{
+    padding-left: 0 !important;
+        padding-right: 0 !important;
+}

@@ -1,0 +1,32 @@
+.navbarwrapper {
+  padding: 28px 15px 28px 0;
+// box-shadow: inset 0px -1px 0px rgba(242, 242, 242, 0.25);
+  &__notification {
+    color: #005aab;
+    font-size: 18px;
+    font-size: 22px;
+    margin-top: 8px;
+    position: relative;
+    &--circle {
+      position: absolute;
+      height: 6px;
+      width: 6px;
+      background-color: color(primary, base);
+      border-radius: 50%;
+      top: 40px;
+      right: 17.4%;
+    }
+  }
+  &__profile {
+    margin: 0 25px;
+
+    &--name {
+      color: #888888;
+      font-size: 12px;
+      margin: 8px;
+    }
+}
+&__logoutbtn{
+    @include btn(#005AAB);
+}
+}

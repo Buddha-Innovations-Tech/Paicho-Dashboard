@@ -1,0 +1,50 @@
+.orderwrapper {
+  background-color: #e5e5e5;
+  padding: 20px 12px 20px 40px;
+  &__title {
+    color: #383e50;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  &__background {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 4px;
+    &--dateicon{
+        background-color: #F4F5F9;
+        border-radius: 4px;
+        padding: 10px 12px;
+        p{
+        color: #495058;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 0;
+        }
+       .icon{
+        margin-top: 3px;
+        margin-left: 6px;
+       } 
+    }
+    &--datecalender{
+        border: 1px solid #F4F5F9;
+        background-color: #fff;
+        border-radius: 4px;
+        padding: 10px 12px;
+        .calendericon{
+            color: #495058;
+            margin-top: 2px;
+            margin-right: 36px;
+
+        }
+        input{
+            font-size: 12px;
+            color: #4F687B;
+            font-weight: 400;
+            border: none;
+        }
+    }
+    // &--selectstatus{
+    //     height: 35px;
+    // }
+  }
+}

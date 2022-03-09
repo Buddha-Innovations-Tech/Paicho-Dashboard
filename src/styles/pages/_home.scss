@@ -1,3 +1,137 @@
-.home {
-  background-color: beige;
+.homedashboardwrapper{
+  background-color: #E5E5E5;
+  padding: 20px 12px 20px 40px;
+  &__heading{
+    color: #383E50;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: -5px;
+  }
+  &__subheading{
+    color: #4F5D77;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  &__bargraph{
+    background-color:#fff;
+    padding: 7px 15px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+ 
+}
+.tobedelivered{
+  .homeorderwrapper__icon{
+    background-color: #487904;
+    color: #fff;
+  }
+  .homeorderwrapper__desc--order,.homeorderwrapper__desc--number{
+    color:#487904 ;
+  }
+}
+.inprogress{
+  .homeorderwrapper__icon{
+    background-color: #056F76;
+  }
+  .homeorderwrapper__desc--order,.homeorderwrapper__desc--number{
+    color:#487904 ;
+  }
+}
+.cancelledorder{
+  .homeorderwrapper__icon{
+    background-color: #9F1B1A;
+  }
+  .homeorderwrapper__desc--order,.homeorderwrapper__desc--number{
+    color:#9F1B1A ;
+  }
+}
+.completedorder{
+  .homeorderwrapper__icon{
+    background-color: #2367A3;
+  }
+  .homeorderwrapper__desc--order,.homeorderwrapper__desc--number{
+    color:#2367A3 ;
+  }
+}
+
+.latestorderwrapper{
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 33px;
+  &__latestorder{
+    font-size: 18px;
+    font-weight: 700;
+    color: #383E50;
+    margin-bottom: 0;
+  }
+  &__viewall{
+    a{
+      font-size: 14px;
+      color: #005AAB;
+      font-weight: 600;
+    }
+  }
+  &__table{
+    margin-top: 28px;
+    color: #fff !important;
+    border-color: transparent !important;
+    th{
+      padding: 12px !important;
+      color: #495058;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Lato', sans-serif;
+    }
+    tbody{
+      padding: 10px 0;
+      tr{
+        td{
+          font-family: 'Quicksand', sans-serif;
+          font-size: 13px;
+          font-weight: 600;
+          color: #495058;
+          
+          button{
+            @include btn(#005AAB);
+            padding: 8px;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+
+}
+.revenuewrapper{
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 25px;
+  p{
+    margin-bottom: 0;
+  }
+  &__earning{
+    color: #383E50;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  &__revenue{
+    color: #495058;
+    font-size: 13px;
+    font-weight: 400;
+    font-family: 'Lato', sans-serif;
+  }
+  &__total{
+    color: #383E50;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  &__piechartconclusion{
+    color: #495058;
+    width: 50%;
+    font-weight: 400;
+    font-size: 13px;
+    font-family: 'Lato', sans-serif;
+    line-height: 18px;
+  }
 }

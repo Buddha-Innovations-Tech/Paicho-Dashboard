@@ -1,0 +1,43 @@
+.productlistwrapper{
+    background-color: #e5e5e5;
+  padding: 20px 12px 20px 40px;
+  &__title {
+    color: #383e50;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  &__productlistwrapper {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 4px;
+    &--heading{
+      border-bottom: 1px solid #E5E5E5;
+      padding-bottom: 15px;
+    }
+    &--headingrow{
+      background-color: #F4F5F9;
+      border-radius: 4px;
+      padding: 12px 0;
+      text-align: center;
+      margin-top: 15px;
+      color: #495058;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: "Lato","sans-serif";
+      margin-bottom: 25px;
+    }
+    &--listitem{
+      text-align: center;
+      margin: 25px 0;
+      p{
+        color: #495058;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: "Quicksand","sans-serif";
+      }
+      .editbtn{
+        @include btn(#005AAB);
+      }
+    }
+  }
+}
