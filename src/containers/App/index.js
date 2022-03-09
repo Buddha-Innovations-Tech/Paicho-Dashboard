@@ -5,6 +5,7 @@ import Category from "../Category";
 import Home from "../Home";
 import Order from "../Order";
 import ProductList from "../ProductList";
+import Carousel from "../Carousel";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route exact path="/addproduct" element={<AddProduct />} />
           <Route exact path="/productlist" element={<ProductList />} />
           <Route exact path="/order" element={<Order />} />
+          <Route exact path="/carousel" element={<Carousel />} />
         </Routes>
       </main>
     </div>

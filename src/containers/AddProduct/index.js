@@ -4,7 +4,7 @@ import SideBar from "../../components/SideBar";
 import NavBar from "../../components/NavBar";
 import InputField from "../../components/InputField";
 import { ImCross } from "react-icons/im";
-import {FiAlertTriangle} from "react-icons/fi";
+import { FiAlertTriangle } from "react-icons/fi";
 import Previews from "../../components/DragAndDrop";
 const subcategoryItem = [
   {
@@ -18,39 +18,39 @@ const subcategoryItem = [
   },
 ];
 const ingredientItem = [
-    {
-      item: "Fresh Organic Mango",
-    },
-    {
-      item: "Fresh Organic Mango",
-    },
-    {
-      item: "Fresh Organic Mango",
-    },
-    {
-        item: "Fresh Organic Mango",
-      },
-      {
-        item: "Fresh Organic Mango",
-      },
-  ];
-  const addProductItem=[
-      {
-          item:"Garlic Achar",
-      },
-      {
-        item:"Mix Achar",
-    },
-    {
-        item:"Mango Achar",
-    },
-    {
-        item:"Garlic Achar",
-    },
-    {
-        item:"Mix Achar",
-    },
-    ]
+  {
+    item: "Fresh Organic Mango",
+  },
+  {
+    item: "Fresh Organic Mango",
+  },
+  {
+    item: "Fresh Organic Mango",
+  },
+  {
+    item: "Fresh Organic Mango",
+  },
+  {
+    item: "Fresh Organic Mango",
+  },
+];
+const addProductItem = [
+  {
+    item: "Garlic Achar",
+  },
+  {
+    item: "Mix Achar",
+  },
+  {
+    item: "Mango Achar",
+  },
+  {
+    item: "Garlic Achar",
+  },
+  {
+    item: "Mix Achar",
+  },
+];
 
 const AddProduct = () => {
   return (
@@ -63,7 +63,7 @@ const AddProduct = () => {
           <NavBar />
           <div className="addproductwrapper">
             <div className="addproductwrapper__background">
-              <Row>                 
+              <Row>
                 <Col md={6}>
                   <p className="addproductwrapper__background--title">
                     Product Information
@@ -157,8 +157,11 @@ const AddProduct = () => {
                   <p className="addproductwrapper__background--title">
                     Media Information
                   </p>
-                  <p className="addproductwrapper__background--dragdroptitle"><FiAlertTriangle/><span>Please choose image below 5 mb</span></p>
-                  <Previews/>
+                  <p className="addproductwrapper__background--dragdroptitle">
+                    <FiAlertTriangle />
+                    <span>Please choose image below 5 mb</span>
+                  </p>
+                  <Previews />
                 </Col>
               </Row>
               <div>
@@ -180,27 +183,26 @@ const AddProduct = () => {
                         </button>
                       </Col>
                       <ul className="categorywrapper__addcategorywrapper--unorderlist mt-3">
-                          {ingredientItem.map((curElm, index) => {
-                            return (
-                              <li
-                                className="d-flex align-items-center justify-content-between"
-                                key={index}
-                              >
-                                <p>{curElm.item}</p>
-                                <ImCross className="crossicon" />
-                              </li>
-                            );
-                          })}
-                        </ul>
+                        {ingredientItem.map((curElm, index) => {
+                          return (
+                            <li
+                              className="d-flex align-items-center justify-content-between"
+                              key={index}
+                            >
+                              <p>{curElm.item}</p>
+                              <ImCross className="crossicon" />
+                            </li>
+                          );
+                        })}
+                      </ul>
                     </Row>
-                   
                   </Col>
                   <Col md={2}></Col>
                 </Row>
               </div>
               <div>
                 <p className="addproductwrapper__ingredientused">
-                Add Similar Products
+                  Add Similar Products
                 </p>
                 <Row>
                   <Col md={10}>
@@ -217,28 +219,27 @@ const AddProduct = () => {
                         </button>
                       </Col>
                       <ul className="categorywrapper__addcategorywrapper--unorderlist mt-3">
-                          {addProductItem.map((curElm, index) => {
-                            return (
-                              <li
-                                className="d-flex align-items-center justify-content-between"
-                                key={index}
-                              >
-                                <p>{curElm.item}</p>
-                                <ImCross className="crossicon" />
-                              </li>
-                            );
-                          })}
-                        </ul>
+                        {addProductItem.map((curElm, index) => {
+                          return (
+                            <li
+                              className="d-flex align-items-center justify-content-between"
+                              key={index}
+                            >
+                              <p>{curElm.item}</p>
+                              <ImCross className="crossicon" />
+                            </li>
+                          );
+                        })}
+                      </ul>
                     </Row>
-                   
                   </Col>
                   <Col md={2}></Col>
                 </Row>
               </div>
               <div className="categorywrapper__addcategorywrapper--buttons">
-                      <button className="btn-discard">Discard</button>
-                      <button className="btn-addcategory">Add Product</button>
-                    </div>
+                <button className="btn-discard">Discard</button>
+                <button className="btn-addcategory">Add Product</button>
+              </div>
             </div>
           </div>
         </Col>
