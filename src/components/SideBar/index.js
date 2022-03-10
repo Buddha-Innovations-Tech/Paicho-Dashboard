@@ -31,16 +31,20 @@ const SideBar = () => {
               </NavLink>
             </li>
 
-            <li className="product-li">
-            <MdOutlineProductionQuantityLimits className="icon"/>
-              <NavLink to="" className="product">Product</NavLink> 
+            <li className="product-li" onClick={()=>setSubNav(!subnav)}>
+              {/* <NavLink to="" className="product">Product</NavLink> 
+            <MdOutlineProductionQuantityLimits className="icon"/> */}
+            <NavLink to="/category" className="active-link product-li-link">
+          <MdOutlineProductionQuantityLimits className="icon"/>
+          <span className="me-5">Product</span>
               {subnav?<BiChevronUp onClick={()=>setSubNav(!subnav)} style={{fontSize:"24px"}}/>:
                           <BiChevronDown onClick={()=>setSubNav(!subnav)} style={{fontSize:"24px"}}/>
 
               }
+              </NavLink>
             {/* <BiChevronDown onClick={()=>setSubNav(!subnav)} style={{fontSize:"24px"}}/> */}
             {subnav && 
-            <ul style={{paddingLeft:"70px",listStyle:"disc"}}>
+            <ul style={{paddingLeft:"130px",listStyle:"disc",paddingTop:"15px"}}>
             <li><NavLink to="/category" className="subnav">Categories</NavLink></li>
             <li><NavLink to="/addproduct" className="subnav">Add product</NavLink></li>
             <li><NavLink to="/productlist" className="subnav">Product List</NavLink></li>
