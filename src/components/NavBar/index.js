@@ -1,6 +1,7 @@
 import React from 'react'
 import {IoMdNotificationsOutline} from "react-icons/io"
 import profile from "../../assets/images/profile.png"
+import { Link } from 'react-router-dom'
 
 const NavBar = () => {
   return (
@@ -18,7 +19,9 @@ const NavBar = () => {
                     <span className='navbarwrapper__profile--name'>Anderson</span>
                 </div>
                 <div>
+                    <Link to="/login">
                     <button className='navbarwrapper__logoutbtn'>Log out</button>
+                    </Link>
                 </div>
 
             </div>
