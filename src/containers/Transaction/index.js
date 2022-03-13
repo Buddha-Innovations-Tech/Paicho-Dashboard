@@ -3,7 +3,7 @@ import { Row, Col } from "react-bootstrap";
 import NavBar from "../../components/NavBar";
 import SideBar from "../../components/SideBar";
 import PaginationComp from "../../components/PaginationComp";
-import { IoMdArrowDropdown } from "react-icons/io";
+// import { IoMdArrowDropdown } from "react-icons/io";
 // import { AiOutlineCalendar } from "react-icons/ai";
 const transactionList = [
     {
@@ -90,10 +90,11 @@ const Transaction = () => {
 
                 <div>
                   <div className="d-flex">
-                    <div className="d-flex orderwrapper__background--dateicon">
-                      <p>Date</p>
-                      <IoMdArrowDropdown className="icon" />
-                    </div>
+                    <select className="orderwrapper__background--selectstatus">
+                    <option selected>Day</option>
+                    <option>Dates</option>
+                  </select>
+                      
 
                     <div className="d-flex orderwrapper__background--datecalender ms-3 me-3">
                       {/* <AiOutlineCalendar className="calendericon" /> */}

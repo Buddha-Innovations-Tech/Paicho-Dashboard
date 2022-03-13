@@ -1,0 +1,118 @@
+.loginbackground {
+  background: url(../../assets/images/Paicho.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 646px;
+  padding: 45px 0;
+  // filter: brightness(0.4);
+  &__loginform {
+    margin: 0 auto;
+    width: 380px;
+    height: 510px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 18px 33px 90px 33px;
+    figure {
+      margin-bottom: 0;
+      img {
+        display: block;
+        margin: 0 auto;
+      }
+    }
+    &--title {
+      font-family: "Quicksand", "sans-serif";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 18px;
+      letter-spacing: 0em;
+      text-align: center;
+      color: #383e50;
+      margin-bottom: 0;
+    }
+    &--login {
+      color: #495058;
+      font-family: "Quicksand", "sans-serif";
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 30px;
+      letter-spacing: 0em;
+      margin-top: 24px;
+      margin-bottom: 0;
+    }
+    &--subtitle {
+      font-family: "Lato", "sans-serif";
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 14px;
+      letter-spacing: 0.02em;
+      color: #888888;
+      display: block;
+    }
+    &--email {
+      margin-top: 24px;
+      margin-bottom: 17px;
+      label {
+        font-family: "Lato", "sans-serif";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 17px;
+        letter-spacing: 0.02em;
+        text-align: left;
+        color: #383e50;
+        margin-bottom: 10px;
+      }
+      
+    }
+  }
+}
+.passwordlabel{
+    font-family: "Lato", "sans-serif";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0.02em;
+    text-align: left;
+    color: #383e50;
+    margin-bottom: 10px;
+}
+.passwordinput{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #EFEFEF;
+    border-radius: 4px;
+    .passwordinputdiv{
+        input{
+            border: none;
+        }
+    }
+    .eye-icon{
+        margin-right: 15px;
+    }
+}
+.login-btn{
+    font-family: Lato;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 19px;
+    letter-spacing: 0.03em;
+    padding: 13px 0;
+    background-color: #005AAB;
+    border-radius: 4px;
+    margin-top: 33px;
+    width: 100%;
+    color: #fff;
+    border: none;
+    display: block;
+    text-align: center;
+    &:hover{
+        color: #fff ;
+    }
+}

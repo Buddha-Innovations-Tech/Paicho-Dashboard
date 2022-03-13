@@ -18,7 +18,7 @@ const subcategoryItem = [
 const Category = () => {
   return (
     <>
-      <Row>
+      <Row className="gx-0">
         <Col md={3}>
           <SideBar />
         </Col>

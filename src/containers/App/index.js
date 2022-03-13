@@ -9,6 +9,8 @@ import Transaction from "../Transaction";
 import Customer from "../Customer";
 import Carousel from "../Carousel";
 import Report from "../Report";
+import Register from "../Register";
+import Login from "../Login";
 
 const App = () => {
   return (
@@ -22,8 +24,10 @@ const App = () => {
           <Route exact path="/order" element={<Order />} />
           <Route exact path="/transaction" element={<Transaction />} />
           <Route exact path="/customer" element={<Customer />} />
-          <Route exact path="/carousel" element={<Carousel />} />
           <Route exact path="/report" element={<Report />} />
+          <Route exact path="/register" element={<Register />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/carousel" element={<Carousel />} />
         </Routes>
       </main>
     </div>
