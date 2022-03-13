@@ -18,14 +18,27 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-const labels = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+const labels = [
+  "Baisakh",
+  "Jestha",
+  "Asar",
+  "Shrawan",
+  "Bhadra",
+  "Asoj",
+  "Kartik",
+  "Mangsir",
+  "Poush",
+  "Magh",
+  "Falgun",
+  "Chaitra",
+];
 export const data = {
   labels,
   datasets: [
     {
       label: "Dataset 1",
       data: labels.map(() =>
-        faker.datatype.number({ min: "3000", max: "15000" })
+        faker.datatype.number({ min: "150000", max: "60000" })
       ),
       backgroundColor: "#005AAB",
     },

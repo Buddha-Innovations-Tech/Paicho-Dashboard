@@ -1,0 +1,65 @@
+.reportwrapper__weekly,
+.reportwrapper__yearly,
+.reportwrapper__monthly {
+  &--piechart,
+  &--bargraph {
+    border: 0.7px solid #e0e0e0;
+    border-radius: 4px;
+  }
+
+  &--piechart {
+    margin-top: 23px;
+    padding: 23px 33px 50px 23px;
+
+    &-title {
+      margin-bottom: 37px;
+      font-family: "Lato";
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 0.03em;
+      color: #383e50;
+    }
+
+    &-chart {
+      &-chart1 {
+        width: 60%;
+        margin-bottom: 18px;
+      }
+      &-content {
+        font-family: "Lato";
+        letter-spacing: 0.01em;
+        margin-top: 45px;
+
+        p {
+          margin-bottom: 0;
+        }
+
+        &-topic {
+          font-size: 16px;
+          font-weight: 700;
+        }
+        .blue {
+          color: #005aab;
+        }
+
+        .red {
+          color: #f60f0f;
+        }
+
+        &-order {
+          font-size: 12px;
+          font-weight: 400;
+          color: #495058;
+        }
+      }
+    }
+  }
+  &--bargraph {
+    margin-top: 24px;
+    padding: 23px 29px 33px 23px;
+  }
+
+  .mt-30 {
+    margin-top: 30px;
+  }
+}

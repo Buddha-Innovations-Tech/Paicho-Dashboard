@@ -18,14 +18,14 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-const labels = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+const labels = ["2073", "2074", "2075", "2076", "2077", "2078"];
 export const data = {
   labels,
   datasets: [
     {
       label: "Dataset 1",
       data: labels.map(() =>
-        faker.datatype.number({ min: "3000", max: "15000" })
+        faker.datatype.number({ min: "20000", max: "60000" })
       ),
       backgroundColor: "#005AAB",
     },

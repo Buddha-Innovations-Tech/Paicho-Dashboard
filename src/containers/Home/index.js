@@ -81,7 +81,7 @@ const Home = () => {
               </Col>
               <Col md={6}>
                 <div className="homedashboardwrapper__bargraph">
-                  <HomeBarGraph />
+                  <HomeBarGraph title="Revenue" topic="Last 7 days" />
                 </div>
               </Col>
             </Row>
@@ -114,31 +114,32 @@ const Home = () => {
                             <td>{data.sn}</td>
                             <td>{data.name}</td>
                             <td>{data.phone}</td>
-                            <td
-                             
-                            >
-                              <span  style={{
-                                color:
-                                  data.status === "completed"
-                                    ? "#063865"
-                                    : data.status === "cancelled"
-                                    ? "#920000"
-                                    : data.status === "To be delivered"
-                                    ? "#FFA500"
-                                    : "#495058",
-                                background:
-                                  data.status === "completed"
-                                    ? "#C4DCF2"
-                                    : data.status === "cancelled"
-                                    ? "#FCDCD2"
-                                    : data.status === "To be delivered"
-                                    ? "#FFEDCC"
-                                    : "#DDEEC5",
-                                borderRadius: "28px",
-                                padding:"5px 10px",
-                                textAlign: "center",
-                              }}>{data.status}</span>
-                              
+                            <td>
+                              <span
+                                style={{
+                                  color:
+                                    data.status === "completed"
+                                      ? "#063865"
+                                      : data.status === "cancelled"
+                                      ? "#920000"
+                                      : data.status === "To be delivered"
+                                      ? "#FFA500"
+                                      : "#495058",
+                                  background:
+                                    data.status === "completed"
+                                      ? "#C4DCF2"
+                                      : data.status === "cancelled"
+                                      ? "#FCDCD2"
+                                      : data.status === "To be delivered"
+                                      ? "#FFEDCC"
+                                      : "#DDEEC5",
+                                  borderRadius: "28px",
+                                  padding: "5px 10px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {data.status}
+                              </span>
                             </td>
                             <td style={{ paddingTop: "0" }}>
                               <button>View Details</button>
@@ -155,13 +156,17 @@ const Home = () => {
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
                       <p className="revenuewrapper__earning">Earning</p>
-                      <span className="revenuewrapper__revenue">Total Revenue</span>
+                      <span className="revenuewrapper__revenue">
+                        Total Revenue
+                      </span>
                     </div>
                     <p className="revenuewrapper__total">Rs 40,20,000</p>
                   </div>
                   <div className="mt-3">
-                  <HomePieChart/>
-                  <p className="revenuewrapper__piechartconclusion mt-2">Sell is 70% more than last Month</p>
+                    <HomePieChart percentage="80%" />
+                    <p className="revenuewrapper__piechartconclusion mt-2">
+                      Sell is 70% more than last Month
+                    </p>
                   </div>
                 </div>
               </Col>
