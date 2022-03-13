@@ -150,6 +150,7 @@ const Register = () => {
               </Col>
             </Row>
           </div>
+          </div>
         </Col>
       </Row>
     </>
