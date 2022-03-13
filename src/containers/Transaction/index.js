@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { Row, Col } from "react-bootstrap";
 import NavBar from "../../components/NavBar";
 import SideBar from "../../components/SideBar";
@@ -65,6 +65,19 @@ const transactionList = [
       
 ]
 const Transaction = () => {
+  const [filterdate, setFilterDate] = useState("Day");
+  const [date, setDate] = useState(true);
+  const [dates, setDates] = useState(false);
+  const handleChange = (e) => {
+    setFilterDate(e.target.value);
+  };
+  useEffect(() => {
+    
+      filterdate === "Day" ? setDate(true) : setDate(false);
+      filterdate === "Dates" ? setDates(true) : setDates(false);
+    
+  }, [filterdate]);
+
   return (
     <>
       <Row className="gx-0">
@@ -90,16 +103,40 @@ const Transaction = () => {
 
                 <div>
                   <div className="d-flex">
-                    <select className="orderwrapper__background--selectstatus">
-                    <option selected>Day</option>
-                    <option>Dates</option>
-                  </select>
-                      
-
+                  <div>
+                    <select
+                      className="orderwrapper__background--selectstatus"
+                      onChange={handleChange}
+                    >
+                      <option value="Day">Day</option>
+                      <option value="Dates">Dates</option>
+                    </select>
+                  </div>
+                  {date && (
                     <div className="d-flex orderwrapper__background--datecalender ms-3 me-3">
                       {/* <AiOutlineCalendar className="calendericon" /> */}
                       <input type="date" placeholder="03/23/2020" />
                     </div>
+                  )}
+                  {dates && (
+                    <>
+                      <div className="d-flex orderwrapper__background--datecalender ms-3 me-3 inputreletive">
+                        <div className="reportwrapper__background--right-title inputabsolute">
+                          From
+                        </div>
+                        <input type="date" placeholder="03/23/2020" />
+                      </div>
+                      <div className="d-flex orderwrapper__background--datecalender ms-3 me-3 inputreletive">
+                        <div className="reportwrapper__background--right-title inputabsolute">
+                          To
+                        </div>
+                        <input type="date" placeholder="03/23/2020" />
+                      </div>
+                    </>
+                  )}
+                      
+
+                    
                   </div>
                 </div>
               </div>

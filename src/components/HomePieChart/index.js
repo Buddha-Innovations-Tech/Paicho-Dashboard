@@ -19,7 +19,8 @@ import "react-circular-progressbar/dist/styles.css";
 //       },
 //     ],
 //   };
-const HomePieChart = ({ percentage }) => {
+const HomePieChart = () => {
+  const percentage =70;
   return (
     <>
       {/* <CircularProgressbar value={percentage} text={`${percentage}%`} /> */}

@@ -1,6 +1,4 @@
 import { Col, Row } from "react-bootstrap";
-import { FaFileExport } from "react-icons/fa";
-
 import HomePieChart from "../HomePieChart";
 import ReportCard from "../../components/ReportCard";
 import YearlyBarGraph from "../../components/YearlyBarGraph";
@@ -60,7 +58,7 @@ const YearlyReport = () => {
 
                   <div className="reportwrapper__yearly--piechart-chart d-flex justify-content-between">
                     <div className="reportwrapper__yearly--piechart-chart-chart1">
-                      <HomePieChart percentage="40,200 " />
+                      <HomePieChart percentage="40,200 "/>
                     </div>
                     <div className="reportwrapper__yearly--piechart-chart-content">
                       <p className="reportwrapper__yearly--piechart-chart-content-topic blue">

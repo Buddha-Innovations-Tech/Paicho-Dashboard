@@ -32,8 +32,6 @@ const SideBar = () => {
             </li>
 
             <li className="product-li" onClick={() => setSubNav(!subnav)}>
-              {/* <NavLink to="" className="product">Product</NavLink> 
-            <MdOutlineProductionQuantityLimits className="icon"/> */}
               <NavLink to="/category" className="active-link product-li-link">
                 <MdOutlineProductionQuantityLimits className="icon" />
                 <span className="me-5">Product</span>

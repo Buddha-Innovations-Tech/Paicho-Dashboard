@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Modal } from "react-bootstrap";
 import SideBar from "../../components/SideBar";
 import NavBar from "../../components/NavBar";
 import PaginationComp from "../../components/PaginationComp";
 import { BiSearch } from "react-icons/bi";
-import { IoMdArrowDropdown } from "react-icons/io";
 import { ImCross } from "react-icons/im";
 const orderList = [
   {
@@ -82,10 +81,23 @@ const orderList = [
 ];
 
 const Order = () => {
+  const [filterdate, setFilterDate] = useState("Day");
+  const [date, setDate] = useState(true);
+  const [dates, setDates] = useState(false);
   const [filterTerm, setFilterTerm] = useState("Status");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleChange = (e) => {
+    setFilterDate(e.target.value);
+  };
+  useEffect(() => {
+    
+      filterdate === "Day" ? setDate(true) : setDate(false);
+      filterdate === "Dates" ? setDates(true) : setDates(false);
+    
+  }, [filterdate]);
+
   return (
     <>
       <Row className="gx-0">
@@ -104,15 +116,37 @@ const Order = () => {
                 </div>
 
                 <div className="d-flex">
-                  <div className="d-flex orderwrapper__background--dateicon">
-                    <p>Date</p>
-                    <IoMdArrowDropdown className="icon" />
+                  <div>
+                    <select
+                      className="orderwrapper__background--selectstatus"
+                      onChange={handleChange}
+                    >
+                      <option value="Day">Day</option>
+                      <option value="Dates">Dates</option>
+                    </select>
                   </div>
-
-                  <div className="d-flex orderwrapper__background--datecalender ms-3 me-3">
-                    {/* <AiOutlineCalendar className="calendericon" /> */}
-                    <input type="date" placeholder="03/23/2020" />
-                  </div>
+                  {date && (
+                    <div className="d-flex orderwrapper__background--datecalender ms-3 me-3">
+                      {/* <AiOutlineCalendar className="calendericon" /> */}
+                      <input type="date" placeholder="03/23/2020" />
+                    </div>
+                  )}
+                  {dates && (
+                    <>
+                      <div className="d-flex orderwrapper__background--datecalender ms-3 me-3 inputreletive">
+                        <div className="reportwrapper__background--right-title inputabsolute">
+                          From
+                        </div>
+                        <input type="date" placeholder="03/23/2020" />
+                      </div>
+                      <div className="d-flex orderwrapper__background--datecalender ms-3 me-3 inputreletive">
+                        <div className="reportwrapper__background--right-title inputabsolute">
+                          To
+                        </div>
+                        <input type="date" placeholder="03/23/2020" />
+                      </div>
+                    </>
+                  )}
 
                   <div>
                     <select
@@ -264,7 +298,7 @@ const Order = () => {
                                   </table>
                                 </div>
                                 <div className="userdetails">
-                                <p className="topic">Order Details</p>
+                                  <p className="topic">Order Details</p>
                                   <div className="orderwrapper__background--headingrow modalheading">
                                     <Row>
                                       <Col md={4}>Product Name</Col>
@@ -273,25 +307,25 @@ const Order = () => {
                                     </Row>
                                   </div>
                                   <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                      <Col md={4}>Mix Achar</Col>
-                                      <Col md={4}>5</Col>
-                                      <Col md={4}>Rs.240</Col>
-                                    </Row>
-                                    <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                      <Col md={4}>Lemon Pickle</Col>
-                                      <Col md={4}>2</Col>
-                                      <Col md={4}>Rs.120</Col>
-                                    </Row>
-                                     <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                      <Col md={4}>Honey</Col>
-                                      <Col md={4}>4</Col>
-                                      <Col md={4}>Rs.500</Col>
-                                    </Row>
-                                    <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
-                                      <Col md={4}>Total</Col>
-                                      <Col md={4}></Col>
-                                      <Col md={4}>Rs.1000</Col>
-                                    </Row>
+                                    <Col md={4}>Mix Achar</Col>
+                                    <Col md={4}>5</Col>
+                                    <Col md={4}>Rs.240</Col>
+                                  </Row>
+                                  <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                                    <Col md={4}>Lemon Pickle</Col>
+                                    <Col md={4}>2</Col>
+                                    <Col md={4}>Rs.120</Col>
+                                  </Row>
+                                  <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                                    <Col md={4}>Honey</Col>
+                                    <Col md={4}>4</Col>
+                                    <Col md={4}>Rs.500</Col>
+                                  </Row>
+                                  <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
+                                    <Col md={4}>Total</Col>
+                                    <Col md={4}></Col>
+                                    <Col md={4}>Rs.1000</Col>
+                                  </Row>
                                 </div>
                               </div>
                             </Modal.Body>

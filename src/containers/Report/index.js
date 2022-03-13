@@ -2,11 +2,11 @@ import { Row, Col } from "react-bootstrap";
 import SideBar from "../../components/SideBar";
 import NavBar from "../../components/NavBar";
 import { FaFileExport } from "react-icons/fa";
-import ReportCard from "../../components/ReportCard";
 import WeeklyReport from "../../components/WeeklyReport";
 import YearlyReport from "../../components/YearlyReport";
 import MonthlyReport from "../../components/MonthlyReport";
 import { useEffect, useState } from "react";
+import DailyReport from "../../components/DailyReport";
 
 const Report = () => {
   const [filteritem, setFilterItem] = useState("Daily Report");
@@ -16,6 +16,7 @@ const Report = () => {
   const [yearly, setYearly] = useState(false);
 
   useEffect(() => {
+    filteritem === "Daily Report"?setDaily(true):setDaily(false);
     filteritem === "Weekly Report" ? setWeekly(true) : setWeekly(false);
     filteritem === "Monthly Report" ? setMonthly(true) : setMonthly(false);
     filteritem === "Yearly Report" ? setYearly(true) : setYearly(false);
@@ -76,52 +77,11 @@ const Report = () => {
                   </div>
                 </div>
               </div>
-
+              {daily && <DailyReport />}
               {weekly && <WeeklyReport />}
               {monthly && <MonthlyReport />}
               {yearly && <YearlyReport />}
-              <div className="reportwrapper__background--reports">
-                <Row className="mb-29">
-                  <Col md={6}>
-                    <ReportCard date="Today" />
-                  </Col>
-                  <Col md={6}>
-                    <ReportCard date="Yesterday" />
-                  </Col>
-                </Row>
-                <Row className="mb-29">
-                  <Col md={6}>
-                    <ReportCard date="03/02/2078" />
-                  </Col>
-                  <Col md={6}>
-                    <ReportCard date="04/02/2078" />
-                  </Col>
-                </Row>
-                <Row className="mb-29">
-                  <Col md={6}>
-                    <ReportCard date="05/02/2078" />
-                  </Col>
-                  <Col md={6}>
-                    <ReportCard date="07/02/2078" />
-                  </Col>
-                </Row>
-                <Row className="mb-29">
-                  <Col md={6}>
-                    <ReportCard date="08/02/1996" />
-                  </Col>
-                  <Col md={6}>
-                    <ReportCard date="09/02/1996" />
-                  </Col>
-                </Row>
-                <Row className="mb-145">
-                  <Col md={6}>
-                    <ReportCard date="10/02/1996" />
-                  </Col>
-                  <Col md={6}>
-                    <ReportCard date="11/02/1996" />
-                  </Col>
-                </Row>
-              </div>
+              
             </div>
           </div>
 

@@ -161,7 +161,9 @@ const AddProduct = () => {
                     <FiAlertTriangle />
                     <span>Please choose image below 5 mb</span>
                   </p>
-                  <Previews />
+                  <div className="addproduct-dragdrop">
+                    <Previews />
+                  </div>
                 </Col>
               </Row>
               <div>

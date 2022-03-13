@@ -1,5 +1,4 @@
 import { Col, Row } from "react-bootstrap";
-import { FaFileExport } from "react-icons/fa";
 
 import HomePieChart from "../HomePieChart";
 import ReportCard from "../ReportCard";

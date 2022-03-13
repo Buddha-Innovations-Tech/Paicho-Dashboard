@@ -11,6 +11,8 @@ import Carousel from "../Carousel";
 import Report from "../Report";
 import Register from "../Register";
 import Login from "../Login";
+import EditCategory from "../EditCategory";
+import UpdateRegisterAcc from "../UpdateRegisterAcc";
 
 const App = () => {
   return (
@@ -19,6 +21,7 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/category" element={<Category />} />
+          <Route exact path="/editcategory" element={<EditCategory />} />
           <Route exact path="/addproduct" element={<AddProduct />} />
           <Route exact path="/productlist" element={<ProductList />} />
           <Route exact path="/order" element={<Order />} />
@@ -28,6 +31,7 @@ const App = () => {
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/carousel" element={<Carousel />} />
+          <Route exact path="/updateregisteracc" element={<UpdateRegisterAcc />} />
         </Routes>
       </main>
     </div>

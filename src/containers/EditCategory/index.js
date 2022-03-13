@@ -15,7 +15,7 @@ const subcategoryItem = [
   { item: "Bhutuk Pickle" },
 ];
 
-const Category = () => {
+const EditCategory = () => {
   return (
     <>
       <Row className="gx-0">
@@ -31,7 +31,7 @@ const Category = () => {
                 <Col md={4}>
                   <div className="categorywrapper__addcategorywrapper--col">
                     <p className="categorywrapper__addcategorywrapper--addcategory">
-                      Add Categories
+                      Edit Categories
                     </p>
                     <div className="categorywrapper__addcategorywrapper--categoryname">
                       <label htmlFor="name">Name</label> <br />
@@ -57,8 +57,7 @@ const Category = () => {
                     </ul>
                     <div className="categorywrapper__addcategorywrapper--buttons">
                       <button className="btn-discard">Discard</button>
-                      
-                      <button className="btn-addcategory">Add Category</button>
+                      <button className="btn-addcategory">Update Category</button>
                     </div>
                   </div>
                 </Col>
@@ -105,4 +104,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default EditCategory;

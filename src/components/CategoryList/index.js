@@ -1,5 +1,6 @@
 import React from 'react'
 import {Col,Row} from "react-bootstrap"
+import {Link} from "react-router-dom"
 export const categoryData=[
   { sn:1,
     category:"Paicho Pickle",
@@ -61,7 +62,11 @@ const CategoryList = ({id,sn,category,subcategory1,subcategory2,subcategory3,pro
           <p>{subcategory4}</p>
           </Col>
           <Col md={2}>{product}</Col>
-          <Col md={2}><button>Edit</button></Col>
+          <Col md={2}>
+          <Link to="/editcategory" >
+            <button>Edit</button>
+            </Link>
+            </Col>
       </Row>
     </>
   )

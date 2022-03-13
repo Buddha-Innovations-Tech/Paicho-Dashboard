@@ -10,12 +10,12 @@ const productList = [
   {
     id: 1101,
     image: ProductImg,
-    name: "Mix Achr",
+    name: "Mix Achr (250gm)",
     category: "Paicho Pickle",
     price: "Rs.250",
     discount: "10%",
     stock: "In Stock",
-    bimal:"abc"
+    bimal:"abc",
   },
   {
     id: 1102,
@@ -60,7 +60,7 @@ const productList = [
 ];
 
 const ProductList = () => {
-    const [items,setItems]=useState(productList);
+    // const [items,setItems]=useState(productList);
 
     const [filterTerm, setFilterTerm] = useState('Stock')
   return (
@@ -121,7 +121,7 @@ const ProductList = () => {
                 </Row>
               </div>
               <div>
-                { filterTerm==='Stock'? items.map((curElm,index) => {
+                { filterTerm==='Stock'? productList.map((curElm,index) => {
                   return (
                     <Row className="productlistwrapper__productlistwrapper--listitem" key={index}>
                       <Col md={1}>
@@ -164,7 +164,7 @@ const ProductList = () => {
                     </Row>
                   );
                 }):
-               items.filter(i => i.stock===filterTerm).map(i => <Row className="productlistwrapper__productlistwrapper--listitem" key={i.id}>
+                productList.filter(i => i.stock===filterTerm).map(i => <Row className="productlistwrapper__productlistwrapper--listitem" key={i.id}>
                <Col md={1}>
                  <p>{i.id}</p>
                </Col>

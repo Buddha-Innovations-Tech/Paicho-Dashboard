@@ -7,7 +7,6 @@ import InputField from "../../components/InputField";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
-import { Link } from "react-router-dom";
 // const Register = () => {
 const adminList = [
   {
@@ -35,7 +34,7 @@ const adminList = [
     password:"hello123@3"
   },
 ];
-const Register = () => {
+const UpdateRegisterAcc = () => {
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
@@ -51,7 +50,7 @@ const Register = () => {
               <Row>
                 <Col md={5}>
                   <div className="registerwrapper__background">
-                    <p className="registerwrapper__title">Create an Account</p>
+                    <p className="registerwrapper__title">Update an Account</p>
                     <p className="registerwrapper__subtitle">
                       Register new user
                     </p>
@@ -70,9 +69,11 @@ const Register = () => {
                     </div>
                     <div className="categorywrapper__addcategorywrapper--buttons register-btn">
                       <button className="btn-discard">Discard</button>
+                     
                       <button className="btn-addcategory">
-                        Create Account
+                        Update Account
                       </button>
+                   
                     </div>
                   </div>
                 </Col>
@@ -107,8 +108,7 @@ const Register = () => {
                             </Col>
                             <Col md={2}>
                               <div className="d-flex justify-content-center">
-                                <Link to="/updateregisteracc" style={{marginTop:"-5px"}}><AiOutlineEdit className="editicon" /></Link>
-                                
+                                <AiOutlineEdit className="editicon" />
                                 <RiDeleteBin7Line
                                   className="deleteicon"
                                   onClick={handleShow1}
@@ -160,4 +160,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default UpdateRegisterAcc;
