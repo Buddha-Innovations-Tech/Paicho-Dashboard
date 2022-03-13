@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
+import { FaChevronLeft } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
 import profile from "../../assets/images/profile.png";
 import { VscCircleFilled } from "react-icons/vsc";
-import { Link } from "react-router-dom";
-
+import { BsClock } from "react-icons/bs";
+import { MdOutlinePermContactCalendar } from "react-icons/md";
 const NavBar = () => {
   const [show, setShow] = useState(false);
 
@@ -15,7 +16,180 @@ const NavBar = () => {
       <div className="navbarwrapper">
         <div className="d-flex justify-content-end">
           <div>
-            <IoMdNotificationsOutline className="navbarwrapper__notification" />
+            <IoMdNotificationsOutline
+              className="navbarwrapper__notification"
+              onClick={handleShow}
+            />
+
+            <div className="navbarwrapper__notification__modal">
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Body>
+                  <div className="d-flex justify-content-between navbarwrapper__notification__modal--title">
+                    <div className="navbarwrapper__notification__modal--title-left">
+                      <FaChevronLeft className="mr-5" />
+                      Notifications
+                    </div>
+                    <div className="navbarwrapper__notification__modal--title-right">
+                      Mark all as read
+                    </div>
+                  </div>
+                  <hr />
+
+                  <div className="navbarwrapper__notification__modal--body d-flex justify-content-between align-items-center">
+                    <div className="navbarwrapper__notification__modal--body-left d-flex justify-content-between">
+                      <div className="icon">
+                        <MdOutlinePermContactCalendar className="contact" />
+                      </div>
+                      <div className="text">
+                        <p className="para">
+                          Sagar Chhetri{" "}
+                          <span className="time2">has just registered</span>
+                        </p>
+                        <div>
+                          <BsClock />
+                          <span className="time">15 m</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="navbarwrapper__notification__modal--body-right">
+                      <VscCircleFilled className="green" />
+                    </div>
+                  </div>
+
+                  <div className="navbarwrapper__notification__modal--body d-flex justify-content-between align-items-center">
+                    <div className="navbarwrapper__notification__modal--body-left d-flex justify-content-between">
+                      <div className="icon icon2">
+                        <IoMdNotificationsOutline className="contact register" />
+                      </div>
+                      <div className="text">
+                        <p className="para">
+                          Jeewan Kunwar
+                          <span className="time2">
+                            {" "}
+                            has ordered paicho achar
+                          </span>
+                        </p>
+                        <div>
+                          <BsClock />
+                          <span className="time">15 m</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="navbarwrapper__notification__modal--body-right">
+                      <VscCircleFilled className="green" />
+                    </div>
+                  </div>
+                  <div className="navbarwrapper__notification__modal--body d-flex justify-content-between align-items-center">
+                    <div className="navbarwrapper__notification__modal--body-left d-flex justify-content-between">
+                      <div className="icon">
+                        <MdOutlinePermContactCalendar className="contact" />
+                      </div>
+                      <div className="text">
+                        <p className="para">
+                          Sagar Chhetri{" "}
+                          <span className="time2">has just registered</span>
+                        </p>
+                        <div>
+                          <BsClock />
+                          <span className="time">15 m</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="navbarwrapper__notification__modal--body-right">
+                      <VscCircleFilled className="green" />
+                    </div>
+                  </div>
+                  <div className="navbarwrapper__notification__modal--body d-flex justify-content-between align-items-center">
+                    <div className="navbarwrapper__notification__modal--body-left d-flex justify-content-between">
+                      <div className="icon">
+                        <MdOutlinePermContactCalendar className="contact" />
+                      </div>
+                      <div className="text">
+                        <p className="para">
+                          Sagar Chhetri{" "}
+                          <span className="time2">has just registered</span>
+                        </p>
+                        <div>
+                          <BsClock />
+                          <span className="time">15 m</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="navbarwrapper__notification__modal--body-right">
+                      <VscCircleFilled className="green" />
+                    </div>
+                  </div>
+
+                  <div className="navbarwrapper__notification__modal--body d-flex justify-content-between align-items-center">
+                    <div className="navbarwrapper__notification__modal--body-left d-flex justify-content-between">
+                      <div className="icon icon2">
+                        <IoMdNotificationsOutline className="contact register" />
+                      </div>
+                      <div className="text">
+                        <p className="para">
+                          Jeewan Kunwar
+                          <span className="time2">
+                            {" "}
+                            has ordered paicho achar
+                          </span>
+                        </p>
+                        <div>
+                          <BsClock />
+                          <span className="time">15 m</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="navbarwrapper__notification__modal--body-right">
+                      <VscCircleFilled className="green" />
+                    </div>
+                  </div>
+                  <div className="navbarwrapper__notification__modal--body d-flex justify-content-between align-items-center">
+                    <div className="navbarwrapper__notification__modal--body-left d-flex justify-content-between">
+                      <div className="icon">
+                        <MdOutlinePermContactCalendar className="contact" />
+                      </div>
+                      <div className="text">
+                        <p className="para">
+                          Sagar Chhetri{" "}
+                          <span className="time2">has just registered</span>
+                        </p>
+                        <div>
+                          <BsClock />
+                          <span className="time">15 m</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="navbarwrapper__notification__modal--body-right">
+                      <VscCircleFilled className="green" />
+                    </div>
+                  </div>
+
+                  <div className="navbarwrapper__notification__modal--body d-flex justify-content-between align-items-center">
+                    <div className="navbarwrapper__notification__modal--body-left d-flex justify-content-between">
+                      <div className="icon icon2">
+                        <IoMdNotificationsOutline className="contact register" />
+                      </div>
+                      <div className="text">
+                        <p className="para">
+                          Jeewan Kunwar
+                          <span className="time2">
+                            {" "}
+                            has ordered paicho achar
+                          </span>
+                        </p>
+                        <div>
+                          <BsClock />
+                          <span className="time">15 m</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="navbarwrapper__notification__modal--body-right">
+                      <VscCircleFilled className="green" />
+                    </div>
+                  </div>
+                </Modal.Body>
+              </Modal>
+            </div>
             <div className="navbarwrapper__notification--circle"></div>
           </div>
           <div className="d-flex navbarwrapper__profile">
@@ -25,38 +199,8 @@ const NavBar = () => {
             <span className="navbarwrapper__profile--name">Anderson</span>
           </div>
           <div>
-            <Link to="/login">
-              <button className="navbarwrapper__logoutbtn">Log out</button>
-            </Link>
+            <button className="navbarwrapper__logoutbtn">Log out</button>
           </div>
-
-          <div className="notifications__modal">
-            <Modal show={show} onHide={handleClose}>
-              <Modal.Body>
-                <div className="d-flex justify-content-between notifications__modal--title">
-                  <div className="notifications__modal--title-left">
-                    Notifications
-                  </div>
-                  <div className="notifications__modal--title-right">
-                    Mark all as read
-                  </div>
-                </div>
-                <hr />
-                <div className="notifications__modal--body d-flex justify-content-between">
-                  <div className="notifications__modal--body-left d-flex justify-content-between">
-                    <div className="icon">icon</div>
-                    <div className="text">
-                      Solam jung rana has ordered paicho achar
-                    </div>
-                  </div>
-                  <div className="notifications__modal--body-right">
-                    <VscCircleFilled />
-                  </div>
-                </div>
-              </Modal.Body>
-            </Modal>
-          </div>
-          <div className="navbarwrapper__notification--circle"></div>
         </div>
       </div>
     </>

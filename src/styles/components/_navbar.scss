@@ -1,12 +1,105 @@
 .navbarwrapper {
   padding: 28px 15px 28px 0;
-// box-shadow: inset 0px -1px 0px rgba(242, 242, 242, 0.25);
+  // box-shadow: inset 0px -1px 0px rgba(242, 242, 242, 0.25);
   &__notification {
     color: #005aab;
     font-size: 18px;
     font-size: 22px;
     margin-top: 8px;
     position: relative;
+
+    &__modal {
+      &--title {
+        &-left {
+          font-weight: 700;
+          font-size: 18px;
+          color: #383e50;
+          display: flex;
+          align-items: center;
+
+          .mr-5 {
+            margin-right: 5px;
+          }
+        }
+
+        &-right {
+          font-family: "Lato";
+          font-weight: 600;
+          font-size: 14px;
+          letter-spacing: 0.01em;
+          color: #2283da;
+        }
+      }
+
+      &--body {
+        font-family: "Lato";
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.01em;
+        color: #000000;
+
+        margin-bottom: 19px;
+
+        &-left {
+          .icon2 {
+            background-color: #e6eff7 !important;
+          }
+          .icon {
+            position: relative;
+            height: 38px;
+            width: 38px;
+            border-radius: 50%;
+            background-color: #ebf8db;
+
+            .contact {
+              position: absolute;
+              top: 7px;
+              left: 10px;
+              height: 20px;
+              width: 20px;
+              color: #8dc73d;
+            }
+            .register {
+              color: #005aab;
+            }
+          }
+
+          .text {
+            margin-left: 18px;
+
+            .para {
+              margin-bottom: 0;
+              font-family: "Lato";
+              font-weight: 600;
+              font-size: 14px;
+              letter-spacing: 0.01em;
+
+              color: #000000;
+            }
+
+            .time2 {
+              color: #888888;
+            }
+
+            .time {
+              margin-left: 5px;
+              font-family: "Lato";
+              font-weight: 600;
+              font-size: 10px;
+              letter-spacing: 0.01em;
+              color: #888888;
+            }
+          }
+        }
+
+        &-right {
+          .green {
+            color: #8dc73d;
+          }
+        }
+      }
+    }
+
     &--circle {
       position: absolute;
       height: 6px;
@@ -25,8 +118,8 @@
       font-size: 12px;
       margin: 8px;
     }
-}
-&__logoutbtn{
-    @include btn(#005AAB);
-}
+  }
+  &__logoutbtn {
+    @include btn(#005aab);
+  }
 }
