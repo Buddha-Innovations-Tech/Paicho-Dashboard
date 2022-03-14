@@ -17,7 +17,7 @@ const SideBar = () => {
   return (
     <>
       <div className="sidebarwrapper">
-        <Link to="/">
+        <Link to="/home">
           <figure>
             <img src={logo} alt="" className="sidebarwrapper__logo" />
           </figure>
@@ -25,7 +25,7 @@ const SideBar = () => {
         <div className="sidebarwrapper__unorderlist">
           <ul style={{ paddingLeft: "0" }}>
             <li>
-              <NavLink to="/" className="active-link">
+              <NavLink to="/home" className="active-link">
                 <MdSpaceDashboard className="icon" />
                 <span>Dashboard</span>
               </NavLink>
