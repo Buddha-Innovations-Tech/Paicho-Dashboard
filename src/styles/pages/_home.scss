@@ -137,3 +137,21 @@
     line-height: 18px;
   }
 }
+.home-viewdetailsbtn{
+  background-color: #005AAB;
+    font-size: 11px;
+    padding: 7px 8px;
+    border-radius: 4px;
+    border: none;
+    color: #fff;
+}
+.transactionlistleft{
+  text-align: left !important;
+  padding-left: 11px;
+}
+.homeheadingrow{
+  text-align: left !important;
+  .row{
+    padding-left: 10px;
+  }
+}

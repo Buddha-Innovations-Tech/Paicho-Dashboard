@@ -6,6 +6,7 @@ import profile from "../../assets/images/profile.png";
 import { VscCircleFilled } from "react-icons/vsc";
 import { BsClock } from "react-icons/bs";
 import { MdOutlinePermContactCalendar } from "react-icons/md";
+import { Link } from "react-router-dom";
 const NavBar = () => {
   const [show, setShow] = useState(false);
 
@@ -199,7 +200,9 @@ const NavBar = () => {
             <span className="navbarwrapper__profile--name">Anderson</span>
           </div>
           <div>
+            <Link to="/login">
             <button className="navbarwrapper__logoutbtn">Log out</button>
+            </Link>
           </div>
         </div>
       </div>

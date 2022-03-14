@@ -1,11 +1,12 @@
-import React from "react";
-import { Row, Col } from "react-bootstrap";
+import React,{useState} from "react";
+import { Row, Col,Modal } from "react-bootstrap";
 import HomeOrder from "../../components/HomeOrder";
 import NavBar from "../../components/NavBar";
 import SideBar from "../../components/SideBar";
 import { Link } from "react-router-dom";
 import HomeBarGraph from "../../components/HomeBarGraph";
 import HomePieChart from "../../components/HomePieChart";
+import {ImCross} from "react-icons/im"
 
 const latestOrderData = [
   {
@@ -41,6 +42,9 @@ const latestOrderData = [
 ];
 
 const Home = () => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   return (
     <>
       <Row className="gx-0">
@@ -94,61 +98,164 @@ const Home = () => {
                       Latest Order
                     </p>
                     <span className="latestorderwrapper__viewall">
-                      <Link to="">View All</Link>
+                      <Link to="/order">View All</Link>
                     </span>
                   </div>
-                  <table className="table latestorderwrapper__table">
-                    <thead style={{ background: "#F4F5F9" }}>
-                      <tr>
-                        <th>SN</th>
-                        <th>Name</th>
-                        <th>Phone Number</th>
-                        <th>Status</th>
-                        <th>Details</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {latestOrderData.map((data, index) => {
-                        return (
-                          <tr key={index}>
-                            <td>{data.sn}</td>
-                            <td>{data.name}</td>
-                            <td>{data.phone}</td>
-                            <td>
-                              <span
-                                style={{
-                                  color:
-                                    data.status === "completed"
-                                      ? "#063865"
-                                      : data.status === "cancelled"
-                                      ? "#920000"
-                                      : data.status === "To be delivered"
-                                      ? "#FFA500"
-                                      : "#495058",
-                                  background:
-                                    data.status === "completed"
-                                      ? "#C4DCF2"
-                                      : data.status === "cancelled"
-                                      ? "#FCDCD2"
-                                      : data.status === "To be delivered"
-                                      ? "#FFEDCC"
-                                      : "#DDEEC5",
-                                  borderRadius: "28px",
-                                  padding: "5px 10px",
-                                  textAlign: "center",
-                                }}
-                              >
-                                {data.status}
-                              </span>
-                            </td>
-                            <td style={{ paddingTop: "0" }}>
-                              <button>View Details</button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+
+                  <div className="orderwrapper__background--headingrow homeheadingrow">
+                <Row>
+                  <Col md={1}>SN</Col>
+                  <Col md={3}>Name</Col>
+                  <Col md={3}>Phone Number</Col>
+                  <Col md={3}>Status</Col>
+                  <Col md={2}>Details</Col>
+                </Row>
+              </div>
+
+              <div>
+                {latestOrderData.map((curElm, index) => {
+                  return (
+                    <Row
+                      className="productlistwrapper__productlistwrapper--listitem transactionlistleft"
+                      key={index}
+                    >
+                      <Col md={1}>
+                        <p>{curElm.sn}</p>
+                      </Col>
+                      <Col md={3}>
+                        <p>{curElm.name}</p>
+                      </Col>
+                      <Col md={3}>
+                        <p>{curElm.phone}</p>
+                      </Col>
+                      <Col md={3}>
+                        <p 
+                         style={{
+                          color:
+                            curElm.status === "completed"
+                              ? "#063865"
+                              : curElm.status === "cancelled"
+                              ? "#920000"
+                              : curElm.status === "To be delivered"
+                              ? "#FFA500"
+                              : "#495058",
+                          background:
+                            curElm.status === "completed"
+                              ? "#C4DCF2"
+                              : curElm.status === "cancelled"
+                              ? "#FCDCD2"
+                              : curElm.status === "To be delivered"
+                              ? "#FFEDCC"
+                              : "#DDEEC5",
+                          borderRadius: "28px",
+                          padding: "5px 10px",
+                          textAlign: "center",
+                        }}>{curElm.status}</p>
+                      </Col>
+                      <Col md={2}>
+                      <button className="home-viewdetailsbtn" onClick={handleShow}>View Details</button>
+                      </Col>
+                      
+                    </Row>
+                  );
+                })}
+                 <Modal show={show} onHide={handleClose}>
+                            <Modal.Body>
+                              <div className="ordermodalbg">
+                                <div className="d-flex justify-content-between align-items-center">
+                                  <p className="ordermodalbg__title">Details</p>
+                                  <ImCross
+                                    className="carouselCard__category--icons--crossicon"
+                                    onClick={handleClose}
+                                  />
+                                </div>
+                                <div className="userdetails">
+                                  <p className="topic">User Details</p>
+                                  <div
+                                    className="d-flex justify-content-between align-items-center"
+                                    style={{
+                                      borderBottom: "0.6px solid #E0E0E0",
+                                      paddingBottom: "11px",
+                                    }}
+                                  >
+                                    <p className="username">Sagar Gc</p>
+                                    <div>
+                                      <select>
+                                        <option selected>
+                                          To be delivered
+                                        </option>
+                                        <option> To be delivered </option>
+                                        <option>In Progress</option>
+                                        <option>Completed</option>
+                                        <option>Cancelled</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <table>
+                                    <tr>
+                                      <td className="maindata">
+                                        Billing Name:
+                                      </td>
+                                      <td className="descdata">Self</td>
+                                    </tr>
+                                    <tr>
+                                      <td className="maindata">Email:</td>
+                                      <td className="descdata">
+                                        sagarchhetri981@gmail.com
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className="maindata">
+                                        Phone Number:
+                                      </td>
+                                      <td className="descdata">9815165795</td>
+                                    </tr>
+                                    <tr>
+                                      <td className="maindata">Address:</td>
+                                      <td className="descdata">
+                                        Butwal 10 Golpark
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className="maindata">Date:</td>
+                                      <td className="descdata">02/05/2022</td>
+                                    </tr>
+                                  </table>
+                                </div>
+                                <div className="userdetails">
+                                  <p className="topic">Order Details</p>
+                                  <div className="orderwrapper__background--headingrow modalheading">
+                                    <Row>
+                                      <Col md={4}>Product Name</Col>
+                                      <Col md={4}>Quantity</Col>
+                                      <Col md={4}>Price</Col>
+                                    </Row>
+                                  </div>
+                                  <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                                    <Col md={4}>Mix Achar</Col>
+                                    <Col md={4}>5</Col>
+                                    <Col md={4}>Rs.240</Col>
+                                  </Row>
+                                  <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                                    <Col md={4}>Lemon Pickle</Col>
+                                    <Col md={4}>2</Col>
+                                    <Col md={4}>Rs.120</Col>
+                                  </Row>
+                                  <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                                    <Col md={4}>Honey</Col>
+                                    <Col md={4}>4</Col>
+                                    <Col md={4}>Rs.500</Col>
+                                  </Row>
+                                  <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
+                                    <Col md={4}>Total</Col>
+                                    <Col md={4}></Col>
+                                    <Col md={4}>Rs.1000</Col>
+                                  </Row>
+                                </div>
+                              </div>
+                            </Modal.Body>
+                          </Modal>
+              </div>
                 </div>
               </Col>
               <Col md={4}>
