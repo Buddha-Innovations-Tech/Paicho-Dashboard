@@ -4,6 +4,9 @@ import { BiSearch } from "react-icons/bi";
 import React, { useEffect, useState } from "react";
 
 import PaginationComp from "../../components/PaginationComp";
+import { listUsers } from "../../actions/userActions";
+import { useDispatch } from "react-redux";
+
 const customerList = [
   {
     id: 1,
@@ -102,31 +105,33 @@ const customerList = [
     order: 90,
   },
 ];
+
 const Customer = () => {
   const [sortType, setSortType] = useState("Orders");
-  const [loading, setLoading] =useState(false)
+  const [loading, setLoading] = useState(false);
   const [sorting, setSorting] = useState(customerList);
-  const changeSort = ()=> {
-    if(sortType.toLowerCase() === "Orders".toLowerCase()){
-      setSorting(customerList)
+  const dispatch = useDispatch();
+  const changeSort = () => {
+    if (sortType.toLowerCase() === "Orders".toLowerCase()) {
+      setSorting(customerList);
     } else if (sortType.toLowerCase() === "Highest Orders".toLowerCase()) {
-      const sorted = customerList.sort((a, b)=>  {
+      const sorted = customerList.sort((a, b) => {
         return b.order - a.order;
-      })
-      setLoading(true)
-      setSorting(sorted)
-      setLoading(false)
+      });
+      setLoading(true);
+      setSorting(sorted);
+      setLoading(false);
     } else if (sortType.toLowerCase() === "Lowest Orders".toLowerCase()) {
-      const sorted = customerList.sort((a, b)=>  {
+      const sorted = customerList.sort((a, b) => {
         return a.order - b.order;
-      })
-      setLoading(true)
-      setSorting(sorted)
-      setLoading(false)
-    }else{
-      setSorting(customerList.filter(i => i.order===0))
+      });
+      setLoading(true);
+      setSorting(sorted);
+      setLoading(false);
+    } else {
+      setSorting(customerList.filter((i) => i.order === 0));
     }
-  }
+  };
 
   // const sorted  =()=>  sorting.sort((a, b) => {
   //     if (sortType === "Orders") {
@@ -138,12 +143,15 @@ const Customer = () => {
   //     }
   //     setSorting(sorted);
   //   })
-  useEffect(()=> {
-    setTimeout(()=> {
-      changeSort()
-    },100)
-  }, [sortType])
-  
+  useEffect(() => {
+    setTimeout(() => {
+      changeSort();
+    }, 100);
+  }, [sortType]);
+
+  useEffect(() => {
+    dispatch(listUsers());
+  }, [dispatch]);
 
   return (
     <>
@@ -166,7 +174,7 @@ const Customer = () => {
               <select
                 className="orderwrapper__background--selectstatus"
                 onChange={(e) => {
-                  setSortType(e.target.value)
+                  setSortType(e.target.value);
                 }}
               >
                 <option selected>Orders</option>
@@ -189,34 +197,35 @@ const Customer = () => {
           </div>
 
           <div>
-            {sorting &&  sorting.map((curElm, index) => {
-              return (
-                <Row
-                  className="productlistwrapper__productlistwrapper--listitem customerlistleft"
-                  key={index}
-                >
-                  <Col md={1}>
-                    <p>{curElm.id}</p>
-                  </Col>
-                  <Col md={2}>
-                    <p>{curElm.username}</p>
-                  </Col>
-                  <Col md={2}>
-                    <p>{curElm.Phone}</p>
-                  </Col>
-                  <Col md={2}>
-                    <p>{curElm.email}</p>
-                  </Col>
-                  <Col md={3}>
-                    <p>{curElm.address}</p>
-                  </Col>
+            {sorting &&
+              sorting.map((curElm, index) => {
+                return (
+                  <Row
+                    className="productlistwrapper__productlistwrapper--listitem customerlistleft"
+                    key={index}
+                  >
+                    <Col md={1}>
+                      <p>{curElm.id}</p>
+                    </Col>
+                    <Col md={2}>
+                      <p>{curElm.username}</p>
+                    </Col>
+                    <Col md={2}>
+                      <p>{curElm.Phone}</p>
+                    </Col>
+                    <Col md={2}>
+                      <p>{curElm.email}</p>
+                    </Col>
+                    <Col md={3}>
+                      <p>{curElm.address}</p>
+                    </Col>
 
-                  <Col md={2}>
-                    <p>{curElm.order===0 ?'No orders': curElm.order}</p>
-                  </Col>
-                </Row>
-              );
-            })}
+                    <Col md={2}>
+                      <p>{curElm.order === 0 ? "No orders" : curElm.order}</p>
+                    </Col>
+                  </Row>
+                );
+              })}
           </div>
         </div>
 

@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import axios from "axios";
 import React from "react";
 
 import UpdateRegisterAcc from "../UpdateRegisterAcc";
@@ -17,6 +18,7 @@ import Order from "../Order";
 import Home from "../Home";
 
 const App = () => {
+  axios.defaults.baseURL = "http://localhost:5000";
   return (
     <div>
       <main>
