@@ -33,7 +33,7 @@ const Login = () => {
               </div>
               <AiOutlineEyeInvisible className="eye-icon" />
             </div>
-            <Link to="/" className="login-btn">Login</Link>
+            <Link to="/home" className="login-btn">Login</Link>
           </Form>
         </div>
       </div>
