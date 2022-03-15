@@ -95,6 +95,7 @@ const Order = () => {
     filterdate === "Day" ? setDate(true) : setDate(false);
     filterdate === "Dates" ? setDates(true) : setDates(false);
   }, [filterdate]);
+
   return (
     <>
       <div className="orderwrapper">
