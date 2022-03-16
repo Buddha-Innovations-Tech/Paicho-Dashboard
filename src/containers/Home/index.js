@@ -1,11 +1,12 @@
-import { Row, Col } from "react-bootstrap";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Row, Col, Modal } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { ImCross } from "react-icons/im";
 
 import HomeBarGraph from "../../components/HomeBarGraph";
 import HomePieChart from "../../components/HomePieChart";
 import HomeOrder from "../../components/HomeOrder";
-import { useSelector } from "react-redux";
 
 const latestOrderData = [
   {
@@ -50,6 +51,11 @@ const Home = () => {
       navigate("/login");
     }
   }, [userInfo]);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <>
       <div className="homedashboardwrapper">
@@ -62,7 +68,7 @@ const Home = () => {
             <Row className="gx-4 gy-3">
               <Col md={6}>
                 <div className="tobedelivered">
-                  <HomeOrder order="To be delivered " number="45,0000" />
+                  <HomeOrder order="To be delivered " number="4,50,000" />
                 </div>
               </Col>
               <Col md={6}>
@@ -143,7 +149,7 @@ const Home = () => {
                           </span>
                         </td>
                         <td style={{ paddingTop: "0" }}>
-                          <button>View Details</button>
+                          <button onClick={handleShow}>View Details</button>
                         </td>
                       </tr>
                     );
@@ -152,6 +158,92 @@ const Home = () => {
               </table>
             </div>
           </Col>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Body>
+              <div className="ordermodalbg">
+                <div className="d-flex justify-content-between align-items-center">
+                  <p className="ordermodalbg__title">Details</p>
+                  <ImCross
+                    className="carouselCard__category--icons--crossicon"
+                    onClick={handleClose}
+                  />
+                </div>
+                <div className="userdetails">
+                  <p className="topic">User Details</p>
+                  <div
+                    className="d-flex justify-content-between align-items-center"
+                    style={{
+                      borderBottom: "0.6px solid #E0E0E0",
+                      paddingBottom: "11px",
+                    }}
+                  >
+                    <p className="username">Sagar Gc</p>
+                    <div>
+                      <select>
+                        <option selected>To be delivered</option>
+                        <option> To be delivered </option>
+                        <option>In Progress</option>
+                        <option>Completed</option>
+                        <option>Cancelled</option>
+                      </select>
+                    </div>
+                  </div>
+                  <table>
+                    <tr>
+                      <td className="maindata">Billing Name:</td>
+                      <td className="descdata">Self</td>
+                    </tr>
+                    <tr>
+                      <td className="maindata">Email:</td>
+                      <td className="descdata">sagarchhetri981@gmail.com</td>
+                    </tr>
+                    <tr>
+                      <td className="maindata">Phone Number:</td>
+                      <td className="descdata">9815165795</td>
+                    </tr>
+                    <tr>
+                      <td className="maindata">Address:</td>
+                      <td className="descdata">Butwal 10 Golpark</td>
+                    </tr>
+                    <tr>
+                      <td className="maindata">Date:</td>
+                      <td className="descdata">02/05/2022</td>
+                    </tr>
+                  </table>
+                </div>
+                <div className="userdetails">
+                  <p className="topic">Order Details</p>
+                  <div className="orderwrapper__background--headingrow modalheading">
+                    <Row>
+                      <Col md={4}>Product Name</Col>
+                      <Col md={4}>Quantity</Col>
+                      <Col md={4}>Price</Col>
+                    </Row>
+                  </div>
+                  <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                    <Col md={4}>Mix Achar</Col>
+                    <Col md={4}>5</Col>
+                    <Col md={4}>Rs.240</Col>
+                  </Row>
+                  <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                    <Col md={4}>Lemon Pickle</Col>
+                    <Col md={4}>2</Col>
+                    <Col md={4}>Rs.120</Col>
+                  </Row>
+                  <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                    <Col md={4}>Honey</Col>
+                    <Col md={4}>4</Col>
+                    <Col md={4}>Rs.500</Col>
+                  </Row>
+                  <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
+                    <Col md={4}>Total</Col>
+                    <Col md={4}></Col>
+                    <Col md={4}>Rs.1000</Col>
+                  </Row>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
           <Col md={4}>
             <div className="revenuewrapper">
               <div className="d-flex justify-content-between align-items-center">
