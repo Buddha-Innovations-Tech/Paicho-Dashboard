@@ -120,3 +120,29 @@ export const userUpdateReducer = (state = { user: {} }, action) => {
       return state;
   }
 };
+
+export const getUsersReducer = (state = {users:[],  loading:false}, action) => {
+
+  switch (action.type) {
+    case "GET_USER_REQUEST":
+      return {
+        loading: true
+      }
+  
+    case "GET_USER_SUCCESS":
+      return {
+        loading: false,
+        users: action.payload
+      }
+  
+    case "GET_USER_FAIL":
+      return {
+        loading: false,
+        error: action.payload
+      }
+  
+    default:
+      return state;
+  }
+}
+
