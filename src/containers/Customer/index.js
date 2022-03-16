@@ -1,11 +1,12 @@
+import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { AiOutlineFilePdf } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import { BiSearch } from "react-icons/bi";
-import React, { useEffect, useState } from "react";
 
 import PaginationComp from "../../components/PaginationComp";
 import { listUsers } from "../../actions/userActions";
-import { useDispatch } from "react-redux";
 
 const customerList = [
   {
@@ -107,6 +108,19 @@ const customerList = [
 ];
 
 const Customer = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+    if (!userInfo.superAdmin) {
+      navigate("/home");
+    }
+  }, [userInfo]);
+
   const [sortType, setSortType] = useState("Orders");
   const [loading, setLoading] = useState(false);
   const [sorting, setSorting] = useState(customerList);

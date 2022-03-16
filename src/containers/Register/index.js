@@ -1,12 +1,13 @@
-import { Row, Col, Modal, FormControl } from "react-bootstrap";
+import { Row, Col, Modal, FormControl, Form } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
 import { RiDeleteBin7Line } from "react-icons/ri";
+import { useNavigate, Link } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import DragAndDrop from "../../components/DragAndDrop";
-import InputField from "../../components/InputField";
+import { register } from "../../actions/userActions";
 
 const adminList = [
   {
@@ -35,9 +36,34 @@ const adminList = [
   },
 ];
 const Register = () => {
+  const dispatch = useDispatch();
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
+
+  const [firstname, setFname] = useState("");
+  const [lastname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [image, setImage] = useState(
+    "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+  );
+
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(register(firstname, lastname, email, password));
+  };
+
   return (
     <>
       <div className="registerwrapper">
@@ -46,42 +72,58 @@ const Register = () => {
             <div className="registerwrapper__background">
               <p className="registerwrapper__title">Create an Account</p>
               <p className="registerwrapper__subtitle">Register new user</p>
-              <div className="mt-3">
-                <label htmlFor="">First Name</label> <br />
-                <FormControl
-                  type="text"
-                  name="firstname"
-                  placeholder="First Name"
-                />
-              </div>
-              <div className="mt-3">
-                <label htmlFor="">Last Name</label> <br />
-                <FormControl
-                  type="text"
-                  name="lastname"
-                  placeholder="Last Name"
-                />
-              </div>
-              <div className="mt-4">
-                <label htmlFor="">Email</label> <br />
-                <FormControl type="email" name="email" placeholder="Email" />
-              </div>
-              <div className="mt-4">
-                <label htmlFor="">Password</label> <br />
-                <FormControl
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                />
-              </div>
-              <div className="mt-4 register-drag-drop">
-                <p className="registerwrapper__image">Image</p>
-                <DragAndDrop />
-              </div>
-              <div className="categorywrapper__addcategorywrapper--buttons register-btn">
-                <button className="btn-discard">Discard</button>
-                <button className="btn-addcategory">Create Account</button>
-              </div>
+              <Form onSubmit={handleSubmit}>
+                <div className="mt-3">
+                  <label htmlFor="">First Name</label> <br />
+                  <FormControl
+                    type="text"
+                    name="firstname"
+                    placeholder="First Name"
+                    value={firstname}
+                    onChange={(e) => setFname(e.target.value)}
+                  />
+                </div>
+                <div className="mt-3">
+                  <label htmlFor="">Last Name</label> <br />
+                  <FormControl
+                    type="text"
+                    name="lastname"
+                    placeholder="Last Name"
+                    value={lastname}
+                    onChange={(e) => setLname(e.target.value)}
+                  />
+                </div>
+                <div className="mt-4">
+                  <label htmlFor="">Email</label> <br />
+                  <FormControl
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="mt-4">
+                  <label htmlFor="">Password</label> <br />
+                  <FormControl
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                {/* <div className="mt-4 register-drag-drop">
+                  <p className="registerwrapper__image">Image</p>
+                  <DragAndDrop />
+                </div> */}
+                <div className="categorywrapper__addcategorywrapper--buttons register-btn">
+                  <button className="btn-discard">Discard</button>
+                  <button className="btn-addcategory" onClick={handleSubmit}>
+                    Create Account
+                  </button>
+                </div>
+              </Form>
             </div>
           </Col>
           <Col md={7}>

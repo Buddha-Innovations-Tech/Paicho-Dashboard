@@ -11,8 +11,11 @@ import { HiOutlineDocumentReport } from "react-icons/hi";
 import { GiArchiveRegister } from "react-icons/gi";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { NavLink, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const SideBar = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   const [subnav, setSubNav] = useState(false);
   return (
     <>
@@ -92,12 +95,14 @@ const SideBar = () => {
                 <span>Carousel</span>
               </NavLink>
             </li>
-            <li>
-              <NavLink to="/customer" className="active-link">
-                <AiOutlineUser className="icon" />
-                <span>Customer</span>
-              </NavLink>
-            </li>
+            {userInfo && userInfo.isSuperAdmin && (
+              <li>
+                <NavLink to="/customer" className="active-link">
+                  <AiOutlineUser className="icon" />
+                  <span>Customer</span>
+                </NavLink>
+              </li>
+            )}
             <li>
               <NavLink to="/report" className="active-link">
                 <HiOutlineDocumentReport className="icon" />
