@@ -1,5 +1,7 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaFileExport } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import MonthlyReport from "../../components/MonthlyReport";
 import WeeklyReport from "../../components/WeeklyReport";
@@ -7,6 +9,16 @@ import YearlyReport from "../../components/YearlyReport";
 import DailyReport from "../../components/DailyReport";
 
 const Report = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
   const [filteritem, setFilterItem] = useState("Daily Report");
   const [daily, setDaily] = useState(true);
   const [weekly, setWeekly] = useState(false);

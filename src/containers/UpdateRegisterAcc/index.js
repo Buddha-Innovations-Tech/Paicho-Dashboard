@@ -1,8 +1,10 @@
+import React, { useState, useEffect } from "react";
 import { Row, Col, Modal } from "react-bootstrap";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { AiOutlineEdit } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { ImCross } from "react-icons/im";
-import React, { useState } from "react";
 
 import DragAndDrop from "../../components/DragAndDrop";
 import InputField from "../../components/InputField";
@@ -34,6 +36,16 @@ const adminList = [
   },
 ];
 const UpdateRegisterAcc = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);

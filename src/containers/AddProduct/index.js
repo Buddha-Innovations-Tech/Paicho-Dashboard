@@ -1,7 +1,9 @@
 import { FiAlertTriangle } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import { ImCross } from "react-icons/im";
-import React from "react";
 
 import InputField from "../../components/InputField";
 import Previews from "../../components/DragAndDrop";
@@ -53,6 +55,16 @@ const addProductItem = [
 ];
 
 const AddProduct = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
   return (
     <>
       <div className="addproductwrapper">

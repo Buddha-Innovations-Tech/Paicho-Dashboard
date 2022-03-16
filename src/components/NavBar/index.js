@@ -7,11 +7,23 @@ import { VscCircleFilled } from "react-icons/vsc";
 import { BsClock } from "react-icons/bs";
 import { MdOutlinePermContactCalendar } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/userActions";
+
 const NavBar = () => {
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
+
   return (
     <>
       <div className="navbarwrapper">
@@ -200,9 +212,14 @@ const NavBar = () => {
             <span className="navbarwrapper__profile--name">Anderson</span>
           </div>
           <div>
-            <Link to="/login">
-            <button className="navbarwrapper__logoutbtn">Log out</button>
-            </Link>
+            {/* <Link to="/login"> */}
+            <button
+              className="navbarwrapper__logoutbtn"
+              onClick={logoutHandler}
+            >
+              Log out
+            </button>
+            {/* </Link> */}
           </div>
         </div>
       </div>

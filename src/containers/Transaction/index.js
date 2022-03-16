@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 import PaginationComp from "../../components/PaginationComp";
 
@@ -62,6 +64,16 @@ const transactionList = [
   },
 ];
 const Transaction = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
   const [filterdate, setFilterDate] = useState("Day");
   const [date, setDate] = useState(true);
   const [dates, setDates] = useState(false);

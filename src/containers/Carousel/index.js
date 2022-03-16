@@ -1,13 +1,25 @@
 import { Row, Col, Form } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
 import { FiAlertTriangle } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Modal from "react-bootstrap/Modal";
-import React, { useState } from "react";
 
 import CarouselCard from "../../components/CarouselCard";
 import InputField from "../../components/InputField";
 import Previews from "../../components/DragAndDrop";
 
 const Carousel = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);

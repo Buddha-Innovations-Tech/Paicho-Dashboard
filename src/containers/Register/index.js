@@ -1,4 +1,4 @@
-import { Row, Col, Modal } from "react-bootstrap";
+import { Row, Col, Modal, FormControl } from "react-bootstrap";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
@@ -47,13 +47,32 @@ const Register = () => {
               <p className="registerwrapper__title">Create an Account</p>
               <p className="registerwrapper__subtitle">Register new user</p>
               <div className="mt-3">
-                <InputField name="Username" placeholder="Username" />
+                <label htmlFor="">First Name</label> <br />
+                <FormControl
+                  type="text"
+                  name="firstname"
+                  placeholder="First Name"
+                />
+              </div>
+              <div className="mt-3">
+                <label htmlFor="">Last Name</label> <br />
+                <FormControl
+                  type="text"
+                  name="lastname"
+                  placeholder="Last Name"
+                />
               </div>
               <div className="mt-4">
-                <InputField name="Email" placeholder="Email" />
+                <label htmlFor="">Email</label> <br />
+                <FormControl type="email" name="email" placeholder="Email" />
               </div>
               <div className="mt-4">
-                <InputField name="Password" placeholder="Password" />
+                <label htmlFor="">Password</label> <br />
+                <FormControl
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                />
               </div>
               <div className="mt-4 register-drag-drop">
                 <p className="registerwrapper__image">Image</p>

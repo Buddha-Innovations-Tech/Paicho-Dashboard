@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Modal } from "react-bootstrap";
-
-import PaginationComp from "../../components/PaginationComp";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { BiSearch } from "react-icons/bi";
 import { ImCross } from "react-icons/im";
+
+import PaginationComp from "../../components/PaginationComp";
 
 const orderList = [
   {
@@ -81,6 +83,16 @@ const orderList = [
 ];
 
 const Order = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
   const [filterdate, setFilterDate] = useState("Day");
   const [date, setDate] = useState(true);
   const [dates, setDates] = useState(false);

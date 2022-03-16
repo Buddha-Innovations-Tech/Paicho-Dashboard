@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
+import React, { useEffect } from "react";
 import { ImCross } from "react-icons/im";
 import { BiPlus } from "react-icons/bi";
-import React from "react";
+import { useSelector } from "react-redux";
 
 import { categoryData } from "../../components/CategoryList";
 import PaginationComp from "../../components/PaginationComp";
@@ -15,6 +17,15 @@ const subcategoryItem = [
 ];
 
 const Category = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
   return (
     <>
       <div className="categorywrapper">

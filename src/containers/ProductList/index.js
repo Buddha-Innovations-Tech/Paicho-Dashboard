@@ -1,6 +1,8 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import { BiSearch } from "react-icons/bi";
-import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 import ProductImg from "../../assets/images/ProductListImg.png";
 import PaginationComp from "../../components/PaginationComp";
@@ -59,6 +61,16 @@ const productList = [
 ];
 
 const ProductList = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
   const [filterTerm, setFilterTerm] = useState("Stock");
   return (
     <>

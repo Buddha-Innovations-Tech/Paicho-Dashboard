@@ -18,7 +18,7 @@ import Order from "../Order";
 import Home from "../Home";
 
 const App = () => {
-  axios.defaults.baseURL = "http://localhost:5000";
+  axios.defaults.baseURL = "https://evening-ravine-71797.herokuapp.com/";
   return (
     <div>
       <main>

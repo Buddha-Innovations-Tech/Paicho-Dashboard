@@ -133,16 +133,6 @@ const Customer = () => {
     }
   };
 
-  // const sorted  =()=>  sorting.sort((a, b) => {
-  //     if (sortType === "Orders") {
-  //       return sorting;
-  //     } else if (sortType === "Highest Orders") {
-  //       return b.order - a.order;
-  //     } else if (sortType === "Lowest Orders") {
-  //       return a.order - b.order;
-  //     }
-  //     setSorting(sorted);
-  //   })
   useEffect(() => {
     setTimeout(() => {
       changeSort();

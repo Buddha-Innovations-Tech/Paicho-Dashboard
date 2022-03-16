@@ -1,10 +1,11 @@
 import { Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import React from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 
 import HomeBarGraph from "../../components/HomeBarGraph";
 import HomePieChart from "../../components/HomePieChart";
 import HomeOrder from "../../components/HomeOrder";
+import { useSelector } from "react-redux";
 
 const latestOrderData = [
   {
@@ -40,6 +41,15 @@ const latestOrderData = [
 ];
 
 const Home = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
   return (
     <>
       <div className="homedashboardwrapper">
