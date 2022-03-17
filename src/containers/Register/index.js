@@ -7,34 +7,8 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
 
 import DragAndDrop from "../../components/DragAndDrop";
-import { listUsers, register } from "../../actions/userActions";
+import { listUsers, register, deleteUser } from "../../actions/userActions";
 
-const adminList = [
-  {
-    id: 1,
-    username: "Sagar Gc",
-    email: "sagar.12@gmail.com",
-    password: "hello123@3",
-  },
-  {
-    id: 2,
-    username: "Sagar Gc",
-    email: "sagar.12@gmail.com",
-    password: "hello123@3",
-  },
-  {
-    id: 3,
-    username: "Sagar Gc",
-    email: "sagar.12@gmail.com",
-    password: "hello123@3",
-  },
-  {
-    id: 4,
-    username: "Sagar Gc",
-    email: "sagar.12@gmail.com",
-    password: "hello123@3",
-  },
-];
 const Register = () => {
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
@@ -52,7 +26,6 @@ const Register = () => {
   // console.log(userInfo);
 
   const { users } = useSelector((state) => state.userList);
-
   const { success } = useSelector((state) => state.userRegister);
   // console.log(users[0].firstname);
 
@@ -67,6 +40,11 @@ const Register = () => {
       setEmail(""),
       setPassword("")
     );
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteUser(id));
+    handleClose1();
   };
 
   useEffect(() => {
@@ -209,7 +187,10 @@ const Register = () => {
                                 </button>
                                 <button
                                   className="carouselwrapper__background__btn--delete"
-                                  onClick={handleClose1}
+                                  // onClick={handleClose1}
+                                  onClick={(e) => {
+                                    handleDelete(curElm._id);
+                                  }}
                                 >
                                   Delete
                                 </button>
