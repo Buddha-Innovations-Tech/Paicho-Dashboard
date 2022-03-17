@@ -7,12 +7,19 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
 
 import DragAndDrop from "../../components/DragAndDrop";
-import { listUsers, register, deleteUser } from "../../actions/userActions";
+import {
+  listUsers,
+  register,
+  deleteUser,
+  updateUser,
+} from "../../actions/userActions";
 
 const Register = () => {
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
+
+  const [deleteId, setDeleteId] = useState(0);
 
   const [firstname, setFname] = useState("");
   const [lastname, setLname] = useState("");
@@ -41,8 +48,14 @@ const Register = () => {
   };
 
   const handleDelete = (id) => {
+    console.log(`delete: ${id}`);
     dispatch(deleteUser(id));
     handleClose1();
+  };
+
+  const handleUpdate = (id) => {
+    console.log(`update: ${id}`);
+    dispatch(updateUser(id));
   };
 
   useEffect(() => {
@@ -154,12 +167,20 @@ const Register = () => {
                               to="/updateregisteracc"
                               style={{ marginTop: "-5px" }}
                             >
-                              <AiOutlineEdit className="editicon" />
+                              <AiOutlineEdit
+                                className="editicon"
+                                onClick={() => {
+                                  handleUpdate(curElm._id);
+                                }}
+                              />
                             </Link>
 
                             <RiDeleteBin7Line
                               className="deleteicon"
-                              onClick={handleShow1}
+                              onClick={() => {
+                                setDeleteId(curElm._id);
+                                handleShow1();
+                              }}
                             />
                           </div>
                           {/* delete modal */}
@@ -186,8 +207,8 @@ const Register = () => {
                                 <button
                                   className="carouselwrapper__background__btn--delete"
                                   // onClick={handleClose1}
-                                  onClick={(e) => {
-                                    handleDelete(curElm._id);
+                                  onClick={() => {
+                                    handleDelete(deleteId);
                                   }}
                                 >
                                   Delete
