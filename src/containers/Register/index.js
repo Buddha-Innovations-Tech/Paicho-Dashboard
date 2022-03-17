@@ -21,27 +21,23 @@ const Register = () => {
   const [image, setImage] = useState(
     "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
   );
- 
-
   const { userInfo } = useSelector((state) => state.userLogin);
   // console.log(userInfo
 
   const { users } = useSelector((state) => state.userList);
   const { success } = useSelector((state) => state.userRegister);
-  // console.log(users[0].firstname
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const handleSubmit = (e) => {
-    e.preventDefault(
+    e.preventDefault();
     dispatch(
       register(firstname, lastname, email, password),
       setFname(""),
       setLname(""),
       setEmail(""),
       setPassword("")
-    ))
+    );
   };
 
   const handleDelete = (id) => {
