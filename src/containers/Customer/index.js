@@ -116,9 +116,9 @@ const Customer = () => {
     if (!userInfo) {
       navigate("/login");
     }
-    if (!userInfo.superAdmin) {
-      navigate("/home");
-    }
+    // if (!userInfo.superAdmin) {
+    //   navigate("/home");
+    // }
   }, [userInfo]);
 
   const [sortType, setSortType] = useState("Orders");

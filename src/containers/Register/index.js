@@ -48,7 +48,7 @@ const Register = () => {
   const [image, setImage] = useState(
     "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
   );
-
+  const { users } = useSelector((state) => state.userList);
   const { userInfo } = useSelector((state) => state.userLogin);
   console.log(userInfo);
   const navigate = useNavigate();
@@ -61,7 +61,13 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(register(firstname, lastname, email, password));
+    dispatch(
+      register(firstname, lastname, email, password),
+      setFname(""),
+      setEmail(""),
+      setLname(""),
+      setPassword("")
+    );
   };
 
   return (
