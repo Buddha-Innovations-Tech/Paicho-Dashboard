@@ -215,11 +215,8 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       },
     };
 
-    // console.log(`before: ${id}`);
-
     await axios.delete(`/api/users/${id}`, config);
 
-    // console.log(`after: ${id}`);
     dispatch({
       type: USER_DELETE_SUCCESS,
     });
@@ -251,11 +248,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(
-      `/api/users/${user._id}/superadmin`,
-      user,
-      config
-    );
+    const { data } = await axios.put(`/api/users/${user._id}/`, user, config);
 
     dispatch({
       type: USER_UPDATE_SUCCESS,
@@ -274,3 +267,45 @@ export const updateUser = (user) => async (dispatch, getState) => {
     });
   }
 };
+
+// ADMIN_UPDATE_REQUEST, ADMIN_UPDATE_SUCCESS, ADMIN_UPDATE_FAIL are not defined
+// export const updateAdmin = (admin) => async (dispatch, getState) => {
+//   try {
+//     dispatch({
+//       type: ADMIN_UPDATE_REQUEST,
+//     });
+
+//     const {
+//       userLogin: { userInfo },
+//     } = getState();
+
+//     const config = {
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${userInfo.token}`,
+//       },
+//     };
+
+//     const { data } = await axios.put(
+//       `/api/users/${admin._id}/superadmin`,
+//       admin,
+//       config
+//     );
+
+//     dispatch({
+//       type: ADMIN_UPDATE_SUCCESS,
+//     });
+//     dispatch({
+//       type: ADMIN_DETAILS_SUCCESS,
+//       payload: data,
+//     });
+//   } catch (error) {
+//     dispatch({
+//       type: ADMIN_UPDATE_FAIL,
+//       payload:
+//         error.response && error.response.data.message
+//           ? error.response.data.message
+//           : error.message,
+//     });
+//   }
+// };

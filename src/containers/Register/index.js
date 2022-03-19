@@ -6,7 +6,7 @@ import { RiDeleteBin7Line } from "react-icons/ri";
 import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
 
-import DragAndDrop from "../../components/DragAndDrop";
+// import DragAndDrop from "../../components/DragAndDrop";
 import {
   listUsers,
   register,
@@ -20,6 +20,7 @@ const Register = () => {
   const handleShow1 = () => setShow1(true);
 
   const [deleteId, setDeleteId] = useState(0);
+  const [updateId, setUpdateId] = useState(0);
 
   const [firstname, setFname] = useState("");
   const [lastname, setLname] = useState("");
@@ -28,10 +29,8 @@ const Register = () => {
   const [image, setImage] = useState(
     "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
   );
-  const { userInfo } = useSelector((state) => state.userLogin);
-  // console.log(userInfo
-
   const { users } = useSelector((state) => state.userList);
+  const { userInfo } = useSelector((state) => state.userLogin);
   const { success } = useSelector((state) => state.userRegister);
 
   const navigate = useNavigate();
@@ -48,13 +47,13 @@ const Register = () => {
   };
 
   const handleDelete = (id) => {
-    console.log(`delete: ${id}`);
+    // console.log(`delete: ${id}`);
     dispatch(deleteUser(id));
     handleClose1();
   };
 
   const handleUpdate = (id) => {
-    console.log(`update: ${id}`);
+    // console.log(`update: ${id}`);
     dispatch(updateUser(id));
   };
 
@@ -85,6 +84,7 @@ const Register = () => {
                     placeholder="First Name"
                     value={firstname}
                     onChange={(e) => setFname(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mt-3">
@@ -95,6 +95,7 @@ const Register = () => {
                     placeholder="Last Name"
                     value={lastname}
                     onChange={(e) => setLname(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mt-4">
@@ -105,6 +106,7 @@ const Register = () => {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mt-4">
@@ -115,6 +117,7 @@ const Register = () => {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                 </div>
                 {/* <div className="mt-4 register-drag-drop">
@@ -170,7 +173,7 @@ const Register = () => {
                               <AiOutlineEdit
                                 className="editicon"
                                 onClick={() => {
-                                  handleUpdate(curElm._id);
+                                  setUpdateId(curElm._id);
                                 }}
                               />
                             </Link>
