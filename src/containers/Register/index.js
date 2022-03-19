@@ -1,10 +1,10 @@
 import { Row, Col, Modal, FormControl, Form } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { RiDeleteBin7Line } from "react-icons/ri";
-import { useNavigate, Link } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
-import { useSelector, useDispatch } from "react-redux";
 
 // import DragAndDrop from "../../components/DragAndDrop";
 import {
@@ -15,7 +15,6 @@ import {
 } from "../../actions/userActions";
 
 const Register = () => {
-  const dispatch = useDispatch();
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
@@ -35,13 +34,14 @@ const Register = () => {
   const { success } = useSelector((state) => state.userRegister);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
       register(firstname, lastname, email, password),
       setFname(""),
-      setEmail(""),
       setLname(""),
+      setEmail(""),
       setPassword("")
     );
   };
@@ -56,6 +56,16 @@ const Register = () => {
     // console.log(`update: ${id}`);
     dispatch(updateUser(id));
   };
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    dispatch(listUsers());
+  }, [success]);
 
   return (
     <>
@@ -128,9 +138,9 @@ const Register = () => {
               <p className="registerwrapper__righttitle">Admin List</p>
               <Row className="catetgorylist-heading adminlistheading">
                 <Col md={1}>SN</Col>
-                <Col md={2}>Username</Col>
-                <Col md={4}>Email</Col>
-                <Col md={3}>Password</Col>
+                <Col md={4}>Username</Col>
+                <Col md={5}>Email</Col>
+                {/* <Col md={3}>Password</Col> */}
                 <Col md={2}>Action</Col>
               </Row>
               <div>
