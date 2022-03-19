@@ -52,10 +52,10 @@ const Register = () => {
     dispatch(deleteUser(id));
     handleClose1();
   };
-
   const handleUpdate = (id) => {
-    console.log(`update: ${id}`);
-    dispatch(updateUser(id));
+    // console.log(`delete: ${id}`);
+    // dispatch(deleteUser(id));
+    // handleClose1();
   };
 
   return (
