@@ -43,7 +43,7 @@ const latestOrderData = [
 
 const Home = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
-  console.log(userInfo);
+  // console.log(userInfo);
   const navigate = useNavigate();
 
   useEffect(() => {

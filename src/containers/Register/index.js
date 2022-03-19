@@ -1,12 +1,12 @@
 import { Row, Col, Modal, FormControl, Form } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { RiDeleteBin7Line } from "react-icons/ri";
-import { useNavigate, Link } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
-import { useSelector, useDispatch } from "react-redux";
 
-import DragAndDrop from "../../components/DragAndDrop";
+// import DragAndDrop from "../../components/DragAndDrop";
 import {
   listUsers,
   register,
@@ -15,12 +15,12 @@ import {
 } from "../../actions/userActions";
 
 const Register = () => {
-  const dispatch = useDispatch();
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
 
   const [deleteId, setDeleteId] = useState(0);
+  const [updateId, setUpdateId] = useState(0);
 
   const [firstname, setFname] = useState("");
   const [lastname, setLname] = useState("");
@@ -29,34 +29,48 @@ const Register = () => {
   const [image, setImage] = useState(
     "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
   );
-  const { userInfo } = useSelector((state) => state.userLogin);
-  // console.log(userInfo
-
   const { users } = useSelector((state) => state.userList);
+  const { userInfo } = useSelector((state) => state.userLogin);
   const { success } = useSelector((state) => state.userRegister);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
       register(firstname, lastname, email, password),
       setFname(""),
-      setEmail(""),
       setLname(""),
+      setEmail(""),
       setPassword("")
     );
   };
 
   const handleDelete = (id) => {
-    console.log(`delete: ${id}`);
+    // console.log(`delete: ${id}`);
     dispatch(deleteUser(id));
     handleClose1();
   };
   const handleUpdate = (id) => {
+<<<<<<< HEAD
     // console.log(`delete: ${id}`);
     // dispatch(deleteUser(id));
     // handleClose1();
+=======
+    // console.log(`update: ${id}`);
+    dispatch(updateUser(id));
+>>>>>>> 8c078dcb5360d3aef948ec0a5a5bf465ac18d8c0
   };
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    dispatch(listUsers());
+  }, [success]);
 
   return (
     <>
@@ -75,6 +89,7 @@ const Register = () => {
                     placeholder="First Name"
                     value={firstname}
                     onChange={(e) => setFname(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mt-3">
@@ -85,6 +100,7 @@ const Register = () => {
                     placeholder="Last Name"
                     value={lastname}
                     onChange={(e) => setLname(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mt-4">
@@ -95,6 +111,7 @@ const Register = () => {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mt-4">
@@ -105,6 +122,7 @@ const Register = () => {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                 </div>
                 {/* <div className="mt-4 register-drag-drop">
@@ -125,9 +143,9 @@ const Register = () => {
               <p className="registerwrapper__righttitle">Admin List</p>
               <Row className="catetgorylist-heading adminlistheading">
                 <Col md={1}>SN</Col>
-                <Col md={2}>Username</Col>
-                <Col md={4}>Email</Col>
-                <Col md={3}>Password</Col>
+                <Col md={4}>Username</Col>
+                <Col md={5}>Email</Col>
+                {/* <Col md={3}>Password</Col> */}
                 <Col md={2}>Action</Col>
               </Row>
               <div>
@@ -160,7 +178,7 @@ const Register = () => {
                               <AiOutlineEdit
                                 className="editicon"
                                 onClick={() => {
-                                  handleUpdate(curElm._id);
+                                  setUpdateId(curElm._id);
                                 }}
                               />
                             </Link>
