@@ -62,6 +62,7 @@ const UpdateRegisterAcc = () => {
               </div>
               <div className="mt-4">
                 <InputField name="Email" placeholder="Email" />
+              
               </div>
               <div className="mt-4">
                 <InputField name="Password" placeholder="Password" />

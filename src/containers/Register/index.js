@@ -1,62 +1,86 @@
 import { Row, Col, Modal, FormControl, Form } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { RiDeleteBin7Line } from "react-icons/ri";
-import { useNavigate, Link } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
-import { useSelector, useDispatch } from "react-redux";
+import { object, string } from "yup";
 
-import DragAndDrop from "../../components/DragAndDrop";
+// import DragAndDrop from "../../components/DragAndDrop";
 import {
   listUsers,
   register,
   deleteUser,
   updateUser,
 } from "../../actions/userActions";
+import { type } from "@testing-library/user-event/dist/type";
 
 const Register = () => {
-  const dispatch = useDispatch();
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
 
   const [deleteId, setDeleteId] = useState(0);
+  const [updateId, setUpdateId] = useState(0);
 
   const [firstname, setFname] = useState("");
+  const [validationError, setValidationError] = useState(false);
   const [lastname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [image, setImage] = useState(
     "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
   );
-  const { userInfo } = useSelector((state) => state.userLogin);
-  // console.log(userInfo
-
   const { users } = useSelector((state) => state.userList);
+  const { userInfo } = useSelector((state) => state.userLogin);
   const { success } = useSelector((state) => state.userRegister);
-
+  const [isValid, setIsValid] = useState(false);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(
-      register(firstname, lastname, email, password),
-      setFname(""),
-      setEmail(""),
-      setLname(""),
-      setPassword("")
-    );
+  const dispatch = useDispatch();
+  const validation = (arr) => {
+    return arr.some((i) => i === "") ? false : true;
+  };
+
+  const handleSubmit = (event) => {
+    const Reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    event.preventDefault();
+    const valid =
+      validation([firstname, lastname, email, password]) && Reg.test(email);
+    {
+      alert("Please fill the fields");
+    }
+    if (!Reg.test(email)) {
+      setIsValid(false);
+      setMessage("Please enter a valid Email");
+    }
+
+    console.log(valid);
+    if (valid) {
+      dispatch(register(firstname, lastname, email, password));
+      setFname("");
+      setLname("");
+      setEmail("");
+      setPassword("");
+      setMessage("");
+    }
   };
 
   const handleDelete = (id) => {
-    console.log(`delete: ${id}`);
     dispatch(deleteUser(id));
     handleClose1();
   };
-  const handleUpdate = (id) => {
-    // console.log(`delete: ${id}`);
-    // dispatch(deleteUser(id));
-    // handleClose1();
-  };
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    dispatch(listUsers());
+  }, [success]);
 
   return (
     <>
@@ -66,7 +90,8 @@ const Register = () => {
             <div className="registerwrapper__background">
               <p className="registerwrapper__title">Create an Account</p>
               <p className="registerwrapper__subtitle">Register new user</p>
-              <Form onSubmit={handleSubmit}>
+              {validationError && <p>Please try again.</p>}
+              <Form onSubmit={handleSubmit} autoComplete="Off">
                 <div className="mt-3">
                   <label htmlFor="">First Name</label> <br />
                   <FormControl
@@ -75,6 +100,7 @@ const Register = () => {
                     placeholder="First Name"
                     value={firstname}
                     onChange={(e) => setFname(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mt-3">
@@ -85,6 +111,7 @@ const Register = () => {
                     placeholder="Last Name"
                     value={lastname}
                     onChange={(e) => setLname(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mt-4">
@@ -95,16 +122,21 @@ const Register = () => {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
+                  <div className={`message ${isValid ? "success" : "error"}`}>
+                    {message}
+                  </div>
                 </div>
                 <div className="mt-4">
                   <label htmlFor="">Password</label> <br />
                   <FormControl
                     type="password"
-                    name="password"
+                    name="passwords"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                 </div>
                 {/* <div className="mt-4 register-drag-drop">
@@ -125,9 +157,9 @@ const Register = () => {
               <p className="registerwrapper__righttitle">Admin List</p>
               <Row className="catetgorylist-heading adminlistheading">
                 <Col md={1}>SN</Col>
-                <Col md={2}>Username</Col>
-                <Col md={4}>Email</Col>
-                <Col md={3}>Password</Col>
+                <Col md={4}>Username</Col>
+                <Col md={5}>Email</Col>
+                {/* <Col md={3}>Password</Col> */}
                 <Col md={2}>Action</Col>
               </Row>
               <div>
@@ -160,7 +192,7 @@ const Register = () => {
                               <AiOutlineEdit
                                 className="editicon"
                                 onClick={() => {
-                                  handleUpdate(curElm._id);
+                                  setUpdateId(curElm._id);
                                 }}
                               />
                             </Link>
