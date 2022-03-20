@@ -9,10 +9,15 @@ import {
 import React, { useState, useEffect } from "react";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { AiOutlineEdit } from "react-icons/ai";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ImCross } from "react-icons/im";
-import { listUsers, deleteUser, updateUser } from "../../actions/userActions";
+import {
+  listUsers,
+  deleteUser,
+  updateUser,
+  getUserDetails,
+} from "../../actions/userActions";
 
 // import DragAndDrop from "../../components/DragAndDrop";
 // import InputField from "../../components/InputField";
@@ -23,17 +28,41 @@ const UpdateRegisterAcc = () => {
   const handleShow1 = () => setShow1(true);
 
   const [deleteId, setDeleteId] = useState(0);
-  // const [updateId, setUpdateId] = useState(0);
 
-  const [firstname, setFname] = useState("");
-  const [lastname, setLname] = useState("");
-  const [email, setEmail] = useState("");
+  const [state, setState] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+  });
 
+  const { firstname, lastname, email } = state;
+
+  const handleInputChange = (e) => {
+    let { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  };
+
+  let { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { user, success: userDetailsSuccess } = useSelector(
+    (state) => state.userDetails
+  );
+  const { loading: updateloading } = useSelector((state) => state.userUpdate);
   const { users } = useSelector((state) => state.userList);
   const { userInfo } = useSelector((state) => state.userLogin);
   const { success } = useSelector((state) => state.userRegister);
+
+  useEffect(() => {
+    dispatch(getUserDetails(id));
+  }, [id]);
+
+  useEffect(() => {
+    if (user) {
+      setState({ ...user });
+    }
+  }, [user]);
 
   const handleDelete = (id) => {
     // console.log(`delete: ${id}`);
@@ -41,11 +70,11 @@ const UpdateRegisterAcc = () => {
     handleClose1();
   };
 
-  const handleUpdate = (id) => {
-    console.log(`update: ${id}`);
-    dispatch(updateUser(id));
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(updateUser(state));
+    // navigate("/register");
   };
-
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
@@ -55,6 +84,9 @@ const UpdateRegisterAcc = () => {
   useEffect(() => {
     dispatch(listUsers());
   }, [success]);
+  useEffect(() => {
+    dispatch(listUsers());
+  }, [updateloading]);
 
   return (
     <>
@@ -64,7 +96,7 @@ const UpdateRegisterAcc = () => {
             <div className="registerwrapper__background">
               <p className="registerwrapper__title">Update an Account</p>
               <p className="registerwrapper__subtitle">Register new user</p>
-              <Form onSubmit={handleUpdate()}>
+              <Form onSubmit={handleSubmit}>
                 <div className="mt-3">
                   {/* <InputField name="Username" placeholder="Username" /> */}
                   <label htmlFor="">Firstname</label> <br />
@@ -73,8 +105,8 @@ const UpdateRegisterAcc = () => {
                       type="text"
                       name="firstname"
                       placeholder="Firstname"
-                      value={firstname}
-                      onChange={(e) => setFname(e.target.value)}
+                      value={firstname || ""}
+                      onChange={handleInputChange}
                       required
                     />
                   </InputGroup>
@@ -87,8 +119,8 @@ const UpdateRegisterAcc = () => {
                       type="text"
                       name="lastname"
                       placeholder="Last Name"
-                      value={lastname}
-                      onChange={(e) => setLname(e.target.value)}
+                      value={lastname || ""}
+                      onChange={handleInputChange}
                       required
                     />
                   </InputGroup>
@@ -101,8 +133,8 @@ const UpdateRegisterAcc = () => {
                       type="email"
                       name="email"
                       placeholder="Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={email || ""}
+                      onChange={handleInputChange}
                       required
                     />
                   </InputGroup>
@@ -122,14 +154,7 @@ const UpdateRegisterAcc = () => {
                   <Link to="/register">
                     <button className="btn-discard">Discard</button>
                   </Link>
-                  <button
-                    className="btn-addcategory"
-                    onClick={() => {
-                      handleUpdate();
-                    }}
-                  >
-                    Update Account
-                  </button>
+                  <button className="btn-addcategory">Update Account</button>
                 </div>
               </Form>
             </div>
@@ -167,17 +192,13 @@ const UpdateRegisterAcc = () => {
                         </Col> */}
                         <Col md={2}>
                           <div className="d-flex justify-content-center">
-                            <Link
-                              to="/updateregisteracc"
-                              style={{ marginTop: "-5px" }}
-                            >
-                              <AiOutlineEdit
-                                className="editicon"
-                                // onClick={() => {
-                                // setUpdateId(curElm._id);
-                                // }}
-                              />
-                            </Link>
+                            <AiOutlineEdit
+                              className="editicon"
+                              onClick={() => {
+                                // handleUpdate(curElm._id);
+                                navigate(`/updateregisteracc/${curElm._id}`);
+                              }}
+                            />
 
                             <RiDeleteBin7Line
                               className="deleteicon"
