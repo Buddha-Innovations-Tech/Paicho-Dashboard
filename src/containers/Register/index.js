@@ -13,6 +13,7 @@ import {
   deleteUser,
   updateUser,
 } from "../../actions/userActions";
+import { type } from "@testing-library/user-event/dist/type";
 
 const Register = () => {
   const [show1, setShow1] = useState(false);
@@ -23,6 +24,7 @@ const Register = () => {
   const [updateId, setUpdateId] = useState(0);
 
   const [firstname, setFname] = useState("");
+  const [validationError, setValidationError] = useState(false);
   const [lastname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,35 +34,59 @@ const Register = () => {
   const { users } = useSelector((state) => state.userList);
   const { userInfo } = useSelector((state) => state.userLogin);
   const { success } = useSelector((state) => state.userRegister);
-
+  const [isValid, setIsValid] = useState(false);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(
-      register(firstname, lastname, email, password),
-      setFname(""),
-      setLname(""),
-      setEmail(""),
-      setPassword("")
-    );
-  };
 
   const handleDelete = (id) => {
     // console.log(`delete: ${id}`);
     dispatch(deleteUser(id));
     handleClose1();
   };
-  const handleUpdate = (id) => {
-<<<<<<< HEAD
-    // console.log(`delete: ${id}`);
-    // dispatch(deleteUser(id));
-    // handleClose1();
-=======
-    // console.log(`update: ${id}`);
-    dispatch(updateUser(id));
->>>>>>> 8c078dcb5360d3aef948ec0a5a5bf465ac18d8c0
+
+  const validation = (arr) => {
+    return arr.some((i) => i === "") ? false : true;
   };
+
+  const handleSubmit = (event) => {
+    const Reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    event.preventDefault();
+    const valid =
+      validation([firstname, lastname, email, password]) && Reg.test(email);
+    {
+      alert("Please fill the fields");
+    }
+    if (!Reg.test(email)) {
+      setIsValid(false);
+      setMessage("Please enter a valid Email");
+    }
+
+    console.log(valid);
+    if (valid) {
+      dispatch(register(firstname, lastname, email, password));
+      setFname("");
+      setLname("");
+      setEmail("");
+      setPassword("");
+      setMessage("");
+    }
+  };
+
+  // const handleDelete = (id) => {
+  //   dispatch(deleteUser(id));
+  //   handleClose1();
+  // };
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    dispatch(listUsers());
+  }, [success]);
 
   useEffect(() => {
     if (!userInfo) {
@@ -80,7 +106,8 @@ const Register = () => {
             <div className="registerwrapper__background">
               <p className="registerwrapper__title">Create an Account</p>
               <p className="registerwrapper__subtitle">Register new user</p>
-              <Form onSubmit={handleSubmit}>
+              {validationError && <p>Please try again.</p>}
+              <Form onSubmit={handleSubmit} autoComplete="Off">
                 <div className="mt-3">
                   <label htmlFor="">First Name</label> <br />
                   <FormControl
@@ -113,12 +140,15 @@ const Register = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
+                  <div className={`message ${isValid ? "success" : "error"}`}>
+                    {message}
+                  </div>
                 </div>
                 <div className="mt-4">
                   <label htmlFor="">Password</label> <br />
                   <FormControl
                     type="password"
-                    name="password"
+                    name="passwords"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
