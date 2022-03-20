@@ -17,8 +17,11 @@ const NavBar = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  // const userLogin = useSelector((state) => state.userLogin);
+  // const { userInfo } = userLogin;
+
+  const { userInfo } = useSelector((state) => state.userLogin);
+  // console.log(userInfo.firstname);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -209,7 +212,9 @@ const NavBar = () => {
             <figure>
               <img src={profile} alt="" />
             </figure>
-            <span className="navbarwrapper__profile--name">Anderson</span>
+            <span className="navbarwrapper__profile--name">
+              {userInfo ? userInfo.firstname : " "}
+            </span>
           </div>
           <div>
             {/* <Link to="/login"> */}

@@ -1,6 +1,13 @@
-import { Row, Col, Modal, FormControl, Form } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Modal,
+  FormControl,
+  Form,
+  InputGroup,
+} from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -21,26 +28,26 @@ const Register = () => {
   const handleShow1 = () => setShow1(true);
 
   const [deleteId, setDeleteId] = useState(0);
-  const [updateId, setUpdateId] = useState(0);
 
   const [firstname, setFname] = useState("");
-  const [validationError, setValidationError] = useState(false);
   const [lastname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [image, setImage] = useState(
-    "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-  );
+  // const [image, setImage] = useState(
+  //   "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+  // );
   const { users } = useSelector((state) => state.userList);
   const { userInfo } = useSelector((state) => state.userLogin);
   const { success } = useSelector((state) => state.userRegister);
   const [isValid, setIsValid] = useState(false);
   const [message, setMessage] = useState("");
+  const { success: userDeleteSuccess } = useSelector(
+    (state) => state.userDelete
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleDelete = (id) => {
-    // console.log(`delete: ${id}`);
     dispatch(deleteUser(id));
     handleClose1();
   };
@@ -98,6 +105,9 @@ const Register = () => {
     dispatch(listUsers());
   }, [success]);
 
+  useEffect(() => {
+    dispatch(listUsers());
+  }, [userDeleteSuccess]);
   return (
     <>
       <div className="registerwrapper">
@@ -106,29 +116,34 @@ const Register = () => {
             <div className="registerwrapper__background">
               <p className="registerwrapper__title">Create an Account</p>
               <p className="registerwrapper__subtitle">Register new user</p>
-              {validationError && <p>Please try again.</p>}
+
               <Form onSubmit={handleSubmit} autoComplete="Off">
                 <div className="mt-3">
-                  <label htmlFor="">First Name</label> <br />
-                  <FormControl
-                    type="text"
-                    name="firstname"
-                    placeholder="First Name"
-                    value={firstname}
-                    onChange={(e) => setFname(e.target.value)}
-                    required
-                  />
+                  <label htmlFor="">Firstname</label> <br />
+                  <InputGroup>
+                    <FormControl
+                      type="text"
+                      name="firstname"
+                      placeholder="Firstname"
+                      value={firstname}
+                      onChange={(e) => setFname(e.target.value)}
+                      required
+                    />
+                  </InputGroup>
                 </div>
                 <div className="mt-3">
-                  <label htmlFor="">Last Name</label> <br />
-                  <FormControl
-                    type="text"
-                    name="lastname"
-                    placeholder="Last Name"
-                    value={lastname}
-                    onChange={(e) => setLname(e.target.value)}
-                    required
-                  />
+                  {/* <InputField name="Username" placeholder="Username" /> */}
+                  <label htmlFor="">Lastname</label> <br />
+                  <InputGroup>
+                    <FormControl
+                      type="text"
+                      name="lastname"
+                      placeholder="Last Name"
+                      value={lastname}
+                      onChange={(e) => setLname(e.target.value)}
+                      required
+                    />
+                  </InputGroup>
                 </div>
                 <div className="mt-4">
                   <label htmlFor="">Email</label> <br />
@@ -201,17 +216,18 @@ const Register = () => {
                         </Col> */}
                         <Col md={2}>
                           <div className="d-flex justify-content-center">
-                            <Link
+                            {/* <Link
                               to="/updateregisteracc"
                               style={{ marginTop: "-5px" }}
-                            >
-                              <AiOutlineEdit
-                                className="editicon"
-                                onClick={() => {
-                                  setUpdateId(curElm._id);
-                                }}
-                              />
-                            </Link>
+                            > */}
+                            <AiOutlineEdit
+                              className="editicon"
+                              onClick={() => {
+                                // handleUpdate(curElm._id);
+                                navigate(`/updateregisteracc/${curElm._id}`);
+                              }}
+                            />
+                            {/* </Link> */}
 
                             <RiDeleteBin7Line
                               className="deleteicon"
