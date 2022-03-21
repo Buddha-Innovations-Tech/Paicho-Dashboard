@@ -12,6 +12,24 @@ import {
   userUpdateReducer,
 } from "./reducers/userReducers";
 
+import {
+  subscriberLoginReducer,
+  subscriberRegisterReducer,
+  subscriberDetailsReducer,
+  subscriberUpdateProfileReducer,
+  subscriberListReducer,
+  subscriberDeleteReducer,
+} from "./reducers/subscriberReducers";
+
+import {
+  categoryCreateReducer,
+  subCategoryCreateReducer,
+  categoryDetailsReducer,
+  categoryListReducer,
+  categoryUpdateReducer,
+  categoryDeleteReducer,
+} from "./reducers/categoryReducers";
+
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
@@ -20,6 +38,20 @@ const reducer = combineReducers({
   userList: userListReducer,
   userDelete: userDeleteReducer,
   userUpdate: userUpdateReducer,
+
+  subscriberLogin: subscriberLoginReducer,
+  subscriberRegister: subscriberRegisterReducer,
+  subscriberDetails: subscriberDetailsReducer,
+  subscriberUpdateProfile: subscriberUpdateProfileReducer,
+  subscriberList: subscriberListReducer,
+  subscriberDelete: subscriberDeleteReducer,
+
+  createCategory: categoryCreateReducer,
+  createSubCategory: subCategoryCreateReducer,
+  categoryDetails: categoryDetailsReducer,
+  categoryList: categoryListReducer,
+  categoryUpdate: categoryUpdateReducer,
+  categoryDelete: categoryDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

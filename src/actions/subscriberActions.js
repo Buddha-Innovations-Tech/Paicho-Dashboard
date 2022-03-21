@@ -21,7 +21,7 @@ import {
   SUBSCRIBER_DELETE_FAIL,
 } from "../constants/subscriberConstants";
 
-export const login = (email, password) => async (dispatch) => {
+export const login = (email, password, mobilenumber) => async (dispatch) => {
   try {
     dispatch({
       type: SUBSCRIBER_LOGIN_REQUEST,
@@ -62,7 +62,16 @@ export const logout = () => (dispatch) => {
 };
 
 export const register =
-  (firstname, lastname, email, password, address, mobilenumber, provider) =>
+  (
+    firstname,
+    lastname,
+    email,
+    password,
+    address,
+    mobilenumber,
+    provider,
+    orders
+  ) =>
   async (dispatch) => {
     try {
       dispatch({
@@ -85,6 +94,7 @@ export const register =
           address,
           mobilenumber,
           provider,
+          orders,
         },
         config
       );
@@ -195,7 +205,7 @@ export const listSubscribers = () => async (dispatch) => {
     };
 
     const { data } = await axios.get(`/api/subscribers/`, config);
-
+    // console.log(data);
     dispatch({
       type: SUBSCRIBER_LIST_SUCCESS,
       payload: data,

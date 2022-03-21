@@ -3,11 +3,12 @@ import { Row, Col } from "react-bootstrap";
 import React, { useEffect } from "react";
 import { ImCross } from "react-icons/im";
 import { BiPlus } from "react-icons/bi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { categoryData } from "../../components/CategoryList";
 import PaginationComp from "../../components/PaginationComp";
 import CategoryList from "../../components/CategoryList";
+import { listCategories } from "../../actions/categoryAction";
 
 const subcategoryItem = [
   { item: "Paicho Pickle" },
@@ -18,14 +19,21 @@ const subcategoryItem = [
 
 const Category = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
-  console.log(userInfo);
+  // console.log(userInfo);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  const { categories } = useSelector((state) => state.categoryList);
+  // console.log(categories);
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
     }
   }, [userInfo]);
+
+  useEffect(() => {
+    dispatch(listCategories());
+  }, [dispatch]);
   return (
     <>
       <div className="categorywrapper">

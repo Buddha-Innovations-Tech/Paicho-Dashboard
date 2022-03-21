@@ -7,105 +7,106 @@ import { BiSearch } from "react-icons/bi";
 
 import PaginationComp from "../../components/PaginationComp";
 import { listUsers } from "../../actions/userActions";
+import { listSubscribers } from "../../actions/subscriberActions";
 
-const customerList = [
-  {
-    id: 1,
-    username: "Sindhu aryal",
-    Phone: 9847135126,
-    email: "sindhu.12@gmail.com",
-    address: "Butwal 10,Sukhanagar",
-    order: 320,
-  },
-  {
-    id: 2,
-    username: "Sindhu ",
-    Phone: 9847135126,
-    email: "sindhu2@gmail.com",
-    address: "Butwal 11,Shankhanagar",
-    order: 0,
-  },
-  {
-    id: 3,
-    username: "Laxmi Pandey",
-    Phone: 9847135126,
-    email: "laxmi.12@gmail.com",
-    address: "Butwal Golpark",
-    order: 400,
-  },
-  {
-    id: 4,
-    username: "Sagar Gc",
-    Phone: 9847135126,
-    email: "sagar.12@gmail.com",
-    address: "Butwal 10,Belbas",
-    order: 440,
-  },
-  {
-    id: 5,
-    username: "Sindhu aryal",
-    Phone: 9847135126,
-    email: "sindhu.12@gmail.com",
-    address: "Butwal 10,Sukhanagar",
-    order: 45,
-  },
-  {
-    id: 6,
-    username: "Sindhu ",
-    Phone: 9847135126,
-    email: "sindhu2@gmail.com",
-    address: "Butwal 11,Shankhanagar",
-    order: 0,
-  },
-  {
-    id: 7,
-    username: "Laxmi Pandey",
-    Phone: 9847135126,
-    email: "laxmi.12@gmail.com",
-    address: "Butwal Golpark",
-    order: 350,
-  },
-  {
-    id: 8,
-    username: "Sagar Gc",
-    Phone: 9847135126,
-    email: "sagar.12@gmail.com",
-    address: "Butwal 10,Belbas",
-    order: 410,
-  },
-  {
-    id: 9,
-    username: "Sindhu aryal",
-    Phone: 9847135126,
-    email: "sindhu.12@gmail.com",
-    address: "Butwal 10,Sukhanagar",
-    order: 310,
-  },
-  {
-    id: 10,
-    username: "Sindhu ",
-    Phone: 9847135126,
-    email: "sindhu2@gmail.com",
-    address: "Butwal 11,Shankhanagar",
-    order: 0,
-  },
-  {
-    id: 11,
-    username: "Laxmi Pandey",
-    Phone: 9847135126,
-    email: "laxmi.12@gmail.com",
-    address: "Butwal Golpark",
-    order: 70,
-  },
-  {
-    id: 12,
-    username: "Sagar Gc",
-    Phone: 9847135126,
-    email: "sagar.12@gmail.com",
-    address: "Butwal 10,Belbas",
-    order: 90,
-  },
-];
+// const customerList = [
+//   {
+//     id: 1,
+//     username: "Sindhu aryal",
+//     Phone: 9847135126,
+//     email: "sindhu.12@gmail.com",
+//     address: "Butwal 10,Sukhanagar",
+//     order: 320,
+//   },
+//   {
+//     id: 2,
+//     username: "Sindhu ",
+//     Phone: 9847135126,
+//     email: "sindhu2@gmail.com",
+//     address: "Butwal 11,Shankhanagar",
+//     order: 0,
+//   },
+//   {
+//     id: 3,
+//     username: "Laxmi Pandey",
+//     Phone: 9847135126,
+//     email: "laxmi.12@gmail.com",
+//     address: "Butwal Golpark",
+//     order: 400,
+//   },
+//   {
+//     id: 4,
+//     username: "Sagar Gc",
+//     Phone: 9847135126,
+//     email: "sagar.12@gmail.com",
+//     address: "Butwal 10,Belbas",
+//     order: 440,
+//   },
+//   {
+//     id: 5,
+//     username: "Sindhu aryal",
+//     Phone: 9847135126,
+//     email: "sindhu.12@gmail.com",
+//     address: "Butwal 10,Sukhanagar",
+//     order: 45,
+//   },
+//   {
+//     id: 6,
+//     username: "Sindhu ",
+//     Phone: 9847135126,
+//     email: "sindhu2@gmail.com",
+//     address: "Butwal 11,Shankhanagar",
+//     order: 0,
+//   },
+//   {
+//     id: 7,
+//     username: "Laxmi Pandey",
+//     Phone: 9847135126,
+//     email: "laxmi.12@gmail.com",
+//     address: "Butwal Golpark",
+//     order: 350,
+//   },
+//   {
+//     id: 8,
+//     username: "Sagar Gc",
+//     Phone: 9847135126,
+//     email: "sagar.12@gmail.com",
+//     address: "Butwal 10,Belbas",
+//     order: 410,
+//   },
+//   {
+//     id: 9,
+//     username: "Sindhu aryal",
+//     Phone: 9847135126,
+//     email: "sindhu.12@gmail.com",
+//     address: "Butwal 10,Sukhanagar",
+//     order: 310,
+//   },
+//   {
+//     id: 10,
+//     username: "Sindhu ",
+//     Phone: 9847135126,
+//     email: "sindhu2@gmail.com",
+//     address: "Butwal 11,Shankhanagar",
+//     order: 0,
+//   },
+//   {
+//     id: 11,
+//     username: "Laxmi Pandey",
+//     Phone: 9847135126,
+//     email: "laxmi.12@gmail.com",
+//     address: "Butwal Golpark",
+//     order: 70,
+//   },
+//   {
+//     id: 12,
+//     username: "Sagar Gc",
+//     Phone: 9847135126,
+//     email: "sagar.12@gmail.com",
+//     address: "Butwal 10,Belbas",
+//     order: 90,
+//   },
+// ];
 
 const Customer = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
@@ -121,41 +122,46 @@ const Customer = () => {
     // }
   }, [userInfo]);
 
-  const [sortType, setSortType] = useState("Orders");
-  const [loading, setLoading] = useState(false);
-  const [sorting, setSorting] = useState(customerList);
+  const { subscribers, success } = useSelector((state) => state.subscriberList);
+
+  const subs = subscribers.users;
+  // console.log(subs);
+
+  // const [sortType, setSortType] = useState("Orders");
+  // const [loading, setLoading] = useState(false);
+  // const [sorting, setSorting] = useState(subs);
   const dispatch = useDispatch();
-  const changeSort = () => {
-    if (sortType.toLowerCase() === "Orders".toLowerCase()) {
-      setSorting(customerList);
-    } else if (sortType.toLowerCase() === "Highest Orders".toLowerCase()) {
-      const sorted = customerList.sort((a, b) => {
-        return b.order - a.order;
-      });
-      setLoading(true);
-      setSorting(sorted);
-      setLoading(false);
-    } else if (sortType.toLowerCase() === "Lowest Orders".toLowerCase()) {
-      const sorted = customerList.sort((a, b) => {
-        return a.order - b.order;
-      });
-      setLoading(true);
-      setSorting(sorted);
-      setLoading(false);
-    } else {
-      setSorting(customerList.filter((i) => i.order === 0));
-    }
-  };
+  // const changeSort = () => {
+  //   if (sortType.toLowerCase() === "Orders".toLowerCase()) {
+  //     setSorting(subs);
+  //   } else if (sortType.toLowerCase() === "Highest Orders".toLowerCase()) {
+  //     const sorted = subs.sort((a, b) => {
+  //       return b.order - a.order;
+  //     });
+  //     setLoading(true);
+  //     setSorting(sorted);
+  //     setLoading(false);
+  //   } else if (sortType.toLowerCase() === "Lowest Orders".toLowerCase()) {
+  //     const sorted = subs.sort((a, b) => {
+  //       return a.order - b.order;
+  //     });
+  //     setLoading(true);
+  //     setSorting(sorted);
+  //     setLoading(false);
+  //   } else {
+  //     setSorting(subs.filter((i) => i.order === 0));
+  //   }
+  // };
 
   useEffect(() => {
-    setTimeout(() => {
-      changeSort();
-    }, 100);
-  }, [sortType]);
+    dispatch(listSubscribers());
+  }, [success]);
 
-  useEffect(() => {
-    dispatch(listUsers());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     changeSort();
+  //   }, 100);
+  // }, [sortType]);
 
   return (
     <>
@@ -178,7 +184,7 @@ const Customer = () => {
               <select
                 className="orderwrapper__background--selectstatus"
                 onChange={(e) => {
-                  setSortType(e.target.value);
+                  // setSortType(e.target.value);
                 }}
               >
                 <option selected>Orders</option>
@@ -201,21 +207,21 @@ const Customer = () => {
           </div>
 
           <div>
-            {sorting &&
-              sorting.map((curElm, index) => {
+            {subs &&
+              subs.map((curElm, index) => {
                 return (
                   <Row
                     className="productlistwrapper__productlistwrapper--listitem customerlistleft"
                     key={index}
                   >
                     <Col md={1}>
-                      <p>{curElm.id}</p>
+                      <p>{index + 1}</p>
                     </Col>
                     <Col md={2}>
-                      <p>{curElm.username}</p>
+                      <p>{`${curElm.firstname} ${curElm.lastname}`}</p>
                     </Col>
                     <Col md={2}>
-                      <p>{curElm.Phone}</p>
+                      <p>{curElm.mobilenumber}</p>
                     </Col>
                     <Col md={2}>
                       <p>{curElm.email}</p>
@@ -225,7 +231,8 @@ const Customer = () => {
                     </Col>
 
                     <Col md={2}>
-                      <p>{curElm.order === 0 ? "No orders" : curElm.order}</p>
+                      {/* <p>{curElm.order === 0 ? "No orders" : curElm.order}</p> */}
+                      <p>{curElm.order}</p>
                     </Col>
                   </Row>
                 );

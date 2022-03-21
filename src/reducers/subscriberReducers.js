@@ -83,7 +83,7 @@ export const subscriberListReducer = (state = { subscribers: [] }, action) => {
     case SUBSCRIBER_LIST_REQUEST:
       return { ...state, loading: true };
     case SUBSCRIBER_LIST_SUCCESS:
-      return { loading: false, subscribers: action.payload };
+      return { loading: false, subscribers: action.payload, success: true };
     case SUBSCRIBER_LIST_FAIL:
       return { loading: false, error: action.payload };
 
