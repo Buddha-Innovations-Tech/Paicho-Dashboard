@@ -6,6 +6,7 @@ import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../actions/userActions";
+import Loader from "../../components/Loader";
 
 const Login = () => {
   const [showA, setShowA] = useState(false);
@@ -72,7 +73,8 @@ const Login = () => {
                 Login
               </Link>
             ) : (
-              <p className="mt-4 Loading">loading...</p>
+              <Loader />
+              // <p className="mt-4 Loading">loading...</p>
             )}
             <br />
             {error && (

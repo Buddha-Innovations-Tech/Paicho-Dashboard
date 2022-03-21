@@ -21,6 +21,7 @@ import {
   updateUser,
 } from "../../actions/userActions";
 import { type } from "@testing-library/user-event/dist/type";
+import Loader from "../../components/Loader";
 
 const Register = () => {
   const [show1, setShow1] = useState(false);
@@ -38,11 +39,17 @@ const Register = () => {
   // );
   const { users } = useSelector((state) => state.userList);
   const { userInfo } = useSelector((state) => state.userLogin);
-  const { success } = useSelector((state) => state.userRegister);
+  const { success, loading, error } = useSelector(
+    (state) => state.userRegister
+  );
   const [isValid, setIsValid] = useState(false);
   const [message, setMessage] = useState("");
   const [isValid1, setIsValid1] = useState(false);
   const [message1, setMessage1] = useState("");
+  const [isValid2, setIsValid2] = useState(false);
+  const [message2, setMessage2] = useState("");
+  const [isValid3, setIsValid3] = useState(false);
+  const [message3, setMessage3] = useState("");
   const { success: userDeleteSuccess } = useSelector(
     (state) => state.userDelete
   );
@@ -65,14 +72,33 @@ const Register = () => {
     const valid =
       validation([firstname, lastname, email, password]) && Reg.test(email);
     // passReg.test(password);
-
-    // if (!Reg.test(email)) {
-    //   setIsValid(false);
-    //   setMessage("Please enter a valid Email.");
-    // }
+    if (firstname === "") {
+      setIsValid2(false);
+      setMessage2("Please fill the firstname");
+    } else {
+      setIsValid(true);
+      setMessage2("");
+    }
+    if (lastname === "") {
+      setIsValid3(false);
+      setMessage3("Please fill the lastname");
+    } else {
+      setIsValid(true);
+      setMessage3("");
+    }
+    if (!Reg.test(email)) {
+      setIsValid(false);
+      setMessage("Please enter a valid Email.");
+    } else {
+      setIsValid(true);
+      setMessage("");
+    }
     if (password.length < 5) {
       setIsValid1(false);
       setMessage1("Password must contain atleast five characters");
+    } else {
+      setIsValid(true);
+      setMessage1("");
     }
     console.log(valid);
     if (valid) {
@@ -81,8 +107,10 @@ const Register = () => {
       setLname("");
       setEmail("");
       setPassword("");
-      setMessage("");
-      setMessage1("");
+      // setMessage("");
+      // setMessage1("");
+      // setMessage2("");
+      // setMessage3("");
     }
   };
 
@@ -136,6 +164,9 @@ const Register = () => {
                       required
                     />
                   </InputGroup>
+                  <div className={`message ${isValid ? "success" : "error"}`}>
+                    {message2}
+                  </div>
                 </div>
                 <div className="mt-3">
                   {/* <InputField name="Username" placeholder="Username" /> */}
@@ -150,6 +181,9 @@ const Register = () => {
                       required
                     />
                   </InputGroup>
+                  <div className={`message ${isValid ? "success" : "error"}`}>
+                    {message3}
+                  </div>
                 </div>
                 <div className="mt-4">
                   <label htmlFor="">Email</label> <br />
@@ -183,12 +217,21 @@ const Register = () => {
                   <p className="registerwrapper__image">Image</p>
                   <DragAndDrop />
                 </div> */}
-                <div className="categorywrapper__addcategorywrapper--buttons register-btn">
-                  <button className="btn-discard">Discard</button>
-                  <button className="btn-addcategory" onClick={handleSubmit}>
-                    Create Account
-                  </button>
-                </div>
+                {!loading ? (
+                  <>
+                    <div className="categorywrapper__addcategorywrapper--buttons register-btn">
+                      <button className="btn-discard">Discard</button>
+                      <button
+                        className="btn-addcategory"
+                        onClick={handleSubmit}
+                      >
+                        Create Account
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <Loader />
+                )}
               </Form>
             </div>
           </Col>

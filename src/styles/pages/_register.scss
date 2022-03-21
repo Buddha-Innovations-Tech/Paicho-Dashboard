@@ -15,10 +15,10 @@
     line-height: 18px;
     letter-spacing: 0.01em;
     text-align: left;
-    color: #4F5D77;
+    color: #4f5d77;
     margin-bottom: 20px;
   }
-  &__image{
+  &__image {
     margin-bottom: 5px;
     color: #495058;
     font-size: 12px;
@@ -30,43 +30,51 @@
     padding: 25px;
     border-radius: 4px;
   }
-  .register-drag-drop{
+  .register-drag-drop {
     .drapanddrop-content {
-        padding: 55px 75px;
+      padding: 55px 75px;
     }
-    .treeicon{
-        margin-bottom: 25px;
+    .treeicon {
+      margin-bottom: 25px;
     }
   }
-  .register-btn{
-      margin-top: 22px;
+  .register-btn {
+    margin-top: 22px;
   }
-  &__righttitle{
-font-family: "Quicksand","sans-serif";
-font-size: 18px;
-font-style: normal;
-font-weight: 700;
-line-height: 23px;
-letter-spacing: 0em;
-text-align: left;
-color: #000;
+  &__righttitle {
+    font-family: "Quicksand", "sans-serif";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 23px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #000;
   }
 }
-.adminlistheading{
-    padding: 12px 0;
+.adminlistheading {
+  padding: 12px 0;
 }
-.adminlist{
-text-align: left;
-padding: 0 5px;
+.adminlist {
+  text-align: left;
+  padding: 0 5px;
 }
-.editicon{
-    color: #005AAB;
-    margin-right: 14px;
-    font-size: 18px;
-    cursor: pointer;
+.editicon {
+  color: #005aab;
+  margin-right: 14px;
+  font-size: 18px;
+  cursor: pointer;
 }
-.deleteicon{
-    color: #F24E1E;
-    font-size: 18px;
-    cursor: pointer;
+.deleteicon {
+  color: #f24e1e;
+  font-size: 18px;
+  cursor: pointer;
 }
+/* CSS for animated bouncing loader. */
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Loader circles */
