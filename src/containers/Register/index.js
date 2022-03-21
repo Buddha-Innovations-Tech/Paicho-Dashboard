@@ -41,6 +41,8 @@ const Register = () => {
   const { success } = useSelector((state) => state.userRegister);
   const [isValid, setIsValid] = useState(false);
   const [message, setMessage] = useState("");
+  const [isValid1, setIsValid1] = useState(false);
+  const [message1, setMessage1] = useState("");
   const { success: userDeleteSuccess } = useSelector(
     (state) => state.userDelete
   );
@@ -57,18 +59,21 @@ const Register = () => {
   };
 
   const handleSubmit = (event) => {
-    const Reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     event.preventDefault();
+    const Reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    // const passReg = /"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"/;
     const valid =
       validation([firstname, lastname, email, password]) && Reg.test(email);
-    {
-      alert("Please fill the fields");
-    }
-    if (!Reg.test(email)) {
-      setIsValid(false);
-      setMessage("Please enter a valid Email");
-    }
+    // passReg.test(password);
 
+    // if (!Reg.test(email)) {
+    //   setIsValid(false);
+    //   setMessage("Please enter a valid Email.");
+    // }
+    if (password.length < 5) {
+      setIsValid1(false);
+      setMessage1("Password must contain atleast five characters");
+    }
     console.log(valid);
     if (valid) {
       dispatch(register(firstname, lastname, email, password));
@@ -77,6 +82,7 @@ const Register = () => {
       setEmail("");
       setPassword("");
       setMessage("");
+      setMessage1("");
     }
   };
 
@@ -169,6 +175,9 @@ const Register = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
+                  <div className={`message1 ${isValid ? "success" : "error"}`}>
+                    {message1}
+                  </div>
                 </div>
                 {/* <div className="mt-4 register-drag-drop">
                   <p className="registerwrapper__image">Image</p>
