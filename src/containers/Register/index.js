@@ -38,7 +38,7 @@ const Register = () => {
   // );
   const { users } = useSelector((state) => state.userList);
   const { userInfo } = useSelector((state) => state.userLogin);
-  const { success } = useSelector((state) => state.userRegister);
+  const { success, loading } = useSelector((state) => state.userRegister);
   const [isValid, setIsValid] = useState(false);
   const [message, setMessage] = useState("");
   const [isValid1, setIsValid1] = useState(false);
