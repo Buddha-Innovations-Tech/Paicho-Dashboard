@@ -30,7 +30,7 @@ const App = () => {
               path="/updateregisteracc/:id"
               element={<UpdateRegisterAcc />}
             />
-            <Route path="/editcategory" element={<EditCategory />} />
+            <Route path="/editcategory/:id" element={<EditCategory />} />
             <Route path="/productlist" element={<ProductList />} />
             <Route path="/transaction" element={<Transaction />} />
             <Route path="/addproduct" element={<AddProduct />} />

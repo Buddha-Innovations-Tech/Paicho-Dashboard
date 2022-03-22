@@ -87,11 +87,20 @@ export const createCategory = () => async (dispatch, getState) => {
   }
 };
 
-export const listCategoryDetails = (id) => async (dispatch) => {
+export const listCategoryDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: CATEGORY_DETAILS_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-    const { data } = await axios.get(`/api/categories/${id}`);
+    const { data } = await axios.get(`/api/categories/${id}`, config);
 
     dispatch({
       type: CATEGORY_DETAILS_SUCCESS,

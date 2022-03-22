@@ -109,6 +109,7 @@ import { listSubscribers } from "../../actions/subscriberActions";
 // ];
 
 const Customer = () => {
+  const [searchInput, setSearchInput] = useState("");
   const { userInfo } = useSelector((state) => state.userLogin);
   console.log(userInfo);
   const navigate = useNavigate();
@@ -177,7 +178,12 @@ const Customer = () => {
           <div className="d-flex justify-content-between align-items-center customerwrapper__background--customerheading">
             <div className="categorywrapper__addcategorywrapper--searchinput">
               <BiSearch className="searchicon" />
-              <input type="text" placeholder="Search Customer" />
+              <input
+                type="text"
+                placeholder="Search Customer"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
             </div>
 
             <div>
@@ -208,35 +214,39 @@ const Customer = () => {
 
           <div>
             {subs &&
-              subs.map((curElm, index) => {
-                return (
-                  <Row
-                    className="productlistwrapper__productlistwrapper--listitem customerlistleft"
-                    key={index}
-                  >
-                    <Col md={1}>
-                      <p>{index + 1}</p>
-                    </Col>
-                    <Col md={2}>
-                      <p>{`${curElm.firstname} ${curElm.lastname}`}</p>
-                    </Col>
-                    <Col md={2}>
-                      <p>{curElm.mobilenumber}</p>
-                    </Col>
-                    <Col md={2}>
-                      <p>{curElm.email}</p>
-                    </Col>
-                    <Col md={3}>
-                      <p>{curElm.address}</p>
-                    </Col>
+              subs
+                .filter((customer) =>
+                  customer.firstname.toLowerCase().includes(searchInput)
+                )
+                .map((curElm, index) => {
+                  return (
+                    <Row
+                      className="productlistwrapper__productlistwrapper--listitem customerlistleft"
+                      key={index}
+                    >
+                      <Col md={1}>
+                        <p>{index + 1}</p>
+                      </Col>
+                      <Col md={2}>
+                        <p>{`${curElm.firstname} ${curElm.lastname}`}</p>
+                      </Col>
+                      <Col md={2}>
+                        <p>{curElm.mobilenumber}</p>
+                      </Col>
+                      <Col md={2}>
+                        <p>{curElm.email}</p>
+                      </Col>
+                      <Col md={3}>
+                        <p>{curElm.address}</p>
+                      </Col>
 
-                    <Col md={2}>
-                      {/* <p>{curElm.order === 0 ? "No orders" : curElm.order}</p> */}
-                      <p>{curElm.order}</p>
-                    </Col>
-                  </Row>
-                );
-              })}
+                      <Col md={2}>
+                        {/* <p>{curElm.order === 0 ? "No orders" : curElm.order}</p> */}
+                        <p>{curElm.order}</p>
+                      </Col>
+                    </Row>
+                  );
+                })}
           </div>
         </div>
 

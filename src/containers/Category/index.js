@@ -5,7 +5,7 @@ import { ImCross } from "react-icons/im";
 import { BiPlus } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 
-import { categoryData } from "../../components/CategoryList";
+// import { categoryData } from "../../components/CategoryList";
 import PaginationComp from "../../components/PaginationComp";
 import CategoryList from "../../components/CategoryList";
 import { listCategories } from "../../actions/categoryAction";
@@ -98,9 +98,10 @@ const Category = () => {
                     <span>Action</span>
                   </Col>
                 </Row>
-                {categoryData.map((data, index) => {
-                  return <CategoryList key={index} {...data} />;
-                })}
+                {categories &&
+                  categories.map((data, index) => {
+                    return <CategoryList key={index} index={index} {...data} />;
+                  })}
               </div>
               <div className="mt-5">
                 <PaginationComp />

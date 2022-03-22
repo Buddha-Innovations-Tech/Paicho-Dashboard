@@ -75,6 +75,7 @@ const UpdateRegisterAcc = () => {
     dispatch(updateUser(state));
     // navigate("/register");
   };
+
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
@@ -84,6 +85,7 @@ const UpdateRegisterAcc = () => {
   useEffect(() => {
     dispatch(listUsers());
   }, [success]);
+
   useEffect(() => {
     dispatch(listUsers());
   }, [updateloading]);
