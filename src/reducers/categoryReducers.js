@@ -94,12 +94,20 @@ export const categoryListReducer = (state = { categories: [] }, action) => {
   }
 };
 
-export const categoryUpdateReducer = (state = { category: {} }, action) => {
+export const categoryUpdateReducer = (
+  state = { category: {}, subCategory: {} },
+  action
+) => {
   switch (action.type) {
     case CATEGORY_UPDATE_REQUEST:
       return { loading: true };
     case CATEGORY_UPDATE_SUCCESS:
-      return { loading: false, success: true, category: action.payload };
+      return {
+        loading: false,
+        success: true,
+        category: action.payload,
+        subCategory: action.payload.subCategories,
+      };
     case CATEGORY_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     case CATEGORY_UPDATE_RESET:
