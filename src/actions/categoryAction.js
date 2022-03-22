@@ -117,8 +117,9 @@ export const listCategoryDetails = (id) => async (dispatch, getState) => {
   }
 };
 
-export const updateCategory = (category) => async (dispatch, getState) => {
+export const updateCategory = (category, id) => async (dispatch, getState) => {
   try {
+    console.log(category, id, "sdsd");
     dispatch({
       type: CATEGORY_UPDATE_REQUEST,
     });
@@ -132,11 +133,9 @@ export const updateCategory = (category) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.put(
-      `/api/categories/${category._id}`,
-      category,
-      config
-    );
+    const { data } = await axios.put(`/api/categories/${id}`, category, config);
+
+    console.log(data);
     dispatch({
       type: CATEGORY_UPDATE_SUCCESS,
       payload: data,
