@@ -173,8 +173,8 @@ const UpdateRegisterAcc = () => {
               </Row>
               <div>
                 {/* {adminList.map((curElm, index) => { */}
-                {users &&
-                  users.map((curElm, index) => {
+                {users.users &&
+                  users.users.map((curElm, index) => {
                     return (
                       <Row
                         className="productlistwrapper__productlistwrapper--listitem adminlist"
