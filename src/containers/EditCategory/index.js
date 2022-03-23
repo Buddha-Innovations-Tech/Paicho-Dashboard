@@ -24,7 +24,6 @@ import {
 const EditCategory = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
   // console.log(userInfo);
-
   let { id } = useParams();
 
   const navigate = useNavigate();
@@ -42,6 +41,13 @@ const EditCategory = () => {
   const { category } = useSelector((state) => state.categoryDetails);
 
   const { categories } = useSelector((state) => state.categoryList);
+
+  const { success: updateSuccess } = useSelector(
+    (state) => state.categoryUpdate
+  );
+  // const { success: categorySuccess } = useSelector(
+  //   (state) => state.categoryUpdate
+  // );
   const [subCategories, setSubCategories] = useState([]);
 
   // const subcat = category.subcategories;
@@ -102,7 +108,6 @@ const EditCategory = () => {
                       placeholder="Sub Category"
                       value={test}
                       onChange={(e) => setTest(e.target.value)}
-                      required
                     />
                     <BiPlus
                       className="plusIcon"

@@ -55,14 +55,7 @@ import { useSelector } from "react-redux";
 //   },
 // ];
 
-const CategoryList = ({
-  index,
-  _id,
-  name,
-  subcategories,
-  product,
-  seoTitle,
-}) => {
+const CategoryList = ({ index, _id, name, subcategories, product }) => {
   const navigate = useNavigate();
   return (
     <>
