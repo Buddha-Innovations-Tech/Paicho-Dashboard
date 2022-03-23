@@ -138,10 +138,6 @@ const Register = () => {
 
   useEffect(() => {
     dispatch(listUsers());
-  }, [success]);
-
-  useEffect(() => {
-    dispatch(listUsers());
   }, [userDeleteSuccess]);
   return (
     <>

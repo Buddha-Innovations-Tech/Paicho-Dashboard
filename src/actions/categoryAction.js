@@ -58,7 +58,7 @@ export const listCategories = () => async (dispatch, getState) => {
   }
 };
 
-export const createCategory = () => async (dispatch, getState) => {
+export const createCategory = (name, test) => async (dispatch, getState) => {
   try {
     dispatch({
       type: CATEGORY_ADD_REQUEST,
@@ -71,7 +71,11 @@ export const createCategory = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.post(`/api/categories/add`, {}, config);
+    const { data } = await axios.post(
+      `/api/categories/add`,
+      { name, test },
+      config
+    );
     dispatch({
       type: CATEGORY_ADD_SUCCESS,
       payload: data,
