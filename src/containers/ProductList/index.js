@@ -2,68 +2,76 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import { BiSearch } from "react-icons/bi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import ProductImg from "../../assets/images/ProductListImg.png";
 import PaginationComp from "../../components/PaginationComp";
+import { listProducts } from "../../actions/productAction";
 
-const productList = [
-  {
-    id: 1101,
-    image: ProductImg,
-    name: "Mix Achr (250gm)",
-    category: "Paicho Pickle",
-    price: "Rs.250",
-    discount: "10%",
-    stock: "In Stock",
-    bimal: "abc",
-  },
-  {
-    id: 1102,
-    image: ProductImg,
-    name: "Bhutuk Pickle",
-    category: "Paicho Pickle",
-    price: "Rs.300",
-    discount: "8%",
-    stock: "Out of Stock",
-    bimal: "abc",
-  },
-  {
-    id: 1103,
-    image: ProductImg,
-    name: "Cabbage",
-    category: "Organic Vegetables",
-    price: "Rs.30",
-    discount: "6%",
-    stock: "Archived",
-    bimal: "def",
-  },
-  {
-    id: 1104,
-    image: ProductImg,
-    name: "Besar",
-    category: "Processing Item",
-    price: "Rs.500",
-    discount: "10%",
-    stock: "Archived",
-    bimal: "abc",
-  },
-  {
-    id: 1105,
-    image: ProductImg,
-    name: "Dry Apple",
-    category: "Dry Foods",
-    price: "Rs.250",
-    discount: "15%",
-    stock: "In Stock",
-    bimal: "abc",
-  },
-];
+// const productList = [
+//   {
+//     id: 1101,
+//     image: ProductImg,
+//     name: "Mix Achr (250gm)",
+//     category: "Paicho Pickle",
+//     price: "Rs.250",
+//     discount: "10%",
+//     stock: "In Stock",
+//     bimal: "abc",
+//   },
+//   {
+//     id: 1102,
+//     image: ProductImg,
+//     name: "Bhutuk Pickle",
+//     category: "Paicho Pickle",
+//     price: "Rs.300",
+//     discount: "8%",
+//     stock: "Out of Stock",
+//     bimal: "abc",
+//   },
+//   {
+//     id: 1103,
+//     image: ProductImg,
+//     name: "Cabbage",
+//     category: "Organic Vegetables",
+//     price: "Rs.30",
+//     discount: "6%",
+//     stock: "Archived",
+//     bimal: "def",
+//   },
+//   {
+//     id: 1104,
+//     image: ProductImg,
+//     name: "Besar",
+//     category: "Processing Item",
+//     price: "Rs.500",
+//     discount: "10%",
+//     stock: "Archived",
+//     bimal: "abc",
+//   },
+//   {
+//     id: 1105,
+//     image: ProductImg,
+//     name: "Dry Apple",
+//     category: "Dry Foods",
+//     price: "Rs.250",
+//     discount: "15%",
+//     stock: "In Stock",
+//     bimal: "abc",
+//   },
+// ];
 
 const ProductList = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
-  console.log(userInfo);
+  // console.log(userInfo);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { products } = useSelector((state) => state.productList);
+
+  useEffect(() => {
+    dispatch(listProducts());
+  }, [dispatch]);
 
   useEffect(() => {
     if (!userInfo) {
@@ -127,14 +135,14 @@ const ProductList = () => {
           </div>
           <div>
             {filterTerm === "Stock"
-              ? productList.map((curElm, index) => {
+              ? products.map((curElm, index) => {
                   return (
                     <Row
                       className="productlistwrapper__productlistwrapper--listitem"
                       key={index}
                     >
                       <Col md={1}>
-                        <p>{curElm.id}</p>
+                        <p>{index + 1}</p>
                       </Col>
                       <Col md={3}>
                         <div className="d-flex ms-5 align-items-center">
@@ -143,7 +151,11 @@ const ProductList = () => {
                         </div>
                       </Col>
                       <Col md={2}>
-                        <p>{curElm.category}</p>
+                        <p>
+                          {curElm.category && curElm.category.name
+                            ? curElm.category.name
+                            : "no"}
+                        </p>
                       </Col>
                       <Col md={1}>
                         <p>{curElm.price}</p>
@@ -171,16 +183,25 @@ const ProductList = () => {
                             textAlign: "center",
                           }}
                         >
-                          {curElm.stock}
+                          {curElm.countInstock == 0
+                            ? "Out of Stock"
+                            : "In stock"}
                         </p>
                       </Col>
                       <Col md={2}>
-                        <button className="editbtn">Edit</button>
+                        <button
+                          className="editbtn"
+                          onClick={() => {
+                            navigate(`/editproduct/${curElm._id}`);
+                          }}
+                        >
+                          Edit
+                        </button>
                       </Col>
                     </Row>
                   );
                 })
-              : productList
+              : products
                   .filter((i) => i.stock === filterTerm)
                   .map((i) => (
                     <Row
@@ -196,9 +217,7 @@ const ProductList = () => {
                           <p className="ms-2 mt-3">{i.name}</p>
                         </div>
                       </Col>
-                      <Col md={2}>
-                        <p>{i.category}</p>
-                      </Col>
+                      <Col md={2}>{/* <p>{i.category}</p> */}</Col>
                       <Col md={1}>
                         <p>{i.price}</p>
                       </Col>
@@ -229,7 +248,14 @@ const ProductList = () => {
                         </p>
                       </Col>
                       <Col md={2}>
-                        <button className="editbtn">Edit</button>
+                        <button
+                          className="editbtn"
+                          onClick={() => {
+                            navigate(`/editproduct/${i._id}`);
+                          }}
+                        >
+                          Edit
+                        </button>
                       </Col>
                     </Row>
                   ))}
