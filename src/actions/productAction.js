@@ -22,7 +22,7 @@ import {
   CREATE_SIMILAR_PRODUCT_FAIL,
 } from "../constants/productConstants";
 
-export const createProduct = () => async (dispatch, getState) => {
+export const createProduct = (category) => async (dispatch, getState) => {
   try {
     dispatch({
       type: PRODUCT_CREATE_REQUEST,
@@ -37,8 +37,9 @@ export const createProduct = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
+    console.log(category);
 
-    const { data } = await axios.post(`/api/products/add`, {}, config);
+    const { data } = await axios.post(`/api/products/add`, category, config);
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,

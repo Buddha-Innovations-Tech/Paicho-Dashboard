@@ -41,7 +41,7 @@
     border-bottom: 1px solid #d0d0d0;
   }
   &__addbtn {
-    margin-top: 28px;
+    // margin-top: 28px;
     @include btn(#fff);
     border: 1px solid #005aab;
     padding: 11px 38px;
@@ -63,9 +63,9 @@ select {
     outline: none !important;
   }
 }
-.addproduct-dragdrop{
+.addproduct-dragdrop {
   .drapanddrop-content {
     padding: 65px 145px;
     text-align: center;
-}
+  }
 }
