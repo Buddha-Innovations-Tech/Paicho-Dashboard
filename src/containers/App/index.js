@@ -4,6 +4,7 @@ import React from "react";
 
 import UpdateRegisterAcc from "../UpdateRegisterAcc";
 import EditCategory from "../EditCategory";
+import EditProduct from "../EditProduct";
 import ProductList from "../ProductList";
 import Transaction from "../Transaction";
 import AddProduct from "../AddProduct";
@@ -31,6 +32,7 @@ const App = () => {
               element={<UpdateRegisterAcc />}
             />
             <Route path="/editcategory/:id" element={<EditCategory />} />
+            <Route path="/editproduct/:id" element={<EditProduct />} />
             <Route path="/productlist" element={<ProductList />} />
             <Route path="/transaction" element={<Transaction />} />
             <Route path="/addproduct" element={<AddProduct />} />
