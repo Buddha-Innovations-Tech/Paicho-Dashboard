@@ -10,7 +10,6 @@ import PaginationComp from "../../components/PaginationComp";
 import CategoryList from "../../components/CategoryList";
 
 import {
-  listCategories,
   listCategoryDetails,
   updateCategory,
 } from "../../actions/categoryAction";
@@ -31,8 +30,6 @@ const EditCategory = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [updatedC, setUpdatedC] = useState({});
-
   const handleInputChange = (e) => {
     let { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -45,22 +42,15 @@ const EditCategory = () => {
   const { category } = useSelector((state) => state.categoryDetails);
 
   const { categories } = useSelector((state) => state.categoryList);
-
-  // const { success: updateSuccess } = useSelector(
-  //   (state) => state.categoryUpdate
-  // );
   const [subCategories, setSubCategories] = useState([]);
+
+  // const subcat = category.subcategories;
+  // console.log(subcat);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(subCategories);
-    setUpdatedC({
-      name: name,
-      subcategories: subCategories.map((i) => {
-        return { name: i };
-      }),
-    });
-
-    dispatch(updateCategory(updatedC, id));
+    dispatch(updateCategory(state));
+    // state("");
     // navigate("/register");
   };
 
@@ -72,10 +62,6 @@ const EditCategory = () => {
       );
     }
   }, [category]);
-
-  // useEffect(() => {
-  //   dispatch(listCategories());
-  // }, [updateSuccess]);
 
   useEffect(() => {
     dispatch(listCategoryDetails(id));
@@ -120,10 +106,9 @@ const EditCategory = () => {
                     />
                     <BiPlus
                       className="plusIcon"
-                      onClick={(e) => {
-                        !subCategories.find((i) => i === test) &&
-                          setSubCategories([test, ...subCategories]);
-                      }}
+                      onClick={(e) =>
+                        setSubCategories([test, ...subCategories])
+                      }
                     />
                   </div>
                   <ul className="categorywrapper__addcategorywrapper--unorderlist">
@@ -135,23 +120,17 @@ const EditCategory = () => {
                             key={index}
                           >
                             <p>{curElm}</p>
-                            <ImCross
-                              className="crossicon"
-                              onClick={(e) =>
-                                setSubCategories(
-                                  subCategories.filter((i) => i !== curElm)
-                                )
-                              }
-                            />
+                            <ImCross className="crossicon" />
                           </li>
                         );
                       })}
                   </ul>
-                  <div className="categorywrapper__addcategorywrapper--buttons">
-                    <button className="btn-discard">Discard</button>
-                    <button className="btn-addcategory">Update Category</button>
-                  </div>
                 </Form>
+
+                <div className="categorywrapper__addcategorywrapper--buttons">
+                  <button className="btn-discard">Discard</button>
+                  <button className="btn-addcategory">Update Category</button>
+                </div>
               </div>
             </Col>
             <Col md={8}>
