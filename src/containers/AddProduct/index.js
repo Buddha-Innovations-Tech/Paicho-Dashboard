@@ -313,6 +313,7 @@ const AddProduct = () => {
                       <button
                         className="addproductwrapper__addbtn"
                         onClick={(e) => {
+                          e.preventDefault();
                           ingredient !== "" &&
                             // !subCategories.find((i) => i === similarproduct) &&
                             setSubCategories([ingredient, ...subCategories]);
@@ -368,6 +369,7 @@ const AddProduct = () => {
                       <button
                         className="addproductwrapper__addbtn"
                         onClick={(e) => {
+                          e.preventDefault();
                           // !subCategories.find((i) => i === similarproduct) &&
                           similarproduct !== "" &&
                             setDltSimilarPdct([

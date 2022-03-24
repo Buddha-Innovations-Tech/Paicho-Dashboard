@@ -37,7 +37,7 @@ export const createProduct = (category) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    console.log(category);
+    // console.log(category);
 
     const { data } = await axios.post(`/api/products/add`, category, config);
 
@@ -93,11 +93,21 @@ export const listProducts =
     }
   };
 
-export const listProductDetails = (id) => async (dispatch) => {
+export const listProductDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/products/${id}`);
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/products/${id}`, config);
 
     dispatch({
       type: PRODUCT_DETAILS_SUCCESS,
