@@ -14,33 +14,50 @@ import {
 import { listCategories } from "../../actions/categoryAction";
 
 const EditProduct = () => {
-  const [name, setProduct] = useState("");
-  const [category, setCategory] = useState("");
+  // const [name, setProduct] = useState("");
+  // const [category, setCategory] = useState("");
   const [subcategory, setSubCategory] = useState([]);
   const [subcategorystate, setSubCategoryState] = useState("");
-  const [description, setDescription] = useState("");
-  const [count, setCount] = useState("");
-  const [discount, setDiscount] = useState("");
-  const [price, setPrice] = useState("");
-  const [keyword, setKeyword] = useState("");
-  const [ingredient, setIngredient] = useState("");
-  const [similarproduct, setSimilarProduct] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [count, setCount] = useState("");
+  // const [discount, setDiscount] = useState("");
+  // const [price, setPrice] = useState("");
+  // const [keyword, setKeyword] = useState("");
+  // const [ingredient, setIngredient] = useState("");
+  // const [similarproduct, setSimilarProduct] = useState("");
   const [subCategories, setSubCategories] = useState([]);
   const [dltsimilarpdct, setDltSimilarPdct] = useState([]);
   const [seo, setSeo] = useState([]);
   // const [product, setProduct] = useState("");
 
-  // const handleInputChange = (e) => {
-  //   let { name, value } = e.target;
-  //   setState({ ...state, [name]: value });
-  // };
+  const handleInputChange = (e) => {
+    let { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  };
 
   const [state, setState] = useState({
     name: "",
     category: "",
-    subcategory: "",
+    description: "",
+    count: "",
+    discount: "",
+    count: "",
+    price: "",
+    keyword: "",
+    ingredient: "",
+    similarproduct: "",
   });
-  // const { name,category, subcategory } = state;
+  const {
+    name,
+    category,
+    description,
+    count,
+    discount,
+    price,
+    keyword,
+    ingredient,
+    similarproduct,
+  } = state;
 
   const { userInfo } = useSelector((state) => state.userLogin);
   const { categories } = useSelector((state) => state.categoryList);
@@ -58,7 +75,7 @@ const EditProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateProduct(name, category, subcategory));
+    dispatch(updateProduct(state));
   };
 
   useEffect(() => {
@@ -95,7 +112,8 @@ const EditProduct = () => {
                     name="product"
                     placeholder="Product"
                     value={name}
-                    onChange={(e) => setProduct(e.target.value)}
+                    // onChange={(e) => setProduct(e.target.value)}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="mt-3">
@@ -105,10 +123,11 @@ const EditProduct = () => {
                       <select
                         id="category"
                         name="category"
+                        onChange={handleInputChange}
                         // onChange={handleCategory}
-                        onChange={(e) => {
-                          setCategory(e.target.value);
-                        }}
+                        // onChange={(e) => {
+                        //   setCategory(e.target.value);
+                        // }}
                       >
                         <option value="" selected>
                           Select a Category
@@ -133,7 +152,8 @@ const EditProduct = () => {
                       <select
                         id="subcategory"
                         name="subcategory"
-                        onChange={(e) => setSubCategoryState(e.target.value)}
+                        // onChange={(e) => setSubCategoryState(e.target.value)}
+                        onChange={handleInputChange}
                       >
                         <option selected>Select a Sub-Category</option>
                         {subcategory.map((curElm, index) => {
@@ -158,7 +178,8 @@ const EditProduct = () => {
                     placeholder="Description"
                     name="description"
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    // onChange={(e) => setDescription(e.target.value)}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="mt-3">
@@ -170,7 +191,8 @@ const EditProduct = () => {
                         name="count"
                         placeholder=" Stock Count"
                         value={count}
-                        onChange={(e) => setCount(e.target.value)}
+                        // onChange={(e) => setCount(e.target.value)}
+                        onChange={handleInputChange}
                       />
                     </Col>
                     <Col md={4}>
@@ -180,7 +202,8 @@ const EditProduct = () => {
                         name="discount"
                         placeholder=" Discount"
                         value={discount}
-                        onChange={(e) => setDiscount(e.target.value)}
+                        // onChange={(e) => setDiscount(e.target.value)}
+                        onChange={handleInputChange}
                       />
                     </Col>
                     <Col md={4}>
@@ -190,7 +213,8 @@ const EditProduct = () => {
                         name="price"
                         placeholder=" Price"
                         value={price}
-                        onChange={(e) => setPrice(e.target.value)}
+                        // onChange={(e) => setPrice(e.target.value)}
+                        onChange={handleInputChange}
                       />
                     </Col>
                   </Row>
@@ -202,7 +226,8 @@ const EditProduct = () => {
                           type="text"
                           name="keyword"
                           value={keyword}
-                          onChange={(e) => setKeyword(e.target.value)}
+                          // onChange={(e) => setKeyword(e.target.value)}
+                          onChange={handleInputChange}
                           // required
                         />
                       </Col>
@@ -269,7 +294,8 @@ const EditProduct = () => {
                         name="ingredient"
                         value={ingredient}
                         placeholder="ingredient used for making this product"
-                        onChange={(e) => setIngredient(e.target.value)}
+                        // onChange={(e) => setIngredient(e.target.value)}
+                        onChange={handleInputChange}
                         // required
                       />
                     </Col>
@@ -325,7 +351,8 @@ const EditProduct = () => {
                         name="similarproduct"
                         placeholder="Similar product"
                         value={similarproduct}
-                        onChange={(e) => setSimilarProduct(e.target.value)}
+                        // onChange={(e) => setSimilarProduct(e.target.value)}
+                        onChange={handleInputChange}
                         // required
                       />
                     </Col>
