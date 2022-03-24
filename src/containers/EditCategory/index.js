@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { BiPlus } from "react-icons/bi";
 
-// import { categoryData } from "../../components/CategoryList";
 import PaginationComp from "../../components/PaginationComp";
 import CategoryList from "../../components/CategoryList";
 
@@ -14,13 +13,7 @@ import {
   listCategoryDetails,
   updateCategory,
 } from "../../actions/categoryAction";
-
-// const subcategoryItem = [
-//   { item: "Paicho Pickle" },
-//   { item: "Mango Pickle" },
-//   { item: "Lemon Pickle" },
-//   { item: "Bhutuk Pickle" },
-// ];
+import Loader from "../../components/Loader";
 
 const EditCategory = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
@@ -45,9 +38,8 @@ const EditCategory = () => {
 
   const { categories } = useSelector((state) => state.categoryList);
 
-  const { success: updateSuccess } = useSelector(
-    (state) => state.categoryUpdate
-  );
+  const { success: updateSuccess, loading: categoryUpdateLoading } =
+    useSelector((state) => state.categoryUpdate);
   // const { success: categorySuccess } = useSelector(
   //   (state) => state.categoryUpdate
   // );
@@ -149,10 +141,18 @@ const EditCategory = () => {
                         );
                       })}
                   </ul>
-                  <div className="categorywrapper__addcategorywrapper--buttons">
-                    <button className="btn-discard">Discard</button>
-                    <button className="btn-addcategory">Update Category</button>
-                  </div>
+                  {!categoryUpdateLoading ? (
+                    <>
+                      <div className="categorywrapper__addcategorywrapper--buttons">
+                        <button className="btn-discard">Discard</button>
+                        <button className="btn-addcategory">
+                          Update Category
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <Loader />
+                  )}
                 </Form>
               </div>
             </Col>

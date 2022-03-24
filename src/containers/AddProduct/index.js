@@ -9,6 +9,7 @@ import InputField from "../../components/InputField";
 import Previews from "../../components/DragAndDrop";
 import { createProduct } from "../../actions/productAction";
 import { listCategories } from "../../actions/categoryAction";
+import Loader from "../../components/Loader";
 
 // const subcategoryItem = [
 //   {
@@ -74,8 +75,14 @@ const AddProduct = () => {
   // const [product, setProduct] = useState("");
   const { userInfo } = useSelector((state) => state.userLogin);
   const { categories } = useSelector((state) => state.categoryList);
+
+  const { loading: addProductLoading } = useSelector(
+    (state) => state.createProduct
+  );
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
@@ -407,12 +414,18 @@ const AddProduct = () => {
                 <Col md={2}></Col>
               </Row>
             </div>
-            <div className="categorywrapper__addcategorywrapper--buttons">
-              <button className="btn-discard">Discard</button>
-              <button className="btn-addcategory" onClick={handleSubmit}>
-                Add Product
-              </button>
-            </div>
+            {!addProductLoading ? (
+              <>
+                <div className="categorywrapper__addcategorywrapper--buttons">
+                  <button className="btn-discard">Discard</button>
+                  <button className="btn-addcategory" onClick={handleSubmit}>
+                    Add Product
+                  </button>
+                </div>
+              </>
+            ) : (
+              <Loader />
+            )}
           </div>
         </Form>
       </div>
