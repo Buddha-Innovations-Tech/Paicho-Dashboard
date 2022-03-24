@@ -102,9 +102,6 @@ const AddProduct = () => {
     setSimilarProduct("");
   };
 
-  const handleCategory = (e) => {
-    setCategory(e.target.value);
-  };
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
@@ -249,8 +246,10 @@ const AddProduct = () => {
                         <button
                           className="addproductwrapper__background--addbtn"
                           onClick={(e) => {
-                            // !subCategories.find((i) => i === similarproduct) &&
-                            setSeo([keyword, ...seo]);
+                            e.preventDefault();
+                            keyword !== "" &&
+                              // !subCategories.find((i) => i === similarproduct) &&
+                              setSeo([keyword, ...seo]);
                           }}
                         >
                           Add
@@ -314,8 +313,9 @@ const AddProduct = () => {
                       <button
                         className="addproductwrapper__addbtn"
                         onClick={(e) => {
-                          // !subCategories.find((i) => i === similarproduct) &&
-                          setSubCategories([ingredient, ...subCategories]);
+                          ingredient !== "" &&
+                            // !subCategories.find((i) => i === similarproduct) &&
+                            setSubCategories([ingredient, ...subCategories]);
                         }}
                       >
                         Add
@@ -369,10 +369,11 @@ const AddProduct = () => {
                         className="addproductwrapper__addbtn"
                         onClick={(e) => {
                           // !subCategories.find((i) => i === similarproduct) &&
-                          setDltSimilarPdct([
-                            similarproduct,
-                            ...dltsimilarpdct,
-                          ]);
+                          similarproduct !== "" &&
+                            setDltSimilarPdct([
+                              similarproduct,
+                              ...dltsimilarpdct,
+                            ]);
                         }}
                       >
                         Add

@@ -84,6 +84,7 @@ const orderList = [
 ];
 
 const Order = () => {
+  const [searchinput, setSearchInput] = useState("");
   const { userInfo } = useSelector((state) => state.userLogin);
   // console.log(userInfo);
   const navigate = useNavigate();
@@ -105,7 +106,7 @@ const Order = () => {
 
   const { orders } = useSelector((state) => state.orderList);
 
-  const orderItem = orders.orders;
+  // const orderItem = orders.orders;
 
   useEffect(() => {
     if (!userInfo) {
@@ -136,7 +137,12 @@ const Order = () => {
           <div className="d-flex justify-content-between align-items-center orderwrapper__background--orderheading ">
             <div className="categorywrapper__addcategorywrapper--searchinput">
               <BiSearch className="searchicon" />
-              <input type="text" placeholder="Search category" />
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchinput}
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
             </div>
 
             <div className="d-flex">
@@ -192,402 +198,187 @@ const Order = () => {
               <Col md={1}>User Name</Col>
               <Col md={2}>Phone Number</Col>
               <Col md={1}>Total</Col>
-              <Col md={2}>Payment Method</Col>
+              <Col md={1}>Payment Method</Col>
               <Col md={2}>Status</Col>
-              <Col md={1}>Date</Col>
+              <Col md={2}>Date</Col>
               <Col md={2}>Details</Col>
             </Row>
           </div>
           <div>
-            {/* {filterTerm === "Status"
-              ? orderList.map((curElm, index) => {
-                  return (
-                    <Row
-                      className="productlistwrapper__productlistwrapper--listitem"
-                      key={index}
-                    >
-                      <Col md={1}>
-                        <p>{index + 1}</p>
-                      </Col>
-                      <Col md={1}>
-                        <p>{curElm.username}</p>
-                      </Col>
-                      <Col md={2}>
-                        <p>{curElm.Phone}</p>
-                      </Col>
-                      <Col md={1}>
-                        <p>{curElm.total}</p>
-                      </Col>
-                      <Col md={2}>
-                        <p>{curElm.payment}</p>
-                      </Col>
+            {filterTerm === "Status"
+              ? orders?.orders
+                  ?.filter((order) =>
+                    order.shippingInfo.user.toLowerCase().includes(searchinput)
+                  )
+                  .map((curElm, index) => {
+                    return (
+                      <Row
+                        className="productlistwrapper__productlistwrapper--listitem"
+                        key={index}
+                      >
+                        <Col md={1}>
+                          <p>{index + 1}</p>
+                        </Col>
+                        <Col md={1}>
+                          <p>
+                            {curElm.shippingInfo && curElm.shippingInfo.user
+                              ? curElm.shippingInfo.user
+                              : "no"}
+                          </p>
+                        </Col>
+                        <Col md={2}>
+                          <p>
+                            {curElm.shippingInfo &&
+                            curElm.shippingInfo.phonenumber
+                              ? curElm.shippingInfo.phonenumber
+                              : "no"}
+                          </p>
+                        </Col>
+                        <Col md={1}>
+                          <p>
+                            {curElm.totalPrice ? curElm.totalPrice : "no"}
+                            {/* {curElm.totalPrice} */}
+                          </p>
+                        </Col>
+                        <Col md={1}>
+                          <p>
+                            {console.log(
+                              curElm.paymentInfo ? curElm.paymentInfo : "no"
+                            )}
+                            {/* {curElm.paymentInfo} */}
+                          </p>
+                        </Col>
 
-                      <Col md={2}>
-                        <p
-                          style={{
-                            color:
-                              curElm.status === "Completed"
-                                ? "#063865"
-                                : curElm.status === "Cancelled"
-                                ? "#920000"
-                                : curElm.status === "In Progress"
-                                ? "#495058"
-                                : "#FFA500",
-                            background:
-                              curElm.status === "Completed"
-                                ? "#C4DCF2"
-                                : curElm.status === "Cancelled"
-                                ? "#FCDCD2"
-                                : curElm.status === "In Progress"
-                                ? "#DDEEC5"
-                                : "#FFEDCC",
-                            borderRadius: "28px",
-                            padding: "5px 10px",
-                            textAlign: "center",
-                          }}
-                        >
-                          {curElm.status}
-                        </p>
-                      </Col>
-                      <Col md={1}>
-                        <p>{curElm.date}</p>
-                      </Col>
+                        <Col md={2}>
+                          <p
+                            style={{
+                              color:
+                                curElm.status === "Completed"
+                                  ? "#063865"
+                                  : curElm.status === "Cancelled"
+                                  ? "#920000"
+                                  : curElm.status === "In Progress"
+                                  ? "#495058"
+                                  : "#FFA500",
+                              background:
+                                curElm.status === "Completed"
+                                  ? "#C4DCF2"
+                                  : curElm.status === "Cancelled"
+                                  ? "#FCDCD2"
+                                  : curElm.status === "In Progress"
+                                  ? "#DDEEC5"
+                                  : "#FFEDCC",
+                              borderRadius: "28px",
+                              padding: "5px 10px",
+                              textAlign: "center",
+                            }}
+                          >
+                            {curElm.orderStatus ? curElm.orderStatus : "no"}
+                          </p>
+                        </Col>
+                        <Col md={2}>
+                          <p> {curElm.createdAt ? curElm.createdAt : ""}</p>
+                        </Col>
 
-                      <Col md={2}>
-                        <button className="editbtn" onClick={handleShow}>
-                          View Details
-                        </button>
-                      </Col>
-                      <Modal show={show} onHide={handleClose}>
-                        <Modal.Body>
-                          <div className="ordermodalbg">
-                            <div className="d-flex justify-content-between align-items-center">
-                              <p className="ordermodalbg__title">Details</p>
-                              <ImCross
-                                className="carouselCard__category--icons--crossicon"
-                                onClick={handleClose}
-                              />
-                            </div>
-                            <div className="userdetails">
-                              <p className="topic">User Details</p>
-                              <div
-                                className="d-flex justify-content-between align-items-center"
-                                style={{
-                                  borderBottom: "0.6px solid #E0E0E0",
-                                  paddingBottom: "11px",
-                                }}
-                              >
-                                <p className="username">Sagar Gc</p>
-                                <div>
-                                  <select>
-                                    <option selected>To be delivered</option>
-                                    <option> To be delivered </option>
-                                    <option>In Progress</option>
-                                    <option>Completed</option>
-                                    <option>Cancelled</option>
-                                  </select>
-                                </div>
+                        <Col md={2}>
+                          <button className="editbtn" onClick={handleShow}>
+                            View Details
+                          </button>
+                        </Col>
+                        <Modal show={show} onHide={handleClose}>
+                          <Modal.Body>
+                            <div className="ordermodalbg">
+                              <div className="d-flex justify-content-between align-items-center">
+                                <p className="ordermodalbg__title">Details</p>
+                                <ImCross
+                                  className="carouselCard__category--icons--crossicon"
+                                  onClick={handleClose}
+                                />
                               </div>
-                              <table>
-                                <tr>
-                                  <td className="maindata">Billing Name:</td>
-                                  <td className="descdata">Self</td>
-                                </tr>
-                                <tr>
-                                  <td className="maindata">Email:</td>
-                                  <td className="descdata">
-                                    sagarchhetri981@gmail.com
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="maindata">Phone Number:</td>
-                                  <td className="descdata">9815165795</td>
-                                </tr>
-                                <tr>
-                                  <td className="maindata">Address:</td>
-                                  <td className="descdata">
-                                    Butwal 10 Golpark
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="maindata">Date:</td>
-                                  <td className="descdata">02/05/2022</td>
-                                </tr>
-                              </table>
-                            </div>
-                            <div className="userdetails">
-                              <p className="topic">Order Details</p>
-                              <div className="orderwrapper__background--headingrow modalheading">
-                                <Row>
-                                  <Col md={4}>Product Name</Col>
-                                  <Col md={4}>Quantity</Col>
-                                  <Col md={4}>Price</Col>
+                              <div className="userdetails">
+                                <p className="topic">User Details</p>
+                                <div
+                                  className="d-flex justify-content-between align-items-center"
+                                  style={{
+                                    borderBottom: "0.6px solid #E0E0E0",
+                                    paddingBottom: "11px",
+                                  }}
+                                >
+                                  <p className="username">Sagar Gc</p>
+                                  <div>
+                                    <select>
+                                      <option selected>To be delivered</option>
+                                      <option> To be delivered </option>
+                                      <option>In Progress</option>
+                                      <option>Completed</option>
+                                      <option>Cancelled</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <table>
+                                  <tr>
+                                    <td className="maindata">Billing Name:</td>
+                                    <td className="descdata">Self</td>
+                                  </tr>
+                                  <tr>
+                                    <td className="maindata">Email:</td>
+                                    <td className="descdata">
+                                      sagarchhetri981@gmail.com
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="maindata">Phone Number:</td>
+                                    <td className="descdata">9815165795</td>
+                                  </tr>
+                                  <tr>
+                                    <td className="maindata">Address:</td>
+                                    <td className="descdata">
+                                      Butwal 10 Golpark
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="maindata">Date:</td>
+                                    <td className="descdata">02/05/2022</td>
+                                  </tr>
+                                </table>
+                              </div>
+                              <div className="userdetails">
+                                <p className="topic">Order Details</p>
+                                <div className="orderwrapper__background--headingrow modalheading">
+                                  <Row>
+                                    <Col md={4}>Product Name</Col>
+                                    <Col md={4}>Quantity</Col>
+                                    <Col md={4}>Price</Col>
+                                  </Row>
+                                </div>
+                                <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                                  <Col md={4}>Mix Achar</Col>
+                                  <Col md={4}>5</Col>
+                                  <Col md={4}>Rs.240</Col>
+                                </Row>
+                                <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                                  <Col md={4}>Lemon Pickle</Col>
+                                  <Col md={4}>2</Col>
+                                  <Col md={4}>Rs.120</Col>
+                                </Row>
+                                <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                                  <Col md={4}>Honey</Col>
+                                  <Col md={4}>4</Col>
+                                  <Col md={4}>Rs.500</Col>
+                                </Row>
+                                <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
+                                  <Col md={4}>Total</Col>
+                                  <Col md={4}></Col>
+                                  <Col md={4}>Rs.1000</Col>
                                 </Row>
                               </div>
-                              <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                <Col md={4}>Mix Achar</Col>
-                                <Col md={4}>5</Col>
-                                <Col md={4}>Rs.240</Col>
-                              </Row>
-                              <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                <Col md={4}>Lemon Pickle</Col>
-                                <Col md={4}>2</Col>
-                                <Col md={4}>Rs.120</Col>
-                              </Row>
-                              <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                <Col md={4}>Honey</Col>
-                                <Col md={4}>4</Col>
-                                <Col md={4}>Rs.500</Col>
-                              </Row>
-                              <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
-                                <Col md={4}>Total</Col>
-                                <Col md={4}></Col>
-                                <Col md={4}>Rs.1000</Col>
-                              </Row>
                             </div>
-                          </div>
-                        </Modal.Body>
-                      </Modal>
-                    </Row>
-                  );
-                })
-              : orderList
-                  .filter((i) => i.status === filterTerm)
-                  .map((i) => (
-                    <Row className="productlistwrapper__productlistwrapper--listitem">
-                      <Col md={1}>
-                        <p>{i.id}</p>
-                      </Col>
-                      <Col md={1}>
-                        <p>{i.username}</p>
-                      </Col>
-                      <Col md={2}>
-                        <p>{i.Phone}</p>
-                      </Col>
-                      <Col md={1}>
-                        <p>{i.total}</p>
-                      </Col>
-                      <Col md={2}>
-                        <p>{i.payment}</p>
-                      </Col>
-
-                      <Col md={2}>
-                        <p
-                          style={{
-                            color:
-                              i.status === "Completed"
-                                ? "#063865"
-                                : i.status === "Cancelled"
-                                ? "#920000"
-                                : i.status === "In Progress"
-                                ? "#495058"
-                                : "#FFA500",
-                            background:
-                              i.status === "Completed"
-                                ? "#C4DCF2"
-                                : i.status === "Cancelled"
-                                ? "#FCDCD2"
-                                : i.status === "In Progress"
-                                ? "#DDEEC5"
-                                : "#FFEDCC",
-                            borderRadius: "28px",
-                            padding: "5px 10px",
-                            textAlign: "center",
-                          }}
-                        >
-                          {i.status}
-                        </p>
-                      </Col>
-                      <Col md={1}>
-                        <p>{i.date}</p>
-                      </Col>
-
-                      <Col md={2}>
-                        <button className="editbtn">View Details</button>
-                      </Col>
-                    </Row>
-                  ))} */}
-
-            {orderItem &&
-              orderItem.map((curElm, index) => {
-                return (
-                  <Row
-                    className="productlistwrapper__productlistwrapper--listitem"
-                    key={index}
-                  >
-                    <Col md={1}>
-                      <p>{index + 1}</p>
-                    </Col>
-                    <Col md={1}>
-                      {/* <p>{curElm.username}</p> */}
-                      <p>
-                        {console.log(
-                          curElm.shippingInfo && curElm.shippingInfo.user
-                            ? curElm.shippingInfo.user
-                            : "no"
-                        )}
-                      </p>
-                    </Col>
-                    <Col md={2}>
-                      {/* <p>{curElm.Phone}</p> */}
-                      <p>
-                        {console.log(
-                          curElm.shippingInfo && curElm.shippingInfo.phonenumber
-                            ? curElm.shippingInfo.phonenumber
-                            : "no"
-                        )}
-                      </p>
-                    </Col>
-                    <Col md={1}>
-                      <p>
-                        {console.log(
-                          curElm.totalPrice ? curElm.totalPrice : "no"
-                        )}
-                        {/* {curElm.totalPrice} */}
-                      </p>
-                    </Col>
-                    <Col md={2}>
-                      <p>
-                        {console.log(
-                          curElm.paymentInfo ? curElm.paymentInfo : "no"
-                        )}
-                        {/* {curElm.paymentInfo} */}
-                      </p>
-                    </Col>
-
-                    <Col md={2}>
-                      <p
-                        style={{
-                          color:
-                            curElm.status === "Completed"
-                              ? "#063865"
-                              : curElm.status === "Cancelled"
-                              ? "#920000"
-                              : curElm.status === "In Progress"
-                              ? "#495058"
-                              : "#FFA500",
-                          background:
-                            curElm.status === "Completed"
-                              ? "#C4DCF2"
-                              : curElm.status === "Cancelled"
-                              ? "#FCDCD2"
-                              : curElm.status === "In Progress"
-                              ? "#DDEEC5"
-                              : "#FFEDCC",
-                          borderRadius: "28px",
-                          padding: "5px 10px",
-                          textAlign: "center",
-                        }}
-                      >
-                        {console.log(
-                          curElm.orderStatus ? curElm.orderStatus : "no"
-                        )}
-                        {/* {curElm.orderStatus} */}
-                      </p>
-                    </Col>
-                    <Col md={1}>
-                      <p>
-                        {console.log(curElm.createdAt)}
-                        {/* {curElm.createdAt} */}
-                      </p>
-                    </Col>
-
-                    <Col md={2}>
-                      <button className="editbtn" onClick={handleShow}>
-                        View Details
-                      </button>
-                    </Col>
-                    <Modal show={show} onHide={handleClose}>
-                      <Modal.Body>
-                        <div className="ordermodalbg">
-                          <div className="d-flex justify-content-between align-items-center">
-                            <p className="ordermodalbg__title">Details</p>
-                            <ImCross
-                              className="carouselCard__category--icons--crossicon"
-                              onClick={handleClose}
-                            />
-                          </div>
-                          <div className="userdetails">
-                            <p className="topic">User Details</p>
-                            <div
-                              className="d-flex justify-content-between align-items-center"
-                              style={{
-                                borderBottom: "0.6px solid #E0E0E0",
-                                paddingBottom: "11px",
-                              }}
-                            >
-                              <p className="username">Sagar Gc</p>
-                              <div>
-                                <select>
-                                  <option selected>To be delivered</option>
-                                  <option> To be delivered </option>
-                                  <option>In Progress</option>
-                                  <option>Completed</option>
-                                  <option>Cancelled</option>
-                                </select>
-                              </div>
-                            </div>
-                            <table>
-                              <tr>
-                                <td className="maindata">Billing Name:</td>
-                                <td className="descdata">Self</td>
-                              </tr>
-                              <tr>
-                                <td className="maindata">Email:</td>
-                                <td className="descdata">
-                                  sagarchhetri981@gmail.com
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="maindata">Phone Number:</td>
-                                <td className="descdata">9815165795</td>
-                              </tr>
-                              <tr>
-                                <td className="maindata">Address:</td>
-                                <td className="descdata">Butwal 10 Golpark</td>
-                              </tr>
-                              <tr>
-                                <td className="maindata">Date:</td>
-                                <td className="descdata">02/05/2022</td>
-                              </tr>
-                            </table>
-                          </div>
-                          <div className="userdetails">
-                            <p className="topic">Order Details</p>
-                            <div className="orderwrapper__background--headingrow modalheading">
-                              <Row>
-                                <Col md={4}>Product Name</Col>
-                                <Col md={4}>Quantity</Col>
-                                <Col md={4}>Price</Col>
-                              </Row>
-                            </div>
-                            <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                              <Col md={4}>Mix Achar</Col>
-                              <Col md={4}>5</Col>
-                              <Col md={4}>Rs.240</Col>
-                            </Row>
-                            <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                              <Col md={4}>Lemon Pickle</Col>
-                              <Col md={4}>2</Col>
-                              <Col md={4}>Rs.120</Col>
-                            </Row>
-                            <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                              <Col md={4}>Honey</Col>
-                              <Col md={4}>4</Col>
-                              <Col md={4}>Rs.500</Col>
-                            </Row>
-                            <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
-                              <Col md={4}>Total</Col>
-                              <Col md={4}></Col>
-                              <Col md={4}>Rs.1000</Col>
-                            </Row>
-                          </div>
-                        </div>
-                      </Modal.Body>
-                    </Modal>
-                  </Row>
-                );
-              })}
+                          </Modal.Body>
+                        </Modal>
+                      </Row>
+                    );
+                  })
+              : ""}
           </div>
           <div className="mt-5">
             <PaginationComp />
@@ -599,3 +390,60 @@ const Order = () => {
 };
 
 export default Order;
+
+// orderList
+//                   .filter((i) => i.status === filterTerm)
+//                   .map((i) => (
+//                     <Row className="productlistwrapper__productlistwrapper--listitem">
+//                       <Col md={1}>
+//                         <p>{i.id}</p>
+//                       </Col>
+//                       <Col md={1}>
+//                         <p>{i.username}</p>
+//                       </Col>
+//                       <Col md={2}>
+//                         <p>{i.Phone}</p>
+//                       </Col>
+//                       <Col md={1}>
+//                         <p>{i.total}</p>
+//                       </Col>
+//                       <Col md={1}>
+//                         <p>{i.payment}</p>
+//                       </Col>
+
+//                       <Col md={2}>
+//                         <p
+//                           style={{
+//                             color:
+//                               i.status === "Completed"
+//                                 ? "#063865"
+//                                 : i.status === "Cancelled"
+//                                 ? "#920000"
+//                                 : i.status === "In Progress"
+//                                 ? "#495058"
+//                                 : "#FFA500",
+//                             background:
+//                               i.status === "Completed"
+//                                 ? "#C4DCF2"
+//                                 : i.status === "Cancelled"
+//                                 ? "#FCDCD2"
+//                                 : i.status === "In Progress"
+//                                 ? "#DDEEC5"
+//                                 : "#FFEDCC",
+//                             borderRadius: "28px",
+//                             padding: "5px 10px",
+//                             textAlign: "center",
+//                           }}
+//                         >
+//                           {i.status}
+//                         </p>
+//                       </Col>
+//                       <Col md={2}>
+//                         <p>{i.date}</p>
+//                       </Col>
+
+//                       <Col md={2}>
+//                         <button className="editbtn">View Details</button>
+//                       </Col>
+//                     </Row>
+//                   ))}

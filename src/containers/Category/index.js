@@ -77,7 +77,8 @@ const Category = () => {
                     <BiPlus
                       className="plusIcon"
                       onClick={(e) => {
-                        !subCategories.find((i) => i === test) &&
+                        test !== "" &&
+                          // subCategories.find((i) => i !== "") &&
                           setSubCategories([test, ...subCategories]);
                       }}
                     />
