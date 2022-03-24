@@ -137,7 +137,11 @@ export const updateCategory = (category, id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.put(`/api/categories/${id}`, category, config);
+    const { data } = await axios.put(
+      `/api/categories/${id}/`,
+      category,
+      config
+    );
 
     console.log(data);
     dispatch({

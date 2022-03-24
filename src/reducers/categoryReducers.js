@@ -100,7 +100,7 @@ export const categoryUpdateReducer = (
 ) => {
   switch (action.type) {
     case CATEGORY_UPDATE_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false };
     case CATEGORY_UPDATE_SUCCESS:
       return {
         loading: false,

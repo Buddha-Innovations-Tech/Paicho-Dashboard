@@ -109,9 +109,9 @@ const EditProduct = () => {
                 <div className="mt-3">
                   <FormControl
                     type="text"
-                    name="product"
+                    name="name"
                     placeholder="Product"
-                    value={name}
+                    value={name || ""}
                     // onChange={(e) => setProduct(e.target.value)}
                     onChange={handleInputChange}
                   />
@@ -400,9 +400,7 @@ const EditProduct = () => {
             </div>
             <div className="categorywrapper__addcategorywrapper--buttons">
               <button className="btn-discard">Discard</button>
-              <button className="btn-addcategory" onClick={handleSubmit}>
-                Update Product
-              </button>
+              <button className="btn-addcategory">Update Product</button>
             </div>
           </div>
         </Form>

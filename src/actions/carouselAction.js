@@ -15,7 +15,7 @@ import {
 export const listCarousel = () => async (dispatch, getState) => {
   try {
     dispatch({ type: CAROUSEL_LIST_REQUEST });
-    const { data } = await axios.get(`/api/carousel`);
+    const { data } = await axios.get(`/api/carousels`);
     dispatch({
       type: CAROUSEL_LIST_SUCCESS,
       payload: data.images,

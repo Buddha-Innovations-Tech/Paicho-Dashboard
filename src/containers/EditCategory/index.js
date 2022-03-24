@@ -30,55 +30,43 @@ const EditCategory = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [updatedC, setUpdatedC] = useState({});
-
-  const handleInputChange = (e) => {
-    let { name, value } = e.target;
-    setState({ ...state, [name]: value });
-  };
   const [test, setTest] = useState("");
-  const [state, setState] = useState({
-    name: "",
-  });
-  const { name } = state;
+  const [categoryName, setCategoryName] = useState("");
+  const [subCategories, setSubCategories] = useState([]);
   const { category } = useSelector((state) => state.categoryDetails);
-
   const { categories } = useSelector((state) => state.categoryList);
-
   const { success: updateSuccess } = useSelector(
     (state) => state.categoryUpdate
   );
-  // const { success: categorySuccess } = useSelector(
-  //   (state) => state.categoryUpdate
-  // );
-  const [subCategories, setSubCategories] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(subCategories);
-    setUpdatedC({
-      name: name,
+
+    const data = {
+      name: categoryName,
       subcategories: subCategories.map((i) => {
         return { name: i };
       }),
-    });
+    };
 
-    dispatch(updateCategory(updatedC, id));
+    dispatch(updateCategory(data, id));
     // navigate("/register");
   };
 
   useEffect(() => {
     if (category) {
-      setState({ ...category });
+      setCategoryName(category.name);
       setSubCategories(
         category.subcategories && category.subcategories.map((i) => i.name)
       );
     }
   }, [category]);
 
-  // useEffect(() => {
-  //   dispatch(listCategories());
-  // }, [updateSuccess]);
+  useEffect(() => {
+    if (updateSuccess) {
+      dispatch(listCategories());
+    }
+  }, [updateSuccess]);
 
   useEffect(() => {
     dispatch(listCategoryDetails(id));
@@ -107,8 +95,9 @@ const EditCategory = () => {
                     <input
                       type="text"
                       placeholder="Category Name"
-                      value={name || ""}
-                      onChange={handleInputChange}
+                      name="name"
+                      value={categoryName}
+                      onChange={(e) => setCategoryName(e.target.value)}
                       required
                     />
                   </div>
@@ -124,6 +113,7 @@ const EditCategory = () => {
                       className="plusIcon"
                       onClick={(e) => {
                         !subCategories.find((i) => i === test) &&
+                          test.trim() !== "" &&
                           setSubCategories([test, ...subCategories]);
                       }}
                     />
