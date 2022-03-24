@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PaginationComp from "../../components/PaginationComp";
 import CategoryList from "../../components/CategoryList";
 import { listCategories, createCategory } from "../../actions/categoryAction";
+import Loader from "../../components/Loader";
 
 // const subcategoryItem = [
 //   { item: "Paicho Pickle" },
@@ -26,7 +27,9 @@ const Category = () => {
   const dispatch = useDispatch();
 
   const { categories } = useSelector((state) => state.categoryList);
-  const { success } = useSelector((state) => state.createCategory);
+  const { success, loading: createLoading } = useSelector(
+    (state) => state.createCategory
+  );
   // const { categories } = useSelector((state) => state.listCategories)
   const [subCategories, setSubCategories] = useState([]);
   const handleSubmit = (e) => {
@@ -104,13 +107,24 @@ const Category = () => {
                         );
                       })}
                   </ul>
-                  <div className="categorywrapper__addcategorywrapper--buttons">
-                    <button className="btn-discard">Discard</button>
 
-                    <button className="btn-addcategory" onClick={handleSubmit}>
-                      Add Category
-                    </button>
-                  </div>
+                  {!createLoading ? (
+                    <>
+                      {" "}
+                      <div className="categorywrapper__addcategorywrapper--buttons">
+                        <button className="btn-discard">Discard</button>
+
+                        <button
+                          className="btn-addcategory"
+                          onClick={handleSubmit}
+                        >
+                          Add Category
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <Loader />
+                  )}
                 </div>
               </Col>
               <Col md={8}>

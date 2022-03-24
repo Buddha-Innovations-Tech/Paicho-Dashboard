@@ -18,6 +18,7 @@ import {
   updateUser,
   getUserDetails,
 } from "../../actions/userActions";
+import Loader from "../../components/Loader";
 
 // import DragAndDrop from "../../components/DragAndDrop";
 // import InputField from "../../components/InputField";
@@ -152,12 +153,20 @@ const UpdateRegisterAcc = () => {
                 <p className="registerwrapper__image">Image</p>
                 <DragAndDrop />
               </div> */}
-                <div className="categorywrapper__addcategorywrapper--buttons register-btn">
-                  <Link to="/register">
-                    <button className="btn-discard">Discard</button>
-                  </Link>
-                  <button className="btn-addcategory">Update Account</button>
-                </div>
+                {!updateloading ? (
+                  <>
+                    <div className="categorywrapper__addcategorywrapper--buttons register-btn">
+                      <Link to="/register">
+                        <button className="btn-discard">Discard</button>
+                      </Link>
+                      <button className="btn-addcategory">
+                        Update Account
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <Loader />
+                )}
               </Form>
             </div>
           </Col>

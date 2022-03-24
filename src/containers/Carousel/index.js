@@ -2,7 +2,7 @@ import { Row, Col, Form } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import { FiAlertTriangle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-bootstrap/Modal";
 
 import CarouselCard from "../../components/CarouselCard";
@@ -14,10 +14,6 @@ const Carousel = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
   console.log(userInfo);
   const navigate = useNavigate();
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,6 +24,10 @@ const Carousel = () => {
   useEffect(() => {
     dispatch(listCarousel());
   });
+
+  useEffect(() => {
+    dispatch(listCarousel());
+  }, [dispatch]);
 
   return (
     <>

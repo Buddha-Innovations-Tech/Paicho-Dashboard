@@ -13,6 +13,8 @@ import {
 } from "../../actions/productAction";
 import { listCategories } from "../../actions/categoryAction";
 
+import Loader from "../../components/Loader";
+
 const EditProduct = () => {
   // const [name, setProduct] = useState("");
   // const [category, setCategory] = useState("");
@@ -22,6 +24,7 @@ const EditProduct = () => {
   // const [count, setCount] = useState("");
   // const [discount, setDiscount] = useState("");
   // const [price, setPrice] = useState("");
+
   // const [keyword, setKeyword] = useState("");
   // const [ingredient, setIngredient] = useState("");
   // const [similarproduct, setSimilarProduct] = useState("");
@@ -62,6 +65,10 @@ const EditProduct = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
   const { categories } = useSelector((state) => state.categoryList);
   const { product } = useSelector((state) => state.productDetails);
+
+  const { loading: productUpdateLoading } = useSelector(
+    (state) => state.productUpdate
+  );
 
   useEffect(() => {
     if (product) {
@@ -398,6 +405,8 @@ const EditProduct = () => {
                 <Col md={2}></Col>
               </Row>
             </div>
+
+            {!productUpdateLoading ? <></> : <Loader />}
             <div className="categorywrapper__addcategorywrapper--buttons">
               <button className="btn-discard">Discard</button>
               <button className="btn-addcategory">Update Product</button>
