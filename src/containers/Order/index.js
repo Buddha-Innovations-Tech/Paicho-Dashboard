@@ -6,82 +6,82 @@ import { BiSearch } from "react-icons/bi";
 import { ImCross } from "react-icons/im";
 
 import PaginationComp from "../../components/PaginationComp";
-import { listOrders } from "../../actions/orderAction";
+import { getOrderDetails, listOrders } from "../../actions/orderAction";
 
-const orderList = [
-  {
-    id: 1,
-    username: "Sindhu aryal",
-    Phone: 9847135126,
-    total: "Rs.250",
-    payment: "Esewa",
-    status: "In Progress",
-    date: "02/01/2020",
-  },
-  {
-    id: 2,
-    username: "Sindhu",
-    Phone: 9847135126,
-    total: "Rs.500",
-    payment: "Fone Pay",
-    status: "Completed",
-    date: "02/01/2021",
-  },
-  {
-    id: 3,
-    username: "Sagar",
-    Phone: 9847135126,
-    total: "Rs.500",
-    payment: "Mobile Banking",
-    status: "In Progress",
-    date: "02/01/2022",
-  },
-  {
-    id: 4,
-    username: "Laxmi",
-    Phone: 9847135188,
-    total: "Rs.1000",
-    payment: "Cash On Delivery",
-    status: "Cancelled",
-    date: "02/01/2021",
-  },
-  {
-    id: 5,
-    username: "Sindhu aryal",
-    Phone: 9847135126,
-    total: "Rs.250",
-    payment: "Esewa",
-    status: "In Progress",
-    date: "02/01/2020",
-  },
-  {
-    id: 6,
-    username: "Sindhu",
-    Phone: 9847135126,
-    total: "Rs.500",
-    payment: "Fone Pay",
-    status: "Completed",
-    date: "02/01/2021",
-  },
-  {
-    id: 7,
-    username: "Sagar",
-    Phone: 9847135126,
-    total: "Rs.500",
-    payment: "Mobile Banking",
-    status: "In Progress",
-    date: "02/01/2022",
-  },
-  {
-    id: 8,
-    username: "Laxmi",
-    Phone: 9847135188,
-    total: "Rs.1000",
-    payment: "Cash On Delivery",
-    status: "To be delivered",
-    date: "02/01/2021",
-  },
-];
+// const orderList = [
+//   {
+//     id: 1,
+//     username: "Sindhu aryal",
+//     Phone: 9847135126,
+//     total: "Rs.250",
+//     payment: "Esewa",
+//     status: "In Progress",
+//     date: "02/01/2020",
+//   },
+//   {
+//     id: 2,
+//     username: "Sindhu",
+//     Phone: 9847135126,
+//     total: "Rs.500",
+//     payment: "Fone Pay",
+//     status: "Completed",
+//     date: "02/01/2021",
+//   },
+//   {
+//     id: 3,
+//     username: "Sagar",
+//     Phone: 9847135126,
+//     total: "Rs.500",
+//     payment: "Mobile Banking",
+//     status: "In Progress",
+//     date: "02/01/2022",
+//   },
+//   {
+//     id: 4,
+//     username: "Laxmi",
+//     Phone: 9847135188,
+//     total: "Rs.1000",
+//     payment: "Cash On Delivery",
+//     status: "Cancelled",
+//     date: "02/01/2021",
+//   },
+//   {
+//     id: 5,
+//     username: "Sindhu aryal",
+//     Phone: 9847135126,
+//     total: "Rs.250",
+//     payment: "Esewa",
+//     status: "In Progress",
+//     date: "02/01/2020",
+//   },
+//   {
+//     id: 6,
+//     username: "Sindhu",
+//     Phone: 9847135126,
+//     total: "Rs.500",
+//     payment: "Fone Pay",
+//     status: "Completed",
+//     date: "02/01/2021",
+//   },
+//   {
+//     id: 7,
+//     username: "Sagar",
+//     Phone: 9847135126,
+//     total: "Rs.500",
+//     payment: "Mobile Banking",
+//     status: "In Progress",
+//     date: "02/01/2022",
+//   },
+//   {
+//     id: 8,
+//     username: "Laxmi",
+//     Phone: 9847135188,
+//     total: "Rs.1000",
+//     payment: "Cash On Delivery",
+//     status: "To be delivered",
+//     date: "02/01/2021",
+//   },
+// ];
 
 const Order = () => {
   const [searchinput, setSearchInput] = useState("");
@@ -105,14 +105,20 @@ const Order = () => {
   // console.log(orders.orders, "orders");
 
   const { orders } = useSelector((state) => state.orderList);
-
+  const { order } = useSelector((state) => state.orderDetails);
   // const orderItem = orders.orders;
+
+  const [viewId, setViewId] = useState(0);
 
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
     }
   }, [userInfo]);
+
+  const handleView = (id) => {
+    dispatch(getOrderDetails(id));
+  };
 
   useEffect(() => {
     dispatch(listOrders());
@@ -242,9 +248,9 @@ const Order = () => {
                         </Col>
                         <Col md={1}>
                           <p>
-                            {console.log(
+                            {/* {console.log(
                               curElm.paymentInfo ? curElm.paymentInfo : "no"
-                            )}
+                            )} */}
                             {/* {curElm.paymentInfo} */}
                           </p>
                         </Col>
@@ -281,7 +287,15 @@ const Order = () => {
                         </Col>
 
                         <Col md={2}>
-                          <button className="editbtn" onClick={handleShow}>
+                          <button
+                            className="editbtn"
+                            onClick={() => {
+                              setViewId(curElm._id);
+                              handleView(curElm._id);
+                              // console.log(curElm._id, "hy");
+                              handleShow();
+                            }}
+                          >
                             View Details
                           </button>
                         </Col>
@@ -304,7 +318,12 @@ const Order = () => {
                                     paddingBottom: "11px",
                                   }}
                                 >
-                                  <p className="username">Sagar Gc</p>
+                                  <p className="username">
+                                    {/* {orders?.orders?.shippingInfo.user
+                                      ? orders?.orders?.shippingInfo.user
+                                      : "nop"} */}
+                                    {order?.order?.shippingInfo.user}
+                                  </p>
                                   <div>
                                     <select>
                                       <option selected>To be delivered</option>
@@ -328,17 +347,21 @@ const Order = () => {
                                   </tr>
                                   <tr>
                                     <td className="maindata">Phone Number:</td>
-                                    <td className="descdata">9815165795</td>
+                                    <td className="descdata">
+                                      {order?.order?.shippingInfo.phonenumber}
+                                    </td>
                                   </tr>
                                   <tr>
                                     <td className="maindata">Address:</td>
                                     <td className="descdata">
-                                      Butwal 10 Golpark
+                                      {order?.order?.shippingInfo.address}
                                     </td>
                                   </tr>
                                   <tr>
                                     <td className="maindata">Date:</td>
-                                    <td className="descdata">02/05/2022</td>
+                                    <td className="descdata">
+                                      {order?.order?.createdAt}
+                                    </td>
                                   </tr>
                                 </table>
                               </div>
@@ -352,11 +375,13 @@ const Order = () => {
                                   </Row>
                                 </div>
                                 <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                  <Col md={4}>Mix Achar</Col>
-                                  <Col md={4}>5</Col>
-                                  <Col md={4}>Rs.240</Col>
+                                  <Col md={4}>
+                                    {console.log(order?.order?.orderItems)}
+                                  </Col>
+                                  <Col md={4}></Col>
+                                  <Col md={4}></Col>
                                 </Row>
-                                <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                                {/* <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
                                   <Col md={4}>Lemon Pickle</Col>
                                   <Col md={4}>2</Col>
                                   <Col md={4}>Rs.120</Col>
@@ -365,12 +390,35 @@ const Order = () => {
                                   <Col md={4}>Honey</Col>
                                   <Col md={4}>4</Col>
                                   <Col md={4}>Rs.500</Col>
+                                </Row>*/}
+
+                                <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
+                                  <Col md={4}>Shipping Price</Col>
+                                  <Col md={4}></Col>
+                                  <Col md={4}>
+                                    {order?.order?.shippingPrice}
+                                  </Col>
                                 </Row>
                                 <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
                                   <Col md={4}>Total</Col>
                                   <Col md={4}></Col>
-                                  <Col md={4}>Rs.1000</Col>
+                                  <Col md={4}>{order?.order?.totalPrice}</Col>
                                 </Row>
+                              </div>
+                              <div className="categorywrapper__addcategorywrapper--buttons">
+                                <button
+                                  className="btn-discard"
+                                  onClick={handleClose}
+                                >
+                                  Cancel
+                                </button>
+
+                                <button
+                                  className="btn-addcategory"
+                                  onClick={handleClose}
+                                >
+                                  Save
+                                </button>
                               </div>
                             </div>
                           </Modal.Body>
