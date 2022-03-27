@@ -11,8 +11,13 @@ import Previews from "../../components/DragAndDrop";
 import { listCarousel } from "../../actions/carouselAction";
 
 const Carousel = () => {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const { userInfo } = useSelector((state) => state.userLogin);
-  console.log(userInfo);
+  // console.log(userInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -21,9 +26,6 @@ const Carousel = () => {
       navigate("/login");
     }
   }, [userInfo]);
-  useEffect(() => {
-    dispatch(listCarousel());
-  });
 
   useEffect(() => {
     dispatch(listCarousel());

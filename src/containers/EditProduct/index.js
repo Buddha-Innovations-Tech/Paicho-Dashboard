@@ -406,11 +406,16 @@ const EditProduct = () => {
               </Row>
             </div>
 
-            {!productUpdateLoading ? <></> : <Loader />}
-            <div className="categorywrapper__addcategorywrapper--buttons">
-              <button className="btn-discard">Discard</button>
-              <button className="btn-addcategory">Update Product</button>
-            </div>
+            {!productUpdateLoading ? (
+              <>
+                <div className="categorywrapper__addcategorywrapper--buttons">
+                  <button className="btn-discard">Discard</button>
+                  <button className="btn-addcategory">Update Product</button>
+                </div>
+              </>
+            ) : (
+              <Loader />
+            )}
           </div>
         </Form>
       </div>

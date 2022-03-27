@@ -27,7 +27,7 @@ const Category = () => {
   const dispatch = useDispatch();
 
   const { categories } = useSelector((state) => state.categoryList);
-  const { success, loading: createLoading } = useSelector(
+  const { success, loading: createCategoryLoading } = useSelector(
     (state) => state.createCategory
   );
   // const { categories } = useSelector((state) => state.listCategories)
@@ -108,23 +108,17 @@ const Category = () => {
                       })}
                   </ul>
 
-                  {!createLoading ? (
-                    <>
-                      {" "}
-                      <div className="categorywrapper__addcategorywrapper--buttons">
-                        <button className="btn-discard">Discard</button>
+                  {/* {!createCategoryLoading ? ( */}
+                  <div className="categorywrapper__addcategorywrapper--buttons">
+                    <button className="btn-discard">Discard</button>
 
-                        <button
-                          className="btn-addcategory"
-                          onClick={handleSubmit}
-                        >
-                          Add Category
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <Loader />
-                  )}
+                    <button className="btn-addcategory" onClick={handleSubmit}>
+                      Add Category
+                    </button>
+                  </div>
+                  {/* ) : ( */}
+                  {/* <Loader /> */}
+                  {/* )} */}
                 </div>
               </Col>
               <Col md={8}>

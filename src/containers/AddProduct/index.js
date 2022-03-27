@@ -414,18 +414,18 @@ const AddProduct = () => {
                 <Col md={2}></Col>
               </Row>
             </div>
-            {!addProductLoading ? (
-              <>
-                <div className="categorywrapper__addcategorywrapper--buttons">
-                  <button className="btn-discard">Discard</button>
-                  <button className="btn-addcategory" onClick={handleSubmit}>
-                    Add Product
-                  </button>
-                </div>
-              </>
-            ) : (
-              <Loader />
-            )}
+            {/* {!addProductLoading ? ( */}
+            <>
+              <div className="categorywrapper__addcategorywrapper--buttons">
+                <button className="btn-discard">Discard</button>
+                <button className="btn-addcategory" onClick={handleSubmit}>
+                  Add Product
+                </button>
+              </div>
+            </>
+            {/* ) : ( */}
+            {/* <Loader /> */}
+            {/* )} */}
           </div>
         </Form>
       </div>
