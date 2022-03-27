@@ -28,19 +28,12 @@ const EditCategory = () => {
   const [subCategories, setSubCategories] = useState([]);
   const { category } = useSelector((state) => state.categoryDetails);
   const { categories } = useSelector((state) => state.categoryList);
-<<<<<<< HEAD
-  const { success: updateSuccess } = useSelector(
-    (state) => state.categoryUpdate
-  );
-=======
 
   const { success: updateSuccess, loading: categoryUpdateLoading } =
     useSelector((state) => state.categoryUpdate);
   // const { success: categorySuccess } = useSelector(
   //   (state) => state.categoryUpdate
   // );
-  const [subCategories, setSubCategories] = useState([]);
->>>>>>> 2e2f0e3680e5fb287bd5f75a189260d606e4fc75
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,6 +46,8 @@ const EditCategory = () => {
     };
 
     dispatch(updateCategory(data, id));
+    setCategoryName("");
+    setTest("");
     // navigate("/register");
   };
 

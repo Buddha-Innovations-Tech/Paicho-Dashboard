@@ -44,6 +44,11 @@ import {
   orderDetailsReducers,
   orderListReducer,
 } from "./reducers/orderReducers";
+import {
+  carouselListReducer,
+  createCarouselReducer,
+  carouselDeleteReducer,
+} from "./reducers/carouselReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -78,6 +83,10 @@ const reducer = combineReducers({
   createOrder: orderCreateReducers,
   orderDetails: orderDetailsReducers,
   orderList: orderListReducer,
+
+  carouselList: carouselListReducer,
+  carouselCreate: createCarouselReducer,
+  carouselDelete: carouselDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

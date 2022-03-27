@@ -35,10 +35,10 @@ const EditProduct = () => {
 
   const handleInputChange = (e) => {
     let { name, value } = e.target;
-    setState({ ...state, [name]: value });
+    setUpdateProduct({ ...updateProduct, [name]: value });
   };
 
-  const [state, setState] = useState({
+  const [updateProduct, setUpdateProduct] = useState({
     name: "",
     category: "",
     description: "",
@@ -60,7 +60,7 @@ const EditProduct = () => {
     keyword,
     ingredient,
     similarproduct,
-  } = state;
+  } = updateProduct;
 
   const { userInfo } = useSelector((state) => state.userLogin);
   const { categories } = useSelector((state) => state.categoryList);
@@ -72,7 +72,7 @@ const EditProduct = () => {
 
   useEffect(() => {
     if (product) {
-      setState({ ...product });
+      setUpdateProduct({ ...product });
     }
   }, [product]);
 
@@ -82,7 +82,8 @@ const EditProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateProduct(state));
+    dispatch(updateProduct(updateProduct));
+    setUpdateProduct("");
   };
 
   useEffect(() => {
