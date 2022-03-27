@@ -114,11 +114,6 @@ const Register = () => {
     }
   };
 
-  // const handleDelete = (id) => {
-  //   dispatch(deleteUser(id));
-  //   handleClose1();
-  // };
-
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");

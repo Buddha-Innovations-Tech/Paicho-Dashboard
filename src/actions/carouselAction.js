@@ -18,7 +18,7 @@ export const listCarousel = () => async (dispatch, getState) => {
     const { data } = await axios.get(`/api/carousels`);
     dispatch({
       type: CAROUSEL_LIST_SUCCESS,
-      payload: data.images,
+      payload: data,
     });
   } catch (error) {
     dispatch({
@@ -46,7 +46,7 @@ export const deleteCarousel = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`/api/carousel/${id}`, config);
+    await axios.delete(`/api/carousels/${id}`, config);
     dispatch({
       type: CAROUSEL_DELETE_SUCCESS,
     });
@@ -76,7 +76,7 @@ export const createCarousel = (carousel) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(`/api/carousel`, carousel, config);
+    const { data } = await axios.post(`/api/carousels/add`, carousel, config);
     dispatch({
       type: CAROUSEL_CREATE_SUCCESS,
       payload: data,

@@ -8,87 +8,9 @@ import { ImCross } from "react-icons/im";
 import PaginationComp from "../../components/PaginationComp";
 import { getOrderDetails, listOrders } from "../../actions/orderAction";
 
-// const orderList = [
-//   {
-//     id: 1,
-//     username: "Sindhu aryal",
-//     Phone: 9847135126,
-//     total: "Rs.250",
-//     payment: "Esewa",
-//     status: "In Progress",
-//     date: "02/01/2020",
-//   },
-//   {
-//     id: 2,
-//     username: "Sindhu",
-//     Phone: 9847135126,
-//     total: "Rs.500",
-//     payment: "Fone Pay",
-//     status: "Completed",
-//     date: "02/01/2021",
-//   },
-//   {
-//     id: 3,
-//     username: "Sagar",
-//     Phone: 9847135126,
-//     total: "Rs.500",
-//     payment: "Mobile Banking",
-//     status: "In Progress",
-//     date: "02/01/2022",
-//   },
-//   {
-//     id: 4,
-//     username: "Laxmi",
-//     Phone: 9847135188,
-//     total: "Rs.1000",
-//     payment: "Cash On Delivery",
-//     status: "Cancelled",
-//     date: "02/01/2021",
-//   },
-//   {
-//     id: 5,
-//     username: "Sindhu aryal",
-//     Phone: 9847135126,
-//     total: "Rs.250",
-//     payment: "Esewa",
-//     status: "In Progress",
-//     date: "02/01/2020",
-//   },
-//   {
-//     id: 6,
-//     username: "Sindhu",
-//     Phone: 9847135126,
-//     total: "Rs.500",
-//     payment: "Fone Pay",
-//     status: "Completed",
-//     date: "02/01/2021",
-//   },
-//   {
-//     id: 7,
-//     username: "Sagar",
-//     Phone: 9847135126,
-//     total: "Rs.500",
-//     payment: "Mobile Banking",
-//     status: "In Progress",
-//     date: "02/01/2022",
-//   },
-//   {
-//     id: 8,
-//     username: "Laxmi",
-//     Phone: 9847135188,
-//     total: "Rs.1000",
-//     payment: "Cash On Delivery",
-//     status: "To be delivered",
-//     date: "02/01/2021",
-//   },
-// ];
-
 const Order = () => {
   const [searchinput, setSearchInput] = useState("");
   const { userInfo } = useSelector((state) => state.userLogin);
-  // console.log(userInfo);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [filterdate, setFilterDate] = useState("Day");
   const [date, setDate] = useState(true);
@@ -97,6 +19,10 @@ const Order = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [modalselected, setModalSelected] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
     setFilterDate(e.target.value);
   };
@@ -325,7 +251,11 @@ const Order = () => {
                                     {order?.order?.shippingInfo.user}
                                   </p>
                                   <div>
-                                    <select>
+                                    <select
+                                      onChange={(e) =>
+                                        setModalSelected(e.target.value)
+                                      }
+                                    >
                                       <option selected>To be delivered</option>
                                       <option> To be delivered </option>
                                       <option>In Progress</option>

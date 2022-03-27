@@ -30,7 +30,7 @@ export const carouselListReducer = (state = { carousel: [] }, action) => {
 export const carouselDeleteReducer = (state = {}, action) => {
   switch (action.type) {
     case CAROUSEL_DELETE_REQUEST:
-      return { loading: true };
+      return { ...state, loading: true };
     case CAROUSEL_DELETE_SUCCESS:
       return {
         loading: false,
