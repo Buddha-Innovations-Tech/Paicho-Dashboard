@@ -27,7 +27,7 @@ const Category = () => {
   const dispatch = useDispatch();
 
   const { categories } = useSelector((state) => state.categoryList);
-  const { success, loading: createLoading } = useSelector(
+  const { success, loading: createCategoryLoading } = useSelector(
     (state) => state.createCategory
   );
   // const { categories } = useSelector((state) => state.listCategories)
@@ -110,6 +110,7 @@ const Category = () => {
                       })}
                   </ul>
 
+                  {/* {!createCategoryLoading ? ( */}
                   {/* {!createLoading ? (
                     <> */}
                   <div className="categorywrapper__addcategorywrapper--buttons">

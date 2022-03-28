@@ -123,7 +123,7 @@ export const listCategoryDetails = (id) => async (dispatch, getState) => {
 
 export const updateCategory = (category, id) => async (dispatch, getState) => {
   try {
-    console.log(category, id, "sdsd");
+    // console.log(category, id, "sdsd");
     dispatch({
       type: CATEGORY_UPDATE_REQUEST,
     });

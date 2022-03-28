@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { BiSearch } from "react-icons/bi";
 import { ImCross } from "react-icons/im";
+import Moment from "react-moment";
 
 import PaginationComp from "../../components/PaginationComp";
 import { getOrderDetails, listOrders } from "../../actions/orderAction";
@@ -210,7 +211,11 @@ const Order = () => {
                           </p>
                         </Col>
                         <Col md={2}>
-                          <p> {curElm.createdAt ? curElm.createdAt : ""}</p>
+                          <p>
+                            <Moment format="DD/MM/YYYY">
+                              {curElm.createdAt ? curElm.createdAt : ""}
+                            </Moment>
+                          </p>
                         </Col>
 
                         <Col md={2}>
@@ -287,7 +292,9 @@ const Order = () => {
                                   <tr>
                                     <td className="maindata">Date:</td>
                                     <td className="descdata">
-                                      {order?.order?.createdAt}
+                                      <Moment format="DD/MM/YYYY">
+                                        {order?.order?.createdAt}
+                                      </Moment>
                                     </td>
                                   </tr>
                                 </table>

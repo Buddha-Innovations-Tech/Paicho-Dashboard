@@ -27,6 +27,9 @@ const Carousel = () => {
   const { loading: carouselListLoading, carousel } = useSelector(
     (state) => state.carouselList
   );
+
+  const { success } = useSelector((state) => state.carouselCreate);
+
   const addCategoryComp = async (e) => {
     e.preventDefault();
     dispatch(createCarousel({ title, link, description, image }));
@@ -65,7 +68,11 @@ const Carousel = () => {
 
   useEffect(() => {
     dispatch(listCarousel());
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(listCarousel());
+  }, [success]);
 
   // useEffect(() => {
   //   dispatch(listCarousel());
