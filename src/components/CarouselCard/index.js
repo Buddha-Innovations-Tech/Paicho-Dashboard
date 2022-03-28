@@ -7,12 +7,16 @@ import cardImage from "../../assets/images/card--img.png";
 import Modal from "react-bootstrap/Modal";
 import InputField from "../../components/InputField";
 import Previews from "../../components/DragAndDrop";
+import { InputGroup, FormControl } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
 import {
   deleteCarousel,
   listCarousel,
+  listCarouselDetails,
   updateCarousel,
 } from "../../actions/carouselAction";
-import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Loader";
 
 const CarouselCard = ({
@@ -22,12 +26,27 @@ const CarouselCard = ({
   const [updateId, setUpdateId] = useState(0);
 
   const dispatch = useDispatch();
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
+
+  const handleInputChange = (e) => {
+    let { name, value } = e.target;
+    setUpdateCaroo({ ...updateCaroo, [name]: value });
+  };
+
+  const [updateCaroo, setUpdateCaroo] = useState({
+    title: "",
+    description: "",
+    link: "",
+  });
+
+  // const { title, desc, link } = updateCaroo;
 
   const { loading } = useSelector((state) => state.carouselDelete);
   // const { success: carouselDeleteSuccess } = useSelector(
@@ -45,9 +64,18 @@ const CarouselCard = ({
     handleClose();
   };
 
-  // useEffect(() => {
-  //   dispatch(listCarousel());
-  // }, [carouselDeleteSuccess]);
+  let { id } = useParams();
+  const { carousel } = useSelector((state) => state.carouselDetails);
+
+  useEffect(() => {
+    dispatch(listCarouselDetails(id));
+  }, []);
+
+  useEffect(() => {
+    if (carousel) {
+      setUpdateCaroo({ ...carousel });
+    }
+  }, [carousel]);
   return (
     <>
       <div className="carouselCard">
@@ -79,29 +107,40 @@ const CarouselCard = ({
               <div className="title">Edit carousel</div>
               <Form>
                 <div className="mt-4">
-                  <InputField
-                    name="Title"
-                    placeholder="Get 10% off with Paicho Lemon Pickle "
-                  />
+                  <label htmlFor="">Title</label> <br />
+                  <InputGroup>
+                    <FormControl
+                      type="text"
+                      name="Title"
+                      placeholder="Get 10% off with Paicho Lemon Pickle "
+                      value={title}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </InputGroup>
                 </div>
                 <div className="mt-3">
-                  {/* <InputField
-                    name="Description"
-                    placeholder="Organic Fresh Fruits"
-                  /> */}
                   <label htmlFor="">Description</label>
                   <textarea
                     class="form-control"
                     id="description"
                     rows="5"
+                    value={description}
                     placeholder="Organic Fresh Fruits"
+                    onChange={handleInputChange}
                   ></textarea>
                 </div>
                 <div className="mt-3">
-                  <InputField
-                    name="Link"
-                    placeholder="https;//paichopasal.com/productpage/pickle "
-                  />
+                  <label htmlFor="">Link</label> <br />
+                  <InputGroup>
+                    <FormControl
+                      name="Link"
+                      placeholder="https;//paichopasal.com/productpage/pickle "
+                      value={link}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </InputGroup>
                 </div>
                 <div className="mt-3">
                   <label htmlFor="">Images</label>
