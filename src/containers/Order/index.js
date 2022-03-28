@@ -175,6 +175,11 @@ const Order = () => {
                         </Col>
                         <Col md={1}>
                           <p>
+                            {/* {curElm.shippingInfo &&
+                            curElm.shippingInfo.paymentInfo
+                              ? curElm.shippingInfo.paymentInfo
+                              : "no"} */}
+                            {/* {curElm.paymentInfo ? curElm.paymentInfo : "no"} */}
                             {/* {console.log(
                               curElm.paymentInfo ? curElm.paymentInfo : "no"
                             )} */}

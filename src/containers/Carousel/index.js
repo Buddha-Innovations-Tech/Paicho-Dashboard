@@ -4,13 +4,15 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-bootstrap/Modal";
-
+import axios from "axios";
 import CarouselCard from "../../components/CarouselCard";
 import InputField from "../../components/InputField";
 import Previews from "../../components/DragAndDrop";
 import { listCarousel, createCarousel } from "../../actions/carouselAction";
 
 const Carousel = () => {
+  const [uploading, setUploading] = useState(false);
+
   const { userInfo } = useSelector((state) => state.userLogin);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -18,33 +20,42 @@ const Carousel = () => {
   const [description, setDescription] = useState("");
   const [link, setLink] = useState("");
   const [show, setShow] = useState(false);
-  const [image, setImage] = useState(
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vectorstock.com%2Froyalty-free-vector%2Fdemo-vector-21910012&psig=AOvVaw3bzuo5CKMBehESiZwQDViP&ust=1648449831773000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNCp56fY5fYCFQAAAAAdAAAAABAD"
-  );
+  const [image, setImage] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const { loading: carouselListLoading, carousel } = useSelector(
     (state) => state.carouselList
   );
-
-  const { success: carouselCreateSuccess } = useSelector(
-    (state) => state.carouselCreate
-  );
-
-  const { success: carouselDeleteSuccess } = useSelector(
-    (state) => state.carouselDelete
-  );
-
-  // const { success } = useSelector((state) => state.carouselDelete);
-
-  const addCategoryComp = (e) => {
+  const addCategoryComp = async (e) => {
     e.preventDefault();
     dispatch(createCarousel({ title, link, description, image }));
     handleClose();
     setTitle("");
     setDescription("");
     setLink("");
+  };
+  const uploadHeroImageHandler = async (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      const { data } = await axios.post("/api/uploads", formData, config);
+      console.log(data);
+      setImage(data);
+      setUploading(false);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
+    }
   };
   useEffect(() => {
     if (!userInfo) {
@@ -54,15 +65,12 @@ const Carousel = () => {
 
   useEffect(() => {
     dispatch(listCarousel());
-  }, [dispatch]);
+  }, []);
 
-  useEffect(() => {
-    dispatch(listCarousel());
-  }, [carouselCreateSuccess]);
+  // useEffect(() => {
+  //   dispatch(listCarousel());
+  // }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(listCarousel());
-  }, [carouselDeleteSuccess]);
   return (
     <>
       <div className="carouselwrapper">
@@ -145,7 +153,13 @@ const Carousel = () => {
                     <FiAlertTriangle />
                     <span>Please choose image below 5 mb</span>
                   </p>
-                  <Previews />
+                  {/* <input
+                    type="file"
+                    name="image"
+                  
+                    onChange={uploadHeroImageHandler}
+                  /> */}
+                  <Previews image={image} setImage={setImage} />
                 </div>
 
                 <div className="mt-3 d-flex justify-content-end">

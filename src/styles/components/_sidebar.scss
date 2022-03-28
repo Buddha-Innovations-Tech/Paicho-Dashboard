@@ -21,20 +21,19 @@
     color: #292f46;
     font-size: 16px;
     font-weight: 700;
-    
   }
-  .icon{
-      color: #888888;
-      font-size: 25px;
+  .icon {
+    color: #888888;
+    font-size: 25px;
   }
-  .active-link.active{
-      background-color: #719F31;
-      border-radius: 4px;
+  .active-link.active {
+    background-color: #719f31;
+    border-radius: 4px;
+    color: #fff;
+    display: block;
+    .icon {
       color: #fff;
-      .icon{
-          color: #fff;
-      }
-  
+    }
   }
   &__unorderlist {
     ul {
@@ -52,22 +51,21 @@
       }
     }
   }
-  .subnav{
-      color: #383E50;
-      font-size: 14px;
-      font-weight: 400;
-      padding: 0;
+  .subnav {
+    color: #383e50;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 0;
   }
-  .product-li{
-     
-  .product{
-    padding: 13px 60px 13px 15px;
-  }
-  li{
+  .product-li {
+    .product {
+      padding: 13px 60px 13px 15px;
+    }
+    li {
       padding: 8px;
+    }
+    .product-li-link {
+      padding: 13px 10px 13px 60px;
+    }
   }
-  .product-li-link{
-    padding: 13px 10px 13px 60px;
-  }
-}
 }

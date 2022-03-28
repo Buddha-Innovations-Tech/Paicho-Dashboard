@@ -1,5 +1,5 @@
-.productlistwrapper{
-    background-color: #e5e5e5;
+.productlistwrapper {
+  background-color: #e5e5e5;
   padding: 20px 12px 20px 40px;
   &__title {
     color: #383e50;
@@ -10,33 +10,35 @@
     background-color: #fff;
     padding: 25px;
     border-radius: 4px;
-    &--heading{
-      border-bottom: 1px solid #E5E5E5;
+    &--heading {
+      border-bottom: 1px solid #e5e5e5;
       padding-bottom: 15px;
     }
-    &--headingrow{
-      background-color: #F4F5F9;
+    &--headingrow {
+      background-color: #f4f5f9;
       border-radius: 4px;
       padding: 12px 0;
-      text-align: center;
+      text-align: left;
+      padding-left: 20px;
       margin-top: 15px;
       color: #495058;
       font-size: 14px;
       font-weight: 600;
-      font-family: "Lato","sans-serif";
+      font-family: "Lato", "sans-serif";
       margin-bottom: 25px;
     }
-    &--listitem{
-      text-align: center;
+    &--listitem {
+      text-align: left;
+      padding-left: 20px;
       margin: 25px 0;
-      p{
+      p {
         color: #495058;
         font-size: 13px;
         font-weight: 600;
-        font-family: "Quicksand","sans-serif";
+        font-family: "Quicksand", "sans-serif";
       }
-      .editbtn{
-        @include btn(#005AAB);
+      .editbtn {
+        @include btn(#005aab);
       }
     }
   }
