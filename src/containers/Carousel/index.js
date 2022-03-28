@@ -28,6 +28,16 @@ const Carousel = () => {
     (state) => state.carouselList
   );
 
+  const { success: carouselCreateSuccess } = useSelector(
+    (state) => state.carouselCreate
+  );
+
+  const { success: carouselDeleteSuccess } = useSelector(
+    (state) => state.carouselDelete
+  );
+
+  // const { success } = useSelector((state) => state.carouselDelete);
+
   const addCategoryComp = (e) => {
     e.preventDefault();
     dispatch(createCarousel({ title, link, description, image }));
@@ -44,12 +54,15 @@ const Carousel = () => {
 
   useEffect(() => {
     dispatch(listCarousel());
-  }, []);
+  }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(listCarousel());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(listCarousel());
+  }, [carouselCreateSuccess]);
 
+  useEffect(() => {
+    dispatch(listCarousel());
+  }, [carouselDeleteSuccess]);
   return (
     <>
       <div className="carouselwrapper">

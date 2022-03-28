@@ -10,6 +10,9 @@ import {
   CAROUSEL_LIST_FAIL,
   CAROUSEL_LIST_REQUEST,
   CAROUSEL_LIST_SUCCESS,
+  CAROUSEL_UPDATE_REQUEST,
+  CAROUSEL_UPDATE_SUCCESS,
+  CAROUSEL_UPDATE_FAIL,
 } from "../constants/carouselConstants";
 
 export const listCarousel = () => async (dispatch, getState) => {
@@ -84,6 +87,41 @@ export const createCarousel = (carousel) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: CAROUSEL_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateCarousel = (carousel, id) => async (dispatch, getState) => {
+  try {
+    console.log(carousel, id, "carousel action");
+    dispatch({
+      type: CAROUSEL_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/carousels/${id}`, carousel, config);
+
+    dispatch({
+      type: CAROUSEL_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: CAROUSEL_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

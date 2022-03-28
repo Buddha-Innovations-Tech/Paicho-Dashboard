@@ -48,6 +48,7 @@ import {
   carouselListReducer,
   createCarouselReducer,
   carouselDeleteReducer,
+  carouselUpdateReducer,
 } from "./reducers/carouselReducers";
 
 const reducer = combineReducers({
@@ -87,6 +88,7 @@ const reducer = combineReducers({
   carouselList: carouselListReducer,
   carouselCreate: createCarouselReducer,
   carouselDelete: carouselDeleteReducer,
+  carouselUpdate: carouselUpdateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

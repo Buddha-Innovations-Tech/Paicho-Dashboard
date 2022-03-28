@@ -7,13 +7,20 @@ import cardImage from "../../assets/images/card--img.png";
 import Modal from "react-bootstrap/Modal";
 import InputField from "../../components/InputField";
 import Previews from "../../components/DragAndDrop";
-import { deleteCarousel, listCarousel } from "../../actions/carouselAction";
+import {
+  deleteCarousel,
+  listCarousel,
+  updateCarousel,
+} from "../../actions/carouselAction";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../Loader";
 
 const CarouselCard = ({
   carousel: { title, link, description, image, _id },
 }) => {
   const [deleteid, setDeleteId] = useState(0);
+  const [updateId, setUpdateId] = useState(0);
+
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -21,6 +28,8 @@ const CarouselCard = ({
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
+
+  const { loading } = useSelector((state) => state.carouselDelete);
   // const { success: carouselDeleteSuccess } = useSelector(
   //   (state) => state.carouselDelete
   // );
@@ -29,6 +38,13 @@ const CarouselCard = ({
     dispatch(deleteCarousel(id));
     handleClose1();
   };
+
+  const updateCaro = (id) => {
+    // console.log(id, "carouselcard");
+    dispatch(updateCarousel(id));
+    handleClose();
+  };
+
   // useEffect(() => {
   //   dispatch(listCarousel());
   // }, [carouselDeleteSuccess]);
@@ -42,7 +58,11 @@ const CarouselCard = ({
           <div className="carouselCard__category--icons d-flex justify-content-between">
             <FiEdit
               className="carouselCard__category--icons--editicon"
-              onClick={handleShow}
+              onClick={() => {
+                setUpdateId(_id);
+                handleShow();
+                console.log(_id, "updateid");
+              }}
             />
             <ImCross
               className="carouselCard__category--icons--crossicon"
@@ -101,7 +121,9 @@ const CarouselCard = ({
                   </button>
                   <button
                     className="carouselwrapper__background__btn--add"
-                    onClick={handleClose}
+                    onClick={() => {
+                      updateCaro(updateId);
+                    }}
                   >
                     Update Product
                   </button>
