@@ -117,13 +117,8 @@ const Carousel = () => {
                       required
                     />
                   </InputGroup>
-                  {/* <InputField name="Title" placeholder="Carousel Title" /> */}
                 </div>
                 <div className="mt-3">
-                  {/* <InputField
-                        name="Description"
-                        placeholder="Carousel description"
-                      /> */}
                   <label htmlFor="">Description</label>
                   <textarea
                     className="form-control"
@@ -135,7 +130,7 @@ const Carousel = () => {
                   ></textarea>
                 </div>
                 <div className="mt-3">
-                  <label htmlFor="">Firstname</label> <br />
+                  <label htmlFor="">Link</label> <br />
                   <InputGroup>
                     <FormControl
                       type="text"
@@ -153,12 +148,6 @@ const Carousel = () => {
                     <FiAlertTriangle />
                     <span>Please choose image below 5 mb</span>
                   </p>
-                  {/* <input
-                    type="file"
-                    name="image"
-                  
-                    onChange={uploadHeroImageHandler}
-                  /> */}
                   <Previews image={image} setImage={setImage} />
                 </div>
 

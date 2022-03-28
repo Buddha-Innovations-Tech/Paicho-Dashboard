@@ -50,7 +50,8 @@
       background-color: #f4f5f9;
       border-radius: 4px;
       padding: 12px 0;
-      text-align: center;
+      text-align: left;
+      padding-left: 20px;
       margin-top: 15px;
       color: #495058;
       font-size: 14px;
@@ -87,19 +88,18 @@
     color: #383e50;
     margin-top: 15px;
   }
-  .descdata{
-    font-family: "Lato","sans-serif";
-font-size: 14px;
-font-style: normal;
-font-weight: 400;
-line-height: 17px;
-letter-spacing: 0.02em;
-color: #495058;
-padding: 5px 0 5px 70px;
-
+  .descdata {
+    font-family: "Lato", "sans-serif";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0.02em;
+    color: #495058;
+    padding: 5px 0 5px 70px;
   }
-  .maindata{
-    font-family: "Lato","sans-serif";
+  .maindata {
+    font-family: "Lato", "sans-serif";
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
@@ -108,44 +108,45 @@ padding: 5px 0 5px 70px;
     color: #495058;
     padding: 5px 0;
   }
-  .userdetails{
+  .userdetails {
     margin-top: 30px;
-    border: 1px solid #E0E0E0;
+    border: 1px solid #e0e0e0;
     border-radius: 4px;
     padding: 15px 33px;
     position: relative;
-    .topic{
+    .topic {
       position: absolute;
-    background-color: #fff;
-    padding: 10px 5px;
-    top: -9%;
-    color: #495058;
-    font-size: 12px;
-    font-weight: 500;
+      background-color: #fff;
+      padding: 10px 5px;
+      top: -9%;
+      color: #495058;
+      font-size: 12px;
+      font-weight: 500;
     }
   }
-table{
-  margin-top: 11px;
+  table {
+    margin-top: 11px;
+  }
 }
-}
-.modal-data,.modalheading{
+.modal-data,
+.modalheading {
   text-align: left;
   padding-left: 30px;
 }
-.modal-total{
-  border-top: 0.6px solid #E0E0E0;
+.modal-total {
+  border-top: 0.6px solid #e0e0e0;
   padding-top: 14px;
   text-align: left;
   padding-left: 30px;
   font-size: 14px;
   font-weight: 700;
-  color: #383E50;
+  color: #383e50;
   text-transform: uppercase;
 }
-.inputreletive{
-  position:relative;
+.inputreletive {
+  position: relative;
 }
-.inputabsolute{
-  position:absolute;
+.inputabsolute {
+  position: absolute;
   top: -32% !important;
 }

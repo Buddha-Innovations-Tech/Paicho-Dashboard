@@ -41,7 +41,7 @@ const ProductList = () => {
             <div className="d-flex justify-content-between align-items-center">
               <div className="me-4">
                 <select id="subcategory" name="subcategory">
-                  <option value="volvo" selected>
+                  <option value="volvo" defaultValue>
                     All Category
                   </option>
                   <option>Paicho Pickle</option>

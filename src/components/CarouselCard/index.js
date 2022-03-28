@@ -36,9 +36,7 @@ const CarouselCard = ({
     <>
       <div className="carouselCard">
         <div className="carouselCard__category d-flex justify-content-between">
-          <div className="carouselCard__category--name">
-            Paicho Lemon Pickle
-          </div>
+          <div className="carouselCard__category--name">{title}</div>
           <div className="carouselCard__category--icons d-flex justify-content-between">
             <FiEdit
               className="carouselCard__category--icons--editicon"
@@ -65,10 +63,6 @@ const CarouselCard = ({
                   />
                 </div>
                 <div className="mt-3">
-                  {/* <InputField
-                    name="Description"
-                    placeholder="Organic Fresh Fruits"
-                  /> */}
                   <label htmlFor="">Description</label>
                   <textarea
                     class="form-control"
@@ -120,7 +114,6 @@ const CarouselCard = ({
                   onClick={handleClose1}
                 />
               </div>
-              {/* <h2 className="modal__delete">Delete</h2> */}
               <p className="modal__para">
                 Are you sure you want to delete this item ?{" "}
               </p>

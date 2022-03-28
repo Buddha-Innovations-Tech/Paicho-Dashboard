@@ -137,10 +137,14 @@ const Order = () => {
             </Row>
           </div>
           <div>
+            {/* <p>{orders && JSON.stringify(orders.orders)} </p> */}
             {filterTerm === "Status"
-              ? orders?.orders
-                  ?.filter((order) =>
-                    order.shippingInfo.user.toLowerCase().includes(searchinput)
+              ? orders &&
+                orders.orders
+                  .filter((order) =>
+                    order.shippingInfo.fullname
+                      .toLowerCase()
+                      .includes(searchinput)
                   )
                   .map((curElm, index) => {
                     return (
@@ -153,8 +157,8 @@ const Order = () => {
                         </Col>
                         <Col md={1}>
                           <p>
-                            {curElm.shippingInfo && curElm.shippingInfo.user
-                              ? curElm.shippingInfo.user
+                            {curElm.shippingInfo && curElm.shippingInfo.fullname
+                              ? curElm.shippingInfo.fullname
                               : "no"}
                           </p>
                         </Col>
@@ -167,22 +171,14 @@ const Order = () => {
                           </p>
                         </Col>
                         <Col md={1}>
-                          <p>
-                            {curElm.totalPrice ? curElm.totalPrice : "no"}
-                            {/* {curElm.totalPrice} */}
-                          </p>
+                          <p>{curElm.totalPrice ? curElm.totalPrice : "no"}</p>
                         </Col>
                         <Col md={1}>
                           <p>
-                            {/* {curElm.shippingInfo &&
-                            curElm.shippingInfo.paymentInfo
-                              ? curElm.shippingInfo.paymentInfo
-                              : "no"} */}
-                            {/* {curElm.paymentInfo ? curElm.paymentInfo : "no"} */}
-                            {/* {console.log(
-                              curElm.paymentInfo ? curElm.paymentInfo : "no"
-                            )} */}
-                            {/* {curElm.paymentInfo} */}
+                            {" "}
+                            {curElm.paymentInfo && curElm.paymentInfo.method
+                              ? curElm.paymentInfo.method
+                              : ""}
                           </p>
                         </Col>
 
@@ -223,7 +219,6 @@ const Order = () => {
                             onClick={() => {
                               setViewId(curElm._id);
                               handleView(curElm._id);
-                              // console.log(curElm._id, "hy");
                               handleShow();
                             }}
                           >
@@ -250,9 +245,6 @@ const Order = () => {
                                   }}
                                 >
                                   <p className="username">
-                                    {/* {orders?.orders?.shippingInfo.user
-                                      ? orders?.orders?.shippingInfo.user
-                                      : "nop"} */}
                                     {order?.order?.shippingInfo.user}
                                   </p>
                                   <div>
@@ -310,22 +302,10 @@ const Order = () => {
                                   </Row>
                                 </div>
                                 <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                  <Col md={4}>
-                                    {console.log(order?.order?.orderItems)}
-                                  </Col>
+                                  <Col md={4}></Col>
                                   <Col md={4}></Col>
                                   <Col md={4}></Col>
                                 </Row>
-                                {/* <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                  <Col md={4}>Lemon Pickle</Col>
-                                  <Col md={4}>2</Col>
-                                  <Col md={4}>Rs.120</Col>
-                                </Row>
-                                <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                  <Col md={4}>Honey</Col>
-                                  <Col md={4}>4</Col>
-                                  <Col md={4}>Rs.500</Col>
-                                </Row>*/}
 
                                 <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
                                   <Col md={4}>Shipping Price</Col>
