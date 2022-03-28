@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { SiGumtree } from "react-icons/si";
-import { axios } from "axios";
+import axios from "axios";
 
 const thumbsContainer = {
   display: "flex",
@@ -9,7 +9,17 @@ const thumbsContainer = {
   flexWrap: "wrap",
   marginTop: 16,
 };
+const focusedStyle = {
+  borderColor: "#2196f3",
+};
 
+const acceptStyle = {
+  borderColor: "#00e676",
+};
+
+const rejectStyle = {
+  borderColor: "#ff1744",
+};
 const thumb = {
   display: "inline-flex",
   borderRadius: 2,
@@ -34,18 +44,21 @@ const img = {
   height: "100%",
 };
 
-const Previews = () => {
-  const [Uploading, setUploading] = useState(false);
+const Previews = ({ image, setImage }) => {
+  // const [uploading, setUploading] = useState(false);
   const [files, setFiles] = useState([]);
   const {
     getRootProps,
     getInputProps,
     isDragAccept,
     isDragActive,
+    isFocused,
     isDragReject,
+    acceptedFiles,
   } = useDropzone({
     accept: "image/*",
     onDrop: (acceptedFiles) => {
+      uploadHeroImageHandler(acceptedFiles);
       setFiles(
         acceptedFiles.map((file) =>
           Object.assign(file, {
@@ -64,12 +77,14 @@ const Previews = () => {
     </div>
   ));
 
-  const uploadHeroImageHandler = async (e) => {
-    e.preventDefault();
-    const file = e.target.files[0];
+  const uploadHeroImageHandler = async (photo) => {
+    // console.log(e);
+    // e.preventDefault();
+    const file = photo[0];
+    console.log(file);
     const formData = new FormData();
     formData.append("image", file);
-    setUploading(true);
+    // setUploading(true);
 
     try {
       const config = {
@@ -78,28 +93,32 @@ const Previews = () => {
         },
       };
       const { data } = await axios.post("/api/uploads", formData, config);
-
       setImage(data);
-      setUploading(false);
+      // setUploading(false);
     } catch (error) {
       console.error(error);
-      setUploading(false);
+      // setUploading(false);
     }
   };
 
-  useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks
-    files.forEach((file) => URL.revokeObjectURL(file.preview));
-  }, [files]);
-
+  // useEffect(() => {
+  //   // Make sure to revoke the data uris to avoid memory leaks
+  // files.forEach((file) => uploadHeroImageHandler(e));
+  // uploadHeroImageHandler();
+  // }, [files]);
+  // const style = useMemo(
+  //   () => ({
+  //     ...baseStyle,
+  //     ...(isFocused ? focusedStyle : {}),
+  //     ...(isDragAccept ? acceptStyle : {}),
+  //     ...(isDragReject ? rejectStyle : {}),
+  //   }),
+  //   [isFocused, isDragAccept, isDragReject]
+  // );
   return (
     <section className="container dragdroppadding">
       <div {...getRootProps({ className: "dropzone" })}>
-        <input
-          type="file"
-          {...getInputProps()}
-          onChange={(e) => setImage(e.target.files[0])}
-        />
+        <input type="file" {...getInputProps()} />
         <div className="drapanddrop-content">
           <SiGumtree className="treeicon" />
           <p>Drag and drop images or click to upload media</p>

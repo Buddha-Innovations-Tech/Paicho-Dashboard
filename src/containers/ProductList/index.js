@@ -8,62 +8,8 @@ import ProductImg from "../../assets/images/ProductListImg.png";
 import PaginationComp from "../../components/PaginationComp";
 import { listProducts } from "../../actions/productAction";
 
-// const productList = [
-//   {
-//     id: 1101,
-//     image: ProductImg,
-//     name: "Mix Achr (250gm)",
-//     category: "Paicho Pickle",
-//     price: "Rs.250",
-//     discount: "10%",
-//     stock: "In Stock",
-//     bimal: "abc",
-//   },
-//   {
-//     id: 1102,
-//     image: ProductImg,
-//     name: "Bhutuk Pickle",
-//     category: "Paicho Pickle",
-//     price: "Rs.300",
-//     discount: "8%",
-//     stock: "Out of Stock",
-//     bimal: "abc",
-//   },
-//   {
-//     id: 1103,
-//     image: ProductImg,
-//     name: "Cabbage",
-//     category: "Organic Vegetables",
-//     price: "Rs.30",
-//     discount: "6%",
-//     stock: "Archived",
-//     bimal: "def",
-//   },
-//   {
-//     id: 1104,
-//     image: ProductImg,
-//     name: "Besar",
-//     category: "Processing Item",
-//     price: "Rs.500",
-//     discount: "10%",
-//     stock: "Archived",
-//     bimal: "abc",
-//   },
-//   {
-//     id: 1105,
-//     image: ProductImg,
-//     name: "Dry Apple",
-//     category: "Dry Foods",
-//     price: "Rs.250",
-//     discount: "15%",
-//     stock: "In Stock",
-//     bimal: "abc",
-//   },
-// ];
-
 const ProductList = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
-  // console.log(userInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -125,9 +71,9 @@ const ProductList = () => {
           <div className="productlistwrapper__productlistwrapper--headingrow">
             <Row>
               <Col md={1}>ID</Col>
-              <Col md={3}>Product</Col>
+              <Col md={2}>Product</Col>
               <Col md={2}>Category</Col>
-              <Col md={1}>Price</Col>
+              <Col md={2}>Price</Col>
               <Col md={1}>Discount</Col>
               <Col md={2}>Stock</Col>
               <Col md={2}>Action</Col>
@@ -144,10 +90,10 @@ const ProductList = () => {
                       <Col md={1}>
                         <p>{index + 1}</p>
                       </Col>
-                      <Col md={3}>
+                      <Col md={2}>
                         <div className="d-flex ms-5 align-items-center">
                           <img src={curElm.image} alt="" />
-                          <p className="ms-2 mt-3">{curElm.name}</p>
+                          <p>{curElm.name}</p>
                         </div>
                       </Col>
                       <Col md={2}>
@@ -157,7 +103,7 @@ const ProductList = () => {
                             : "no"}
                         </p>
                       </Col>
-                      <Col md={1}>
+                      <Col md={2}>
                         <p>{curElm.price}</p>
                       </Col>
                       <Col md={1}>
@@ -183,7 +129,7 @@ const ProductList = () => {
                             textAlign: "center",
                           }}
                         >
-                          {curElm.countInstock == 0
+                          {curElm.countInstock === 0
                             ? "Out of Stock"
                             : "In stock"}
                         </p>

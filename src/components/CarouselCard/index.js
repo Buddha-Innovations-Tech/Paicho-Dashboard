@@ -146,7 +146,12 @@ const CarouselCard = ({
         <div className="carouselCard__image d-flex align-items-center">
           <div className="carouselCard__image--name">Images: </div>
           <div className="carouselCard__image--img">
-            <img src={image} alt="card" className="img-fluid" />
+            <img
+              src={`http://localhost:5000${image}`}
+              // src={image}
+              alt="card"
+              className="img-fluid"
+            />
           </div>
         </div>
         <div className="carouselCard__title d-flex">
