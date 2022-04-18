@@ -100,7 +100,6 @@ export const createCarousel = (carousel) => async (dispatch, getState) => {
 
 export const updateCarousel = (carousel, id) => async (dispatch, getState) => {
   try {
-    console.log(carousel, id, "carousel action");
     dispatch({
       type: CAROUSEL_UPDATE_REQUEST,
     });
@@ -117,7 +116,7 @@ export const updateCarousel = (carousel, id) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(`/api/carousels/${id}`, carousel, config);
-
+    console.log(data);
     dispatch({
       type: CAROUSEL_UPDATE_SUCCESS,
       payload: data,

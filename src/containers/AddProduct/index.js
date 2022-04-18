@@ -11,64 +11,19 @@ import { createProduct } from "../../actions/productAction";
 import { listCategories } from "../../actions/categoryAction";
 import Loader from "../../components/Loader";
 
-// const subcategoryItem = [
-//   {
-//     item: "Fresh Organic Mango",
-//   },
-//   {
-//     item: "Fresh Organic Mango",
-//   },
-//   {
-//     item: "Fresh Organic Mango",
-//   },
-// ];
-// const ingredientItem = [
-//   {
-//     item: "Fresh Organic Mango",
-//   },
-//   {
-//     item: "Fresh Organic Mango",
-//   },
-//   {
-//     item: "Fresh Organic Mango",
-//   },
-//   {
-//     item: "Fresh Organic Mango",
-//   },
-//   {
-//     item: "Fresh Organic Mango",
-//   },
-// ];
-// const addProductItem = [
-//   {
-//     item: "Garlic Achar",
-//   },
-//   {
-//     item: "Mix Achar",
-//   },
-//   {
-//     item: "Mango Achar",
-//   },
-//   {
-//     item: "Garlic Achar",
-//   },
-//   {
-//     item: "Mix Achar",
-//   },
-// ];
-
 const AddProduct = () => {
+  const [image, setImage] = useState("");
   const [name, setProduct] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubCategory] = useState([]);
   const [subcategorystate, setSubCategoryState] = useState("");
   const [description, setDescription] = useState("");
-  const [count, setCount] = useState("");
+  const [countInStock, setCount] = useState("");
   const [discount, setDiscount] = useState("");
   const [price, setPrice] = useState("");
-  const [keyword, setKeyword] = useState("");
+  const [keywords, setKeyword] = useState("");
   const [ingredient, setIngredient] = useState("");
-  const [similarproduct, setSimilarProduct] = useState("");
+  const [similar, setSimilarProduct] = useState("");
   const [subCategories, setSubCategories] = useState([]);
   const [dltsimilarpdct, setDltSimilarPdct] = useState([]);
   const [seo, setSeo] = useState([]);
@@ -88,17 +43,19 @@ const AddProduct = () => {
     dispatch(
       createProduct({
         name,
+        image,
         description,
-        count,
+        countInStock,
         discount,
         price,
-        keyword,
+        keywords,
         ingredient,
         category,
         subcategory,
-        similarproduct,
+        similar,
       })
     );
+    setImage("");
     setProduct("");
     setDescription("");
     setCount("");
@@ -107,6 +64,7 @@ const AddProduct = () => {
     setKeyword("");
     setIngredient("");
     setSimilarProduct("");
+    navigate("/productlist");
   };
 
   useEffect(() => {
@@ -115,6 +73,7 @@ const AddProduct = () => {
     }
     dispatch(listCategories());
   }, [userInfo]);
+
   const settingSubCategoryState = () =>
     setSubCategory(categories.find((i) => i._id === category).subcategories);
 
@@ -212,7 +171,7 @@ const AddProduct = () => {
                         type="text"
                         name="count"
                         placeholder=" Stock Count"
-                        value={count}
+                        value={countInStock}
                         onChange={(e) => setCount(e.target.value)}
                       />
                     </Col>
@@ -244,7 +203,7 @@ const AddProduct = () => {
                         <FormControl
                           type="text"
                           name="keyword"
-                          value={keyword}
+                          value={keywords}
                           onChange={(e) => setKeyword(e.target.value)}
                           // required
                         />
@@ -254,9 +213,11 @@ const AddProduct = () => {
                           className="addproductwrapper__background--addbtn"
                           onClick={(e) => {
                             e.preventDefault();
-                            keyword !== "" &&
+
+                            !seo.find((i) => i === keywords) &&
+                              keywords.trim() !== "" &&
                               // !subCategories.find((i) => i === similarproduct) &&
-                              setSeo([keyword, ...seo]);
+                              setSeo([keywords, ...seo]);
                           }}
                         >
                           Add
@@ -295,7 +256,7 @@ const AddProduct = () => {
                   <span>Please choose image below 5 mb</span>
                 </p>
                 <div className="addproduct-dragdrop">
-                  <Previews />
+                  <Previews image={image} setImage={setImage} />
                 </div>
               </Col>
             </Row>
@@ -321,7 +282,8 @@ const AddProduct = () => {
                         className="addproductwrapper__addbtn"
                         onClick={(e) => {
                           e.preventDefault();
-                          ingredient !== "" &&
+                          !subCategories.find((i) => i === ingredient) &&
+                            ingredient.trim() !== "" &&
                             // !subCategories.find((i) => i === similarproduct) &&
                             setSubCategories([ingredient, ...subCategories]);
                         }}
@@ -367,7 +329,7 @@ const AddProduct = () => {
                         type="text"
                         name="similarproduct"
                         placeholder="Similar product"
-                        value={similarproduct}
+                        value={similar}
                         onChange={(e) => setSimilarProduct(e.target.value)}
                         // required
                       />
@@ -377,12 +339,9 @@ const AddProduct = () => {
                         className="addproductwrapper__addbtn"
                         onClick={(e) => {
                           e.preventDefault();
-                          // !subCategories.find((i) => i === similarproduct) &&
-                          similarproduct !== "" &&
-                            setDltSimilarPdct([
-                              similarproduct,
-                              ...dltsimilarpdct,
-                            ]);
+                          !dltsimilarpdct.find((i) => i === similar) &&
+                            similar.trim() !== "" &&
+                            setDltSimilarPdct([similar, ...dltsimilarpdct]);
                         }}
                       >
                         Add

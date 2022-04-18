@@ -85,6 +85,7 @@ export const categoryListReducer = (state = { categories: [] }, action) => {
         categories: action.payload.categories,
         success: true,
         pages: action.payload.pages,
+        page: parseInt(action.payload.page),
       };
     case CATEGORY_LIST_FAIL:
       return { loading: false, error: action.payload };

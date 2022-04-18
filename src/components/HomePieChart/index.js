@@ -19,24 +19,25 @@ import "react-circular-progressbar/dist/styles.css";
 //       },
 //     ],
 //   };
-const HomePieChart = () => {
-  const percentage =70;
+const HomePieChart = ({ income }) => {
+  const percentage = income.Earning;
   return (
     <>
       {/* <CircularProgressbar value={percentage} text={`${percentage}%`} /> */}
-
-      <div label="Square linecaps">
-        <CircularProgressbar
-          value={percentage}
-          text={`${percentage}`}
-          styles={buildStyles({
-            strokeLinecap: "butt",
-            textColor: "#495058",
-            pathColor: "#005AAB",
-            trailColor: "#ECECEC",
-          })}
-        />
-      </div>
+      {income && (
+        <div label="Square linecaps">
+          <CircularProgressbar
+            value={percentage}
+            text={`${percentage}`}
+            styles={buildStyles({
+              strokeLinecap: "butt",
+              textColor: "#495058",
+              pathColor: "#005AAB",
+              trailColor: "#ECECEC",
+            })}
+          />
+        </div>
+      )}
       {/* <CircularProgressbar
         value={percentage}
         text={`${percentage}%`}

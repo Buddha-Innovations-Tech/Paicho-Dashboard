@@ -1,53 +1,72 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Row, Col, Form } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { BiPlus } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-
-// import { categoryData } from "../../components/CategoryList";
+import Paginate from "../../components/PaginationComp";
 import PaginationComp from "../../components/PaginationComp";
 import CategoryList from "../../components/CategoryList";
 import { listCategories, createCategory } from "../../actions/categoryAction";
 import Loader from "../../components/Loader";
 
-// const subcategoryItem = [
-//   { item: "Paicho Pickle" },
-//   { item: "Mango Pickle" },
-//   { item: "Lemon Pickle" },
-//   { item: "Bhutuk Pickle" },
-// ];
-
 const Category = () => {
   const [name, setName] = useState("");
   const [test, setTest] = useState("");
-  const { userInfo } = useSelector((state) => state.userLogin);
-  // console.log(userInfo);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [checked, setChecked] = useState(false);
 
-  const { categories } = useSelector((state) => state.categoryList);
-  const { success, loading: createCategoryLoading } = useSelector(
-    (state) => state.createCategory
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const history = useNavigate();
+  const dispatch = useDispatch();
+  const { pageNumber } = useParams();
+  const { categories, pages, page, loading } = useSelector(
+    (state) => state.categoryList
   );
-  // const { categories } = useSelector((state) => state.listCategories)
+  const { success } = useSelector((state) => state.createCategory);
+  const { success: categoryUpdateSuccess, loading: categoryUpdateLoading } =
+    useSelector((state) => state.categoryUpdate);
   const [subCategories, setSubCategories] = useState([]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createCategory(name, test));
+    const data = {
+      name: name,
+      subcategories: subCategories.map((i) => {
+        return { name: i };
+      }),
+    };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    dispatch(createCategory(data));
     setName("");
-    setTest("");
+    setSubCategories([]);
   };
   // console.log(categories);
   useEffect(() => {
     if (!userInfo) {
-      navigate("/login");
+      history("/login");
     }
   }, [userInfo]);
+  useEffect(() => {
+    if (categoryUpdateSuccess) {
+      dispatch(listCategories());
+    }
+  }, [categoryUpdateSuccess]);
+  // useEffect(() => {
+  //   if (categoryUpdateLoading) {
+  //     dispatch(listCategories());
+  //   }
+  // }, [categoryUpdateLoading]);
 
   useEffect(() => {
     dispatch(listCategories());
   }, [success]);
+  useEffect(() => {
+    dispatch(listCategories(pageNumber));
+  }, [pageNumber]);
   return (
     <>
       <div className="categorywrapper">
@@ -82,9 +101,10 @@ const Category = () => {
                     <BiPlus
                       className="plusIcon"
                       onClick={(e) => {
-                        test !== "" &&
-                          // subCategories.find((i) => i !== "") &&
+                        !subCategories.find((i) => i === test) &&
+                          test.trim() !== "" &&
                           setSubCategories([test, ...subCategories]);
+                        setTest("");
                       }}
                     />
                   </div>
@@ -110,20 +130,22 @@ const Category = () => {
                       })}
                   </ul>
 
-                  {/* {!createCategoryLoading ? ( */}
-                  {/* {!createLoading ? (
-                    <> */}
-                  <div className="categorywrapper__addcategorywrapper--buttons">
-                    <button className="btn-discard">Discard</button>
+                  {!loading ? (
+                    <>
+                      <div className="categorywrapper__addcategorywrapper--buttons">
+                        <button className="btn-discard">Discard</button>
 
-                    <button className="btn-addcategory" onClick={handleSubmit}>
-                      Add Category
-                    </button>
-                  </div>
-                  {/* </>
+                        <button
+                          className="btn-addcategory"
+                          onClick={handleSubmit}
+                        >
+                          Add Category
+                        </button>
+                      </div>
+                    </>
                   ) : (
                     <Loader />
-                  )} */}
+                  )}
                 </Form>
               </div>
             </Col>
@@ -156,9 +178,18 @@ const Category = () => {
                     return <CategoryList key={index} index={index} {...data} />;
                   })}
               </div>
-              <div className="mt-5">
-                <PaginationComp />
-              </div>
+              {!loading ? (
+                <div className="mt-5">
+                  <Paginate
+                    pages={pages}
+                    page={page}
+                    list="category"
+                    history={history}
+                  />
+                </div>
+              ) : (
+                <Loader />
+              )}
             </Col>
           </Row>
         </div>

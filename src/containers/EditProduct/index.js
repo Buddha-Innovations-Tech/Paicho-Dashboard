@@ -14,10 +14,11 @@ import {
 import { listCategories } from "../../actions/categoryAction";
 
 import Loader from "../../components/Loader";
+import axios from "axios";
 
 const EditProduct = () => {
   // const [name, setProduct] = useState("");
-  // const [category, setCategory] = useState("");
+  const [editcategory, setEditCategory] = useState("");
   const [subcategory, setSubCategory] = useState([]);
   const [subcategorystate, setSubCategoryState] = useState("");
   // const [description, setDescription] = useState("");
@@ -31,59 +32,84 @@ const EditProduct = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [dltsimilarpdct, setDltSimilarPdct] = useState([]);
   const [seo, setSeo] = useState([]);
+  // const [images, setImage] = useState("");
   // const [product, setProduct] = useState("");
-
+  const [checked, setChecked] = useState(false);
   const handleInputChange = (e) => {
     let { name, value } = e.target;
-    setUpdateProduct({ ...updateProduct, [name]: value });
+    if (name === "category") {
+      setCatId(value);
+    } else {
+      setUpdateProducts({ ...updateProducts, [name]: value });
+    }
   };
-
-  const [updateProduct, setUpdateProduct] = useState({
+  const handleImage = (value) => {
+    setUpdateProducts({ ...updateProducts, ["image"]: value });
+  };
+  const [catId, setCatId] = useState("");
+  const [updateProducts, setUpdateProducts] = useState({
     name: "",
     category: "",
     description: "",
-    count: "",
+    countInStock: "",
     discount: "",
-    count: "",
+    // count: "",
     price: "",
     keyword: "",
     ingredient: "",
     similarproduct: "",
+    image: "",
   });
   const {
     name,
     category,
     description,
-    count,
+    countInStock,
     discount,
     price,
     keyword,
     ingredient,
     similarproduct,
-  } = updateProduct;
+    image,
+  } = updateProducts;
 
   const { userInfo } = useSelector((state) => state.userLogin);
   const { categories } = useSelector((state) => state.categoryList);
-  const { product } = useSelector((state) => state.productDetails);
+  const { loading, product } = useSelector((state) => state.productDetails);
 
   const { loading: productUpdateLoading } = useSelector(
     (state) => state.productUpdate
   );
 
   useEffect(() => {
-    if (product) {
-      setUpdateProduct({ ...product });
-    }
+    setUpdateProducts({ ...product });
+    setDltSimilarPdct(product.similar && product.similar.map((i) => i.name));
+    setSubCategories(product.ingredient && product.ingredient.map((i) => i));
+    setSeo(product.seokeyword && product.seokeyword.map((i) => i));
+    product.category && setCatId(product.category._id);
   }, [product]);
 
   let { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateProduct(updateProduct));
-    setUpdateProduct("");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    if (checked) {
+      await axios.put(`/api/products/archive/${product._id}`, {}, config);
+    } else {
+      dispatch(updateProduct(updateProducts));
+    }
+    // {
+    //   !checked && axios.put(`/api/products/archive/:id`);
+    // }
+    navigate("/productlist");
   };
 
   useEffect(() => {
@@ -96,13 +122,24 @@ const EditProduct = () => {
   useEffect(() => {
     dispatch(listProductDetails(id));
   }, []);
-
-  const settingSubCategoryState = () =>
-    setSubCategory(categories.find((i) => i._id === category).subcategories);
-
+  const findCategory = (id) =>
+    categories && categories.find((i) => i._id.toString() === id.toString());
   useEffect(() => {
-    if (category) settingSubCategoryState();
-  }, [category]);
+    if (category) {
+      const updateCategory = findCategory(catId);
+      setUpdateProducts({
+        ...updateProducts,
+        category: categories && updateCategory,
+      });
+      updateCategory && setSubCategory(updateCategory.subcategories);
+    }
+  }, [catId]);
+  // const setImage = (im) => {
+  //   setUpdateProducts
+  // };
+  // if (loading) {
+  //   return <p>loading...</p>;
+  // }
 
   return (
     <>
@@ -132,14 +169,12 @@ const EditProduct = () => {
                         id="category"
                         name="category"
                         onChange={handleInputChange}
-                        // onChange={handleCategory}
-                        // onChange={(e) => {
-                        //   setCategory(e.target.value);
-                        // }}
                       >
-                        <option value="" selected>
-                          Select a Category
-                        </option>
+                        {category && (
+                          <option selected value={category._id}>
+                            {category.name}
+                          </option>
+                        )}
                         {categories.map((curElm, index) => {
                           return (
                             <option value={curElm._id} key={index}>
@@ -147,12 +182,6 @@ const EditProduct = () => {
                             </option>
                           );
                         })}
-                        {/* <option value="">Processing Item</option>
-                        <option value="">Grains & Pulses</option>
-                        <option value="">Indenginous Product</option>
-                        <option value="">Dry Foods</option>
-                        <option value="">Ketchup & Sauces</option>
-                        <option value="">Organic Vegatable</option> */}
                       </select>
                     </Col>
                     <Col md={6}>
@@ -160,7 +189,6 @@ const EditProduct = () => {
                       <select
                         id="subcategory"
                         name="subcategory"
-                        // onChange={(e) => setSubCategoryState(e.target.value)}
                         onChange={handleInputChange}
                       >
                         <option selected>Select a Sub-Category</option>
@@ -171,9 +199,6 @@ const EditProduct = () => {
                             </option>
                           );
                         })}
-                        {/* <option value="saab">Bhutuk Pickle</option>
-                        <option value="fiat">Mango Pickle</option>
-                        <option value="audi">Lemon Pickle</option> */}
                       </select>
                     </Col>
                   </Row>
@@ -186,7 +211,6 @@ const EditProduct = () => {
                     placeholder="Description"
                     name="description"
                     value={description}
-                    // onChange={(e) => setDescription(e.target.value)}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -196,10 +220,9 @@ const EditProduct = () => {
                       <label htmlFor="">Stock Count</label>
                       <FormControl
                         type="text"
-                        name="count"
+                        name="countInStock"
                         placeholder=" Stock Count"
-                        value={count}
-                        // onChange={(e) => setCount(e.target.value)}
+                        value={countInStock}
                         onChange={handleInputChange}
                       />
                     </Col>
@@ -210,7 +233,6 @@ const EditProduct = () => {
                         name="discount"
                         placeholder=" Discount"
                         value={discount}
-                        // onChange={(e) => setDiscount(e.target.value)}
                         onChange={handleInputChange}
                       />
                     </Col>
@@ -221,7 +243,6 @@ const EditProduct = () => {
                         name="price"
                         placeholder=" Price"
                         value={price}
-                        // onChange={(e) => setPrice(e.target.value)}
                         onChange={handleInputChange}
                       />
                     </Col>
@@ -234,9 +255,7 @@ const EditProduct = () => {
                           type="text"
                           name="keyword"
                           value={keyword}
-                          // onChange={(e) => setKeyword(e.target.value)}
                           onChange={handleInputChange}
-                          // required
                         />
                       </Col>
                       <Col md={3}>
@@ -244,9 +263,7 @@ const EditProduct = () => {
                           className="addproductwrapper__background--addbtn"
                           onClick={(e) => {
                             e.preventDefault();
-                            keyword !== "" &&
-                              // !subCategories.find((i) => i === similarproduct) &&
-                              setSeo([keyword, ...seo]);
+                            keyword !== "" && setSeo([keyword, ...seo]);
                           }}
                         >
                           Add
@@ -285,7 +302,7 @@ const EditProduct = () => {
                   <span>Please choose image below 5 mb</span>
                 </p>
                 <div className="addproduct-dragdrop">
-                  <Previews />
+                  <Previews image={image} setImage={handleImage} />
                 </div>
               </Col>
             </Row>
@@ -302,7 +319,6 @@ const EditProduct = () => {
                         name="ingredient"
                         value={ingredient}
                         placeholder="ingredient used for making this product"
-                        // onChange={(e) => setIngredient(e.target.value)}
                         onChange={handleInputChange}
                         // required
                       />
@@ -313,7 +329,6 @@ const EditProduct = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           ingredient !== "" &&
-                            // !subCategories.find((i) => i === similarproduct) &&
                             setSubCategories([ingredient, ...subCategories]);
                         }}
                       >
@@ -359,7 +374,6 @@ const EditProduct = () => {
                         name="similarproduct"
                         placeholder="Similar product"
                         value={similarproduct}
-                        // onChange={(e) => setSimilarProduct(e.target.value)}
                         onChange={handleInputChange}
                         // required
                       />
@@ -369,7 +383,6 @@ const EditProduct = () => {
                         className="addproductwrapper__addbtn"
                         onClick={(e) => {
                           e.preventDefault();
-                          // !subCategories.find((i) => i === similarproduct) &&
                           similarproduct !== "" &&
                             setDltSimilarPdct([
                               similarproduct,
@@ -407,11 +420,33 @@ const EditProduct = () => {
               </Row>
             </div>
 
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value={checked}
+                id="flexCheckDefault"
+                onChange={(e) => {
+                  console.log(e.target.checked);
+
+                  setChecked(e.target.checked);
+                }}
+              />
+              <label
+                class="form-check-label"
+                for="flexCheckDefault"
+                checked={checked}
+              >
+                Archive this product
+              </label>
+            </div>
             {!productUpdateLoading ? (
               <>
                 <div className="categorywrapper__addcategorywrapper--buttons">
                   <button className="btn-discard">Discard</button>
-                  <button className="btn-addcategory">Update Product</button>
+                  <button className="btn-addcategory" onClick={handleSubmit}>
+                    Update Product
+                  </button>
                 </div>
               </>
             ) : (

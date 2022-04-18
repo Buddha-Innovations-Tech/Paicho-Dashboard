@@ -1,136 +1,48 @@
 import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { AiOutlineFilePdf } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import { BiSearch } from "react-icons/bi";
 
 import PaginationComp from "../../components/PaginationComp";
-import { listUsers } from "../../actions/userActions";
 import { listSubscribers } from "../../actions/subscriberActions";
-
-// const customerList = [
-//   {
-//     id: 1,
-//     username: "Sindhu aryal",
-//     Phone: 9847135126,
-//     email: "sindhu.12@gmail.com",
-//     address: "Butwal 10,Sukhanagar",
-//     order: 320,
-//   },
-//   {
-//     id: 2,
-//     username: "Sindhu ",
-//     Phone: 9847135126,
-//     email: "sindhu2@gmail.com",
-//     address: "Butwal 11,Shankhanagar",
-//     order: 0,
-//   },
-//   {
-//     id: 3,
-//     username: "Laxmi Pandey",
-//     Phone: 9847135126,
-//     email: "laxmi.12@gmail.com",
-//     address: "Butwal Golpark",
-//     order: 400,
-//   },
-//   {
-//     id: 4,
-//     username: "Sagar Gc",
-//     Phone: 9847135126,
-//     email: "sagar.12@gmail.com",
-//     address: "Butwal 10,Belbas",
-//     order: 440,
-//   },
-//   {
-//     id: 5,
-//     username: "Sindhu aryal",
-//     Phone: 9847135126,
-//     email: "sindhu.12@gmail.com",
-//     address: "Butwal 10,Sukhanagar",
-//     order: 45,
-//   },
-//   {
-//     id: 6,
-//     username: "Sindhu ",
-//     Phone: 9847135126,
-//     email: "sindhu2@gmail.com",
-//     address: "Butwal 11,Shankhanagar",
-//     order: 0,
-//   },
-//   {
-//     id: 7,
-//     username: "Laxmi Pandey",
-//     Phone: 9847135126,
-//     email: "laxmi.12@gmail.com",
-//     address: "Butwal Golpark",
-//     order: 350,
-//   },
-//   {
-//     id: 8,
-//     username: "Sagar Gc",
-//     Phone: 9847135126,
-//     email: "sagar.12@gmail.com",
-//     address: "Butwal 10,Belbas",
-//     order: 410,
-//   },
-//   {
-//     id: 9,
-//     username: "Sindhu aryal",
-//     Phone: 9847135126,
-//     email: "sindhu.12@gmail.com",
-//     address: "Butwal 10,Sukhanagar",
-//     order: 310,
-//   },
-//   {
-//     id: 10,
-//     username: "Sindhu ",
-//     Phone: 9847135126,
-//     email: "sindhu2@gmail.com",
-//     address: "Butwal 11,Shankhanagar",
-//     order: 0,
-//   },
-//   {
-//     id: 11,
-//     username: "Laxmi Pandey",
-//     Phone: 9847135126,
-//     email: "laxmi.12@gmail.com",
-//     address: "Butwal Golpark",
-//     order: 70,
-//   },
-//   {
-//     id: 12,
-//     username: "Sagar Gc",
-//     Phone: 9847135126,
-//     email: "sagar.12@gmail.com",
-//     address: "Butwal 10,Belbas",
-//     order: 90,
-//   },
-// ];
+import { listOrders } from "../../actions/orderAction";
+import Paginate from "../../components/PaginationComp";
+import Loader from "../../components/Loader";
 
 const Customer = () => {
+  // const [sortType, setSortType] = useState("Orders");
   const [searchInput, setSearchInput] = useState("");
   const { userInfo } = useSelector((state) => state.userLogin);
-  console.log(userInfo);
   const navigate = useNavigate();
-
+  const { pageNumber } = useParams();
+  const history = useNavigate();
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
     }
-    // if (!userInfo.superAdmin) {
-    //   navigate("/home");
-    // }
   }, [userInfo]);
 
-  const { subscribers, success } = useSelector((state) => state.subscriberList);
+  const {
+    subscribers,
+    success,
+    pages,
+    page,
+    loading: paginationLoading,
+  } = useSelector((state) => state.subscriberList);
+  useEffect(() => {
+    dispatch(listSubscribers());
+  }, [success]);
+  // useEffect(() => {
+  //   dispatch(listOrders());
+  // }, [success]);
+  useEffect(() => {
+    dispatch(listSubscribers(pageNumber));
+  }, [pageNumber]);
 
   const subs = subscribers.users;
-  // console.log(subs);
-
-  // const [sortType, setSortType] = useState("Orders");
-  // const [loading, setLoading] = useState(false);
-  // const [sorting, setSorting] = useState(subs);
+  const [sorting, setSorting] = useState(subs);
   const dispatch = useDispatch();
   // const changeSort = () => {
   //   if (sortType.toLowerCase() === "Orders".toLowerCase()) {
@@ -154,15 +66,23 @@ const Customer = () => {
   //   }
   // };
 
-  useEffect(() => {
-    dispatch(listSubscribers());
-  }, [success]);
-
   // useEffect(() => {
   //   setTimeout(() => {
   //     changeSort();
   //   }, 100);
   // }, [sortType]);
+
+  // const sorted = sorting.sort((a, b) => {
+  //   if (sortType === "Orders") {
+  //     return sorting;
+  //   } else if (sortType === "Highest Orders") {
+  //     return b.order - a.order;
+  //     // return [...b.order-a.order,...newCustomerlistString];
+  //   } else if (sortType === "Lowest Orders") {
+  //     return a.order - b.order;
+  //   }
+  //   setSorting(sorted);
+  // });
 
   return (
     <>
@@ -206,8 +126,8 @@ const Customer = () => {
               <Col md={1}>SN</Col>
               <Col md={2}>Name</Col>
               <Col md={2}>Phone Number</Col>
-              <Col md={2}>Email</Col>
-              <Col md={3}>Address</Col>
+              <Col md={3}>Email</Col>
+              <Col md={2}>Address</Col>
               <Col md={2}>Total Order</Col>
             </Row>
           </div>
@@ -233,16 +153,16 @@ const Customer = () => {
                       <Col md={2}>
                         <p>{curElm.mobilenumber}</p>
                       </Col>
-                      <Col md={2}>
+                      <Col md={3}>
                         <p>{curElm.email}</p>
                       </Col>
-                      <Col md={3}>
+                      <Col md={2}>
                         <p>{curElm.address}</p>
                       </Col>
 
                       <Col md={2}>
                         {/* <p>{curElm.order === 0 ? "No orders" : curElm.order}</p> */}
-                        <p>{curElm.order}</p>
+                        <p>{curElm.orders.length}</p>
                       </Col>
                     </Row>
                   );
@@ -250,9 +170,20 @@ const Customer = () => {
           </div>
         </div>
 
-        <div className="mt-5">
-          <PaginationComp />
-        </div>
+        {!paginationLoading ? (
+          <>
+            <div className="mt-5">
+              <Paginate
+                pages={pages}
+                page={page}
+                list="customer"
+                history={history}
+              />
+            </div>
+          </>
+        ) : (
+          <Loader />
+        )}
       </div>
     </>
   );

@@ -18,21 +18,33 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-const labels = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: labels.map(() =>
-        faker.datatype.number({ min: "3000", max: "15000" })
-      ),
-      backgroundColor: "#005AAB",
-    },
-  ],
-};
+const labels = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "June",
+  "July",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
-const HomeBarGraph = ({ title, topic }) => {
+const HomeBarGraph = ({ title, topic, bargraphEarning }) => {
+  const list = Object.values(bargraphEarning);
+  const data = {
+    labels,
+    datasets: [
+      {
+        // label: "Dataset 1",
+        data: list.map((i) => i),
+        backgroundColor: "#005AAB",
+      },
+    ],
+  };
   return (
     <>
       <div className="d-flex justify-content-between align-items-center bargraphwrapper">

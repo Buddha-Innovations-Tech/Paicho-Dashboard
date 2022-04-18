@@ -19,8 +19,8 @@ import Order from "../Order";
 import Home from "../Home";
 
 const App = () => {
-  // axios.defaults.baseURL = "https://evening-ravine-71797.herokuapp.com/";
-  axios.defaults.baseURL = "http://localhost:5000/";
+  axios.defaults.baseURL = "https://evening-ravine-71797.herokuapp.com/";
+  // axios.defaults.baseURL = "http://localhost:5000/";
   return (
     <div>
       <main>
@@ -32,17 +32,23 @@ const App = () => {
               element={<UpdateRegisterAcc />}
             />
             <Route path="/editcategory/:id" element={<EditCategory />} />
+
             <Route path="/editproduct/:id" element={<EditProduct />} />
             <Route path="/productlist" element={<ProductList />} />
             <Route path="/productlist/:pageNumber" element={<ProductList />} />
             <Route path="/transaction" element={<Transaction />} />
             <Route path="/addproduct" element={<AddProduct />} />
-            <Route path="category" element={<Category />} />
+            <Route path="/category" element={<Category />} />
+            <Route path="/category/:pageNumber" element={<Category />} />
             <Route path="/customer" element={<Customer />} />
+            <Route path="/customer/:pageNumber" element={<Customer />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/register/:pageNumber" element={<Register />} />
             <Route path="/carousel" element={<Carousel />} />
             <Route path="/report" element={<Report />} />
-            <Route path="order" element={<Order />} />
+            <Route path="/order" element={<Order />} />
+            <Route path="/order/:pageNumber" element={<Order />} />
+
             <Route path="home" element={<Home />} />
           </Route>
         </Routes>

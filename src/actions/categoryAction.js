@@ -22,7 +22,7 @@ import {
   CATEGORY_DELETE_FAIL,
 } from "../constants/categoryConstants";
 
-export const listCategories = () => async (dispatch, getState) => {
+export const listCategories = (pageNumber) => async (dispatch, getState) => {
   try {
     dispatch({
       type: CATEGORY_LIST_REQUEST,
@@ -40,8 +40,10 @@ export const listCategories = () => async (dispatch, getState) => {
     // const { data } = await axios.get(
     //   `/api/categories?pageNumber=${pageNumber}`
     // );
-
-    const { data } = await axios.get(`/api/categories/`, config);
+    const { data } = await axios.get(
+      `/api/categories?pagenumber=${pageNumber}`,
+      config
+    );
 
     dispatch({
       type: CATEGORY_LIST_SUCCESS,
@@ -58,7 +60,7 @@ export const listCategories = () => async (dispatch, getState) => {
   }
 };
 
-export const createCategory = (name, test) => async (dispatch, getState) => {
+export const createCategory = (p) => async (dispatch, getState) => {
   try {
     dispatch({
       type: CATEGORY_ADD_REQUEST,
@@ -71,11 +73,7 @@ export const createCategory = (name, test) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.post(
-      `/api/categories/add`,
-      { name, test },
-      config
-    );
+    const { data } = await axios.post(`/api/categories/add`, { p }, config);
     dispatch({
       type: CATEGORY_ADD_SUCCESS,
       payload: data,
@@ -123,7 +121,6 @@ export const listCategoryDetails = (id) => async (dispatch, getState) => {
 
 export const updateCategory = (category, id) => async (dispatch, getState) => {
   try {
-    // console.log(category, id, "sdsd");
     dispatch({
       type: CATEGORY_UPDATE_REQUEST,
     });
@@ -143,7 +140,6 @@ export const updateCategory = (category, id) => async (dispatch, getState) => {
       config
     );
 
-    console.log(data);
     dispatch({
       type: CATEGORY_UPDATE_SUCCESS,
       payload: data,

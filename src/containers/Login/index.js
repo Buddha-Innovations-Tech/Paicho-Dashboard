@@ -31,65 +31,67 @@ const Login = () => {
     <>
       {/* {error && <p style={{ backgroundColor: "red" }}>{error}</p>} */}
       <div className="loginbackground">
-        <div className="loginbackground__loginform">
-          <Form onSubmit={handleSubmit}>
-            <figure>
-              <img src={Logo} alt="" />
-            </figure>
-            <p className="loginbackground__loginform--title">
-              Paicho dashboard
-            </p>
-            <p className="loginbackground__loginform--login">Login</p>
-            <span className="loginbackground__loginform--subtitle">
-              Enter your email and password below
-            </span>
-            <div className="loginbackground__loginform--email">
-              <FormControl
-                name="Email"
-                placeholder="email address "
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <label htmlFor="" className="passwordlabel">
-              Password
-            </label>{" "}
-            <br />
-            <div className="passwordinput">
-              <div className="passwordinputdiv">
-                <InputGroup>
-                  <FormControl
-                    placeholder="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </InputGroup>
+        <div className="overlay">
+          <div className="loginbackground__loginform">
+            <Form onSubmit={handleSubmit}>
+              <figure>
+                <img src={Logo} alt="" />
+              </figure>
+              <p className="loginbackground__loginform--title">
+                Paicho dashboard
+              </p>
+              <p className="loginbackground__loginform--login">Login</p>
+              <span className="loginbackground__loginform--subtitle">
+                Enter your email and password below
+              </span>
+              <div className="loginbackground__loginform--email">
+                <FormControl
+                  name="Email"
+                  placeholder="email address "
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
-              <AiOutlineEyeInvisible className="eye-icon" />
-            </div>
-            {!loading ? (
-              <Link to="/" className="login-btn" onClick={handleSubmit}>
-                Login
-              </Link>
-            ) : (
-              <Loader />
-              // <p className="mt-4 Loading">loading...</p>
-            )}
-            <br />
-            {error && (
-              <Toast
-                onClose={() => setShowA(false)}
-                show={showA}
-                delay={3000}
-                autohide
-              >
-                <Toast.Body>
-                  <p>{error}</p>
-                </Toast.Body>
-              </Toast>
-            )}
-          </Form>
+              <label htmlFor="" className="passwordlabel">
+                Password
+              </label>{" "}
+              <br />
+              <div className="passwordinput">
+                <div className="passwordinputdiv">
+                  <InputGroup>
+                    <FormControl
+                      placeholder="password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </InputGroup>
+                </div>
+                <AiOutlineEyeInvisible className="eye-icon" />
+              </div>
+              {!loading ? (
+                <Link to="/" className="login-btn" onClick={handleSubmit}>
+                  Login
+                </Link>
+              ) : (
+                <Loader />
+                // <p className="mt-4 Loading">loading...</p>
+              )}
+              <br />
+              {error && (
+                <Toast
+                  onClose={() => setShowA(false)}
+                  show={showA}
+                  delay={3000}
+                  autohide
+                >
+                  <Toast.Body>
+                    <p>{error}</p>
+                  </Toast.Body>
+                </Toast>
+              )}
+            </Form>
+          </div>
         </div>
       </div>
     </>
