@@ -3,58 +3,65 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { ImCross } from "react-icons/im";
-
 import HomeBarGraph from "../../components/HomeBarGraph";
 import HomePieChart from "../../components/HomePieChart";
 import HomeOrder from "../../components/HomeOrder";
-import { getOrderDetails, listOrders } from "../../actions/orderAction";
-
-// const latestOrderData = [
-//   {
-//     sn: 1,
-//     name: "Sagar Gharti",
-//     phone: "9847456124",
-//     status: "completed",
-//   },
-//   {
-//     sn: 2,
-//     name: "Sagar Kc",
-//     phone: "9847056224",
-//     status: "cancelled",
-//   },
-//   {
-//     sn: 3,
-//     name: "Sagar Thapa",
-//     phone: "9847478624",
-//     status: "To be delivered",
-//   },
-//   {
-//     sn: 4,
-//     name: "Sagar Karki",
-//     phone: "9847412121",
-//     status: "In Progress",
-//   },
-//   {
-//     sn: 5,
-//     name: "Sagar Thapa",
-//     phone: "9847478624",
-//     status: "To be delivered",
-//   },
-// ];
-
+import {
+  getOrderDetails,
+  listOrders,
+  updateOrder,
+} from "../../actions/orderAction";
+import Moment from "react-moment";
+import {
+  earningDashboard,
+  incomeDashboard,
+} from "../../actions/dashboardAction";
+import { listDashboard } from "../../actions/dashboardAction";
 const Home = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
-  // console.log(userInfo);
+  const { dashboard: dashboardEarning } = useSelector(
+    (state) => state.dashboardEarningBarGraph
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [dash, setDash] = useState([]);
+  const [earningdash, setEarningDash] = useState([]);
+  const { dashboard, loading } = useSelector((state) => state.dashboardList);
   const { orders } = useSelector((state) => state.orderList);
   const { order } = useSelector((state) => state.orderDetails);
   const [viewId, setViewId] = useState(0);
+  const [orderStatus, setModalSelected] = useState("");
+  const [bargraphEarning, setBargraphEarning] = useState("");
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const handleView = (id) => {
     dispatch(getOrderDetails(id));
   };
+  const { success: orderUpdateSuccess } = useSelector(
+    (state) => state.orderUpdate
+  );
 
+  const { income, loading: incomeLoading } = useSelector(
+    (state) => state.dashboardIncome
+  );
+  const EditStatus = () => {
+    dispatch(
+      updateOrder(
+        {
+          orderStatus,
+        },
+        order?.order._id
+      )
+    );
+    handleClose();
+  };
+  useEffect(() => {
+    dispatch(listOrders());
+  }, [orderUpdateSuccess]);
+  useEffect(() => {
+    dispatch(earningDashboard(1));
+  }, []);
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
@@ -64,9 +71,25 @@ const Home = () => {
     dispatch(listOrders());
   }, [dispatch]);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  useEffect(() => {
+    if (!loading) {
+      setDash(dashboard);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (!incomeLoading) {
+      setEarningDash(income);
+    }
+  }, [incomeLoading]);
+
+  useEffect(() => {
+    dispatch(listDashboard());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(incomeDashboard(1));
+  }, []);
 
   return (
     <>
@@ -80,29 +103,41 @@ const Home = () => {
             <Row className="gx-4 gy-3">
               <Col md={6}>
                 <div className="tobedelivered">
-                  <HomeOrder order="To be delivered " number="4,50,000" />
+                  <HomeOrder
+                    number={dash.Tobedelivered}
+                    order="To be delivered "
+                  />
                 </div>
               </Col>
               <Col md={6}>
                 <div className="inprogress">
-                  <HomeOrder order="In Progress" number="45" />
+                  <HomeOrder order="In Progress" number={dash.InProgress} />
                 </div>
               </Col>
               <Col md={6}>
                 <div className="cancelledorder">
-                  <HomeOrder order="Canceled Orders " number="45" />
+                  <HomeOrder order="Canceled Orders " number={dash.Cancelled} />
                 </div>
               </Col>
               <Col md={6}>
                 <div className="completedorder">
-                  <HomeOrder order="Completed Orders " number="45" />
+                  <HomeOrder
+                    order="Completed Orders "
+                    number={dash.Completed}
+                  />
                 </div>
               </Col>
             </Row>
           </Col>
           <Col md={6}>
             <div className="homedashboardwrapper__bargraph">
-              <HomeBarGraph title="Revenue" topic="Last 7 days" />
+              {dashboard && (
+                <HomeBarGraph
+                  title="Revenue"
+                  topic="Last 7 days"
+                  bargraphEarning={dashboardEarning}
+                />
+              )}
             </div>
           </Col>
         </Row>
@@ -113,7 +148,7 @@ const Home = () => {
               <div className="d-flex justify-content-between align-items-center">
                 <p className="latestorderwrapper__latestorder">Latest Order</p>
                 <span className="latestorderwrapper__viewall">
-                  <Link to="">View All</Link>
+                  <Link to="/order">View All</Link>
                 </span>
               </div>
               <table className="table latestorderwrapper__table">
@@ -132,13 +167,11 @@ const Home = () => {
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>
-                          {" "}
-                          {curElm.shippingInfo && curElm.shippingInfo.user
-                            ? curElm.shippingInfo.user
+                          {curElm.shippingInfo && curElm.shippingInfo.fullname
+                            ? curElm.shippingInfo.fullname
                             : "no"}
                         </td>
                         <td>
-                          {" "}
                           {curElm.shippingInfo &&
                           curElm.shippingInfo.phonenumber
                             ? curElm.shippingInfo.phonenumber
@@ -148,21 +181,21 @@ const Home = () => {
                           <span
                             style={{
                               color:
-                                curElm.status === "completed"
+                                curElm.orderStatus === "Completed"
                                   ? "#063865"
-                                  : curElm.status === "cancelled"
+                                  : curElm.orderStatus === "Cancelled"
                                   ? "#920000"
-                                  : curElm.status === "To be delivered"
-                                  ? "#FFA500"
-                                  : "#495058",
+                                  : curElm.orderStatus === "In Progress"
+                                  ? "#495058"
+                                  : "#FFA500",
                               background:
-                                curElm.status === "completed"
+                                curElm.orderStatus === "Completed"
                                   ? "#C4DCF2"
-                                  : curElm.status === "cancelled"
+                                  : curElm.orderStatus === "Cancelled"
                                   ? "#FCDCD2"
-                                  : curElm.status === "To be delivered"
-                                  ? "#FFEDCC"
-                                  : "#DDEEC5",
+                                  : curElm.orderStatus === "In Progress"
+                                  ? "#DDEEC5"
+                                  : "#FFEDCC",
                               borderRadius: "28px",
                               padding: "5px 10px",
                               textAlign: "center",
@@ -177,7 +210,6 @@ const Home = () => {
                             onClick={() => {
                               setViewId(curElm._id);
                               handleView(curElm._id);
-                              // console.log(curElm._id, "hy");
                               handleShow();
                             }}
                           >
@@ -211,18 +243,20 @@ const Home = () => {
                     }}
                   >
                     <p className="username">
-                      {/* {orders?.orders?.shippingInfo.user
-                                      ? orders?.orders?.shippingInfo.user
-                                      : "nop"} */}
-                      {order?.order?.shippingInfo.user}
+                      {order?.order?.shippingInfo.fullname}
                     </p>
                     <div>
-                      <select>
+                      <select
+                        onChange={(e) => setModalSelected(e.target.value)}
+                      >
                         <option selected>To be delivered</option>
-                        <option> To be delivered </option>
-                        <option>In Progress</option>
-                        <option>Completed</option>
-                        <option>Cancelled</option>
+                        <option value="To be Delivered">
+                          {" "}
+                          To be delivered{" "}
+                        </option>
+                        <option value="Processing">In Progress</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
                       </select>
                     </div>
                   </div>
@@ -249,7 +283,11 @@ const Home = () => {
                     </tr>
                     <tr>
                       <td className="maindata">Date:</td>
-                      <td className="descdata">{order?.order?.createdAt}</td>
+                      <td className="descdata">
+                        <Moment format="DD/MM/YYYY">
+                          {order?.order?.createdAt}
+                        </Moment>
+                      </td>
                     </tr>
                   </table>
                 </div>
@@ -288,7 +326,7 @@ const Home = () => {
                     Cancel
                   </button>
 
-                  <button className="btn-addcategory" onClick={handleClose}>
+                  <button className="btn-addcategory" onClick={EditStatus}>
                     Save
                   </button>
                 </div>
@@ -302,12 +340,12 @@ const Home = () => {
                   <p className="revenuewrapper__earning">Earning</p>
                   <span className="revenuewrapper__revenue">Total Revenue</span>
                 </div>
-                <p className="revenuewrapper__total">Rs 40,20,000</p>
+                <p className="revenuewrapper__total">{dash.TotalRevenue}</p>
               </div>
               <div className="mt-3">
-                <HomePieChart percentage="80%" />
+                <HomePieChart income={earningdash} />
                 <p className="revenuewrapper__piechartconclusion mt-2">
-                  Sell is 70% more than last Month
+                  Sell is {earningdash.Earning} % more than last Month
                 </p>
               </div>
             </div>

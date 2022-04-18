@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { SiGumtree } from "react-icons/si";
 import axios from "axios";
+import { ImCross } from "react-icons/im";
 
 const thumbsContainer = {
   display: "flex",
@@ -45,6 +46,8 @@ const img = {
 };
 
 const Previews = ({ image, setImage }) => {
+  const [imagecut, setImageCut] = useState([]);
+  const [imageshow, setImageShow] = useState(image);
   // const [uploading, setUploading] = useState(false);
   const [files, setFiles] = useState([]);
   const {
@@ -72,11 +75,36 @@ const Previews = ({ image, setImage }) => {
   const thumbs = files.map((file) => (
     <div style={thumb} key={file.name}>
       <div style={thumbInner}>
-        <img src={file.preview} style={img} alt="" />
+        <img src={file.preview} style={img} alt="" className="dragzoneimg" />
+        <ImCross
+          className="dragzoneimg-icon"
+          onClick={(e) => setFiles(files.filter((i) => i !== file))}
+        />
       </div>
+      {/* {imagecut &&
+        imagecut.map((curElm, index) => {
+          return (
+          );
+        })} */}
     </div>
   ));
-
+  // {
+  //   seo &&
+  //     seo.map((curElm, index) => {
+  //       return (
+  //         <li
+  //           className="d-flex align-items-center justify-content-between"
+  //           key={index}
+  //         >
+  //           <p>{curElm}</p>
+  //           <ImCross
+  //             className="crossicon"
+  //             onClick={(e) => setSeo(seo.filter((i) => i !== curElm))}
+  //           />
+  //         </li>
+  //       );
+  //     });
+  // }
   const uploadHeroImageHandler = async (photo) => {
     // console.log(e);
     // e.preventDefault();
@@ -92,8 +120,11 @@ const Previews = ({ image, setImage }) => {
           "Content-Type": "multipart/form-data",
         },
       };
-      const { data } = await axios.post("/api/uploads", formData, config);
-      setImage(data);
+      const { data } = await axios.post("/api/uploads/", formData, config);
+      setImage(data.image);
+
+      // console.log(data.image);
+
       // setUploading(false);
     } catch (error) {
       console.error(error);
@@ -122,6 +153,44 @@ const Previews = ({ image, setImage }) => {
         <div className="drapanddrop-content">
           <SiGumtree className="treeicon" />
           <p>Drag and drop images or click to upload media</p>
+        </div>
+      </div>
+      <div className="carouselCard__image d-flex align-items-center">
+        <div className="carouselCard__image--img">
+          {/* <img
+            src={`http://localhost:5000${image}`}
+            alt="card"
+            name="image"
+            className="img-fluid"
+            style={{ position: "relative" }}
+          /> */}
+          <img
+            src={`${image}`}
+            alt="card"
+            name="image"
+            className="img-fluid"
+            style={{ position: "relative" }}
+          />
+          {/* {imagecut.map((curElm) => {
+            return (
+              <div>
+                <img
+                  src={`http://localhost:5000${image}`}
+                  alt="card"
+                  name="image"
+                  className="img-fluid"
+                  style={{ position: "relative" }}
+                />
+                <ImCross
+                  style={{ position: "absolute", fontSize: "12px" }}
+                  className="crossicon"
+                  onClick={(e) =>
+                    setImageCut(imagecut.filter((i) => i !== curElm))
+                  }
+                />
+              </div>
+            );
+          })} */}
         </div>
       </div>
       <aside style={thumbsContainer}>{thumbs}</aside>

@@ -187,7 +187,7 @@ export const udpateSubscriberProfile =
     }
   };
 
-export const listSubscribers = () => async (dispatch) => {
+export const listSubscribers = (pageNumber) => async (dispatch) => {
   try {
     dispatch({
       type: SUBSCRIBER_LIST_REQUEST,
@@ -204,8 +204,10 @@ export const listSubscribers = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(`/api/subscribers/`, config);
-    // console.log(data);
+    const { data } = await axios.get(
+      `/api/subscribers?pagenumber=${pageNumber}`,
+      config
+    );
     dispatch({
       type: SUBSCRIBER_LIST_SUCCESS,
       payload: data,

@@ -43,6 +43,8 @@ import {
   orderCreateReducers,
   orderDetailsReducers,
   orderListReducer,
+  orderUpdateReducer,
+  reportListReducer,
 } from "./reducers/orderReducers";
 import {
   carouselListReducer,
@@ -51,6 +53,11 @@ import {
   carouselUpdateReducer,
   carouselDetailsReducer,
 } from "./reducers/carouselReducers";
+import {
+  dashboardListReducer,
+  dashboardEarningBarGraphReducer,
+  dashboardIncomeReducer,
+} from "./reducers/dashboard.Reducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -85,12 +92,18 @@ const reducer = combineReducers({
   createOrder: orderCreateReducers,
   orderDetails: orderDetailsReducers,
   orderList: orderListReducer,
+  orderUpdate: orderUpdateReducer,
+  reportList: reportListReducer,
 
   carouselList: carouselListReducer,
   carouselCreate: createCarouselReducer,
   carouselDelete: carouselDeleteReducer,
   carouselUpdate: carouselUpdateReducer,
   carouselDetails: carouselDetailsReducer,
+
+  dashboardList: dashboardListReducer,
+  dashboardEarningBarGraph: dashboardEarningBarGraphReducer,
+  dashboardIncome: dashboardIncomeReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

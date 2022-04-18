@@ -1,10 +1,17 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Row, Col, Form } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { BiPlus } from "react-icons/bi";
-
+import axios from "axios";
 import PaginationComp from "../../components/PaginationComp";
 import CategoryList from "../../components/CategoryList";
 
@@ -22,6 +29,7 @@ const EditCategory = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [checked, setChecked] = useState(false);
 
   const [test, setTest] = useState("");
   const [categoryName, setCategoryName] = useState("");
@@ -35,20 +43,29 @@ const EditCategory = () => {
   //   (state) => state.categoryUpdate
   // );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     const data = {
       name: categoryName,
       subcategories: subCategories.map((i) => {
         return { name: i };
       }),
     };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    if (checked) {
+      await axios.put(`/api/categories/archive/${id}`, category, config);
+    } else {
+      dispatch(updateCategory(data, id));
+    }
 
-    dispatch(updateCategory(data, id));
+    navigate("/category");
     setCategoryName("");
     setTest("");
-    // navigate("/register");
   };
 
   useEffect(() => {
@@ -137,6 +154,23 @@ const EditCategory = () => {
                         );
                       })}
                   </ul>
+
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value={checked}
+                      id="flexCheckDefault"
+                      onChange={(e) => {
+                        console.log(e.target.checked);
+                        setChecked(e.target.checked);
+                      }}
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Archive this category
+                    </label>
+                  </div>
+
                   {!categoryUpdateLoading ? (
                     <>
                       <div className="categorywrapper__addcategorywrapper--buttons">
@@ -177,7 +211,14 @@ const EditCategory = () => {
                   </Col>
                 </Row>
                 {categories.map((data, index) => {
-                  return <CategoryList key={index} index={index} {...data} />;
+                  return (
+                    <CategoryList
+                      key={index}
+                      index={index}
+                      {...data}
+                      test={test}
+                    />
+                  );
                 })}
               </div>
               <div className="mt-5">

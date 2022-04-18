@@ -13,12 +13,7 @@ const ReportCard = ({ date }) => {
               <div className="reportcard__content--left">Completed Order:</div>
               <div className="reportcard__content--right">12,303</div>
             </div>
-            <div className="reportcard__content--single d-flex justify-content-between align-items-center">
-              <div className="reportcard__content--left">
-                Cancellation Order:
-              </div>
-              <div className="reportcard__content--right">100</div>
-            </div>
+
             <div className="reportcard__content--single d-flex justify-content-between align-items-center">
               <div className="reportcard__content--left">Total Revenue:</div>
               <div className="reportcard__content--right">24,000</div>

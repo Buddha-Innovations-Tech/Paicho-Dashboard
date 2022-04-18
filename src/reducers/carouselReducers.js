@@ -74,7 +74,7 @@ export const createCarouselReducer = (
 export const carouselUpdateReducer = (state = { carousel: {} }, action) => {
   switch (action.type) {
     case CAROUSEL_UPDATE_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, success: false };
     case CAROUSEL_UPDATE_SUCCESS:
       return { loading: false, success: true };
     case CAROUSEL_UPDATE_FAIL:

@@ -9,10 +9,9 @@ import CarouselCard from "../../components/CarouselCard";
 import InputField from "../../components/InputField";
 import Previews from "../../components/DragAndDrop";
 import { listCarousel, createCarousel } from "../../actions/carouselAction";
+import Loader from "../../components/Loader";
 
 const Carousel = () => {
-  const [uploading, setUploading] = useState(false);
-
   const { userInfo } = useSelector((state) => state.userLogin);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,6 +26,12 @@ const Carousel = () => {
   const { loading: carouselListLoading, carousel } = useSelector(
     (state) => state.carouselList
   );
+  const { success: carouselUpdateSuccess } = useSelector(
+    (state) => state.carouselUpdate
+  );
+  const { success: carouselDeleteSuccess } = useSelector(
+    (state) => state.carouselDelete
+  );
 
   const { success } = useSelector((state) => state.carouselCreate);
 
@@ -38,28 +43,7 @@ const Carousel = () => {
     setDescription("");
     setLink("");
   };
-  const uploadHeroImageHandler = async (e) => {
-    e.preventDefault();
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("image", file);
-    setUploading(true);
 
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      const { data } = await axios.post("/api/uploads", formData, config);
-      console.log(data);
-      setImage(data);
-      setUploading(false);
-    } catch (error) {
-      console.error(error);
-      setUploading(false);
-    }
-  };
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
@@ -67,12 +51,25 @@ const Carousel = () => {
   }, [userInfo]);
 
   useEffect(() => {
-    dispatch(listCarousel());
+    if (carouselListLoading) {
+      dispatch(listCarousel());
+    }
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(listCarousel());
   }, [success]);
+
+  useEffect(() => {
+    if (carouselUpdateSuccess) {
+      dispatch(listCarousel());
+    }
+  }, [carouselUpdateSuccess]);
+  useEffect(() => {
+    if (carouselDeleteSuccess) {
+      dispatch(listCarousel());
+    }
+  }, [carouselDeleteSuccess]);
 
   // useEffect(() => {
   //   dispatch(listCarousel());
@@ -106,7 +103,6 @@ const Carousel = () => {
               </button>
             </div>
           </div>
-
           {/* add-modal */}
           <Modal show={show} onHide={handleClose}>
             <Modal.Body>
@@ -124,25 +120,21 @@ const Carousel = () => {
                       required
                     />
                   </InputGroup>
-                  {/* <InputField name="Title" placeholder="Carousel Title" /> */}
                 </div>
                 <div className="mt-3">
-                  {/* <InputField
-                        name="Description"
-                        placeholder="Carousel description"
-                      /> */}
                   <label htmlFor="">Description</label>
                   <textarea
                     className="form-control"
                     id="description"
                     rows="5"
+                    name="des"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Carousel description"
                   ></textarea>
                 </div>
                 <div className="mt-3">
-                  <label htmlFor="">Firstname</label> <br />
+                  <label htmlFor="">Link</label> <br />
                   <InputGroup>
                     <FormControl
                       type="text"
@@ -160,12 +152,6 @@ const Carousel = () => {
                     <FiAlertTriangle />
                     <span>Please choose image below 5 mb</span>
                   </p>
-                  {/* <input
-                    type="file"
-                    name="image"
-                  
-                    onChange={uploadHeroImageHandler}
-                  /> */}
                   <Previews image={image} setImage={setImage} />
                 </div>
 
@@ -189,20 +175,27 @@ const Carousel = () => {
               </Form>
             </Modal.Body>
           </Modal>
+          {!carouselListLoading ? (
+            <>
+              <p className="addproductwrapper__background--dragdroptitle">
+                <FiAlertTriangle />
+                <span>Please choose image below 5 mb</span>
+              </p>
 
-          <p className="addproductwrapper__background--dragdroptitle">
-            <FiAlertTriangle />
-            <span>Please choose image below 5 mb</span>
-          </p>
-
-          <Row className="carouselwrapper__background--cards mb-3 gy-4">
-            {!carouselListLoading &&
-              carousel.map((i, index) => (
-                <Col md={4}>
-                  <CarouselCard key={i._id} carousel={i} />
-                </Col>
-              ))}
-          </Row>
+              {carousel.carousels && carousel.carousels.length > 0 && (
+                <Row className="carouselwrapper__background--cards mb-3 gy-4">
+                  {!carouselListLoading &&
+                    carousel.carousels.map((i) => (
+                      <Col md={4}>
+                        <CarouselCard key={i._id} carousel={i} />
+                      </Col>
+                    ))}
+                </Row>
+              )}
+            </>
+          ) : (
+            <Loader />
+          )}
         </div>
       </div>
     </>

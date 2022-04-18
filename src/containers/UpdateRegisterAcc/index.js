@@ -66,7 +66,6 @@ const UpdateRegisterAcc = () => {
   }, [user]);
 
   const handleDelete = (id) => {
-    // console.log(delete: ${id});
     dispatch(deleteUser(id));
     handleClose1();
   };
@@ -74,7 +73,6 @@ const UpdateRegisterAcc = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateUser(state));
-    // navigate("/register");
   };
 
   useEffect(() => {
@@ -101,7 +99,6 @@ const UpdateRegisterAcc = () => {
               <p className="registerwrapper__subtitle">Register new user</p>
               <Form onSubmit={handleSubmit}>
                 <div className="mt-3">
-                  {/* <InputField name="Username" placeholder="Username" /> */}
                   <label htmlFor="">Firstname</label> <br />
                   <InputGroup>
                     <FormControl
@@ -115,7 +112,6 @@ const UpdateRegisterAcc = () => {
                   </InputGroup>
                 </div>
                 <div className="mt-3">
-                  {/* <InputField name="Username" placeholder="Username" /> */}
                   <label htmlFor="">Lastname</label> <br />
                   <InputGroup>
                     <FormControl
@@ -129,7 +125,6 @@ const UpdateRegisterAcc = () => {
                   </InputGroup>
                 </div>
                 <div className="mt-4">
-                  {/* <InputField name="Email" placeholder="Email" /> */}
                   <label htmlFor="">Email</label> <br />
                   <InputGroup>
                     <FormControl
@@ -177,11 +172,9 @@ const UpdateRegisterAcc = () => {
                 <Col md={1}>SN</Col>
                 <Col md={4}>Username</Col>
                 <Col md={5}>Email</Col>
-                {/* <Col md={3}>Password</Col> */}
                 <Col md={2}>Action</Col>
               </Row>
               <div>
-                {/* {adminList.map((curElm, index) => { */}
                 {users.users &&
                   users.users.map((curElm, index) => {
                     return (

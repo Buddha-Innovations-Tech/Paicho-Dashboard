@@ -16,6 +16,9 @@ import {
   ORDER_UPDATE_FAIL,
   ORDER_UPDATE_REQUEST,
   ORDER_UPDATE_SUCCESS,
+  REPORT_LIST_REQUEST,
+  REPORT_LIST_FAIL,
+  REPORT_LIST_SUCCESS,
 } from "../constants/orderConstants";
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -85,7 +88,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
   }
 };
 
-export const listOrders = () => async (dispatch, getState) => {
+export const listOrders = (pageNumber) => async (dispatch, getState) => {
   try {
     dispatch({
       type: ORDER_LIST_REQUEST,
@@ -101,7 +104,10 @@ export const listOrders = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/orders`, config);
+    const { data } = await axios.get(
+      `/api/orders?pagenumber=${pageNumber}`,
+      config
+    );
 
     dispatch({
       type: ORDER_LIST_SUCCESS,
@@ -110,6 +116,76 @@ export const listOrders = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ORDER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const updateOrder = (order, id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/orders/${id}`, order, config);
+
+    dispatch({
+      type: ORDER_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const listReports = (Month) => async (dispatch, getState) => {
+  console.log(Month);
+  try {
+    dispatch({
+      type: REPORT_LIST_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `/api/orders/monthly/reports?month=${Month}`,
+      config
+    );
+    console.log(data);
+
+    dispatch({
+      type: REPORT_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REPORT_LIST_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

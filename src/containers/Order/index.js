@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Modal } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { BiSearch } from "react-icons/bi";
 import { ImCross } from "react-icons/im";
 import Moment from "react-moment";
 
-import PaginationComp from "../../components/PaginationComp";
-import { getOrderDetails, listOrders } from "../../actions/orderAction";
+import Paginate from "../../components/PaginationComp";
+import {
+  getOrderDetails,
+  listOrders,
+  updateOrder,
+} from "../../actions/orderAction";
+import Loader from "../../components/Loader";
 
 const Order = () => {
   const [searchinput, setSearchInput] = useState("");
@@ -20,20 +25,26 @@ const Order = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [modalselected, setModalSelected] = useState("");
+  const [orderStatus, setModalSelected] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFilterDate(e.target.value);
   };
+  const { pageNumber } = useParams();
+  const history = useNavigate();
 
-  // const { success: orderListSuccess } = useSelector((state) => state.orderList);
-  // console.log(orders.orders, "orders");
-
-  const { orders } = useSelector((state) => state.orderList);
+  const {
+    orders,
+    pages,
+    page,
+    loading: paginationLoading,
+  } = useSelector((state) => state.orderList);
   const { order } = useSelector((state) => state.orderDetails);
-  // const orderItem = orders.orders;
+  const { success: orderUpdateSuccess } = useSelector(
+    (state) => state.orderUpdate
+  );
 
   const [viewId, setViewId] = useState(0);
 
@@ -47,15 +58,29 @@ const Order = () => {
     dispatch(getOrderDetails(id));
   };
 
+  const EditStatus = () => {
+    dispatch(
+      updateOrder(
+        {
+          orderStatus,
+        },
+        order?.order._id
+      )
+    );
+    handleClose();
+  };
+
   useEffect(() => {
     dispatch(listOrders());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (orderListSuccess) {
-  //     dispatch(listOrders());
-  //   }
-  // }, [orderListSuccess]);
+  useEffect(() => {
+    dispatch(listOrders());
+  }, [orderUpdateSuccess]);
+
+  useEffect(() => {
+    dispatch(listOrders(pageNumber));
+  }, [pageNumber]);
 
   useEffect(() => {
     filterdate === "Day" ? setDate(true) : setDate(false);
@@ -117,10 +142,10 @@ const Order = () => {
                   onChange={(e) => setFilterTerm(e.target.value)}
                 >
                   <option selected>Status</option>
-                  <option> To be delivered </option>
-                  <option>In Progress</option>
-                  <option>Completed</option>
-                  <option>Cancelled</option>
+                  <option value="To be Delivered"> To be delivered </option>
+                  <option value="Processing">In Progress</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Cancelled">Cancelled</option>
                 </select>
               </div>
             </div>
@@ -139,9 +164,13 @@ const Order = () => {
           </div>
           <div>
             {filterTerm === "Status"
-              ? orders?.orders
+              ? orders &&
+                orders.orders &&
+                orders?.orders
                   ?.filter((order) =>
-                    order.shippingInfo.user.toLowerCase().includes(searchinput)
+                    order.shippingInfo.fullname
+                      .toLowerCase()
+                      .includes(searchinput)
                   )
                   .map((curElm, index) => {
                     return (
@@ -154,9 +183,9 @@ const Order = () => {
                         </Col>
                         <Col md={1}>
                           <p>
-                            {curElm.shippingInfo && curElm.shippingInfo.user
-                              ? curElm.shippingInfo.user
-                              : "no"}
+                            {curElm.shippingInfo && curElm.shippingInfo.fullname
+                              ? curElm.shippingInfo.fullname
+                              : ""}
                           </p>
                         </Col>
                         <Col md={2}>
@@ -168,22 +197,13 @@ const Order = () => {
                           </p>
                         </Col>
                         <Col md={1}>
-                          <p>
-                            {curElm.totalPrice ? curElm.totalPrice : "no"}
-                            {/* {curElm.totalPrice} */}
-                          </p>
+                          <p>{curElm.totalPrice ? curElm.totalPrice : "no"}</p>
                         </Col>
                         <Col md={1}>
                           <p>
-                            {/* {curElm.shippingInfo &&
-                            curElm.shippingInfo.paymentInfo
-                              ? curElm.shippingInfo.paymentInfo
-                              : "no"} */}
-                            {/* {curElm.paymentInfo ? curElm.paymentInfo : "no"} */}
-                            {/* {console.log(
-                              curElm.paymentInfo ? curElm.paymentInfo : "no"
-                            )} */}
-                            {/* {curElm.paymentInfo} */}
+                            {curElm.paymentInfo && curElm.paymentInfo.method
+                              ? curElm.paymentInfo.method
+                              : "no"}
                           </p>
                         </Col>
 
@@ -191,19 +211,19 @@ const Order = () => {
                           <p
                             style={{
                               color:
-                                curElm.status === "Completed"
+                                curElm.orderStatus === "Completed"
                                   ? "#063865"
-                                  : curElm.status === "Cancelled"
+                                  : curElm.orderStatus === "Cancelled"
                                   ? "#920000"
-                                  : curElm.status === "In Progress"
+                                  : curElm.orderStatus === "In Progress"
                                   ? "#495058"
                                   : "#FFA500",
                               background:
-                                curElm.status === "Completed"
+                                curElm.orderStatus === "Completed"
                                   ? "#C4DCF2"
-                                  : curElm.status === "Cancelled"
+                                  : curElm.orderStatus === "Cancelled"
                                   ? "#FCDCD2"
-                                  : curElm.status === "In Progress"
+                                  : curElm.orderStatus === "In Progress"
                                   ? "#DDEEC5"
                                   : "#FFEDCC",
                               borderRadius: "28px",
@@ -228,152 +248,226 @@ const Order = () => {
                             onClick={() => {
                               setViewId(curElm._id);
                               handleView(curElm._id);
-                              // console.log(curElm._id, "hy");
                               handleShow();
                             }}
                           >
                             View Details
                           </button>
                         </Col>
-                        <Modal show={show} onHide={handleClose}>
-                          <Modal.Body>
-                            <div className="ordermodalbg">
-                              <div className="d-flex justify-content-between align-items-center">
-                                <p className="ordermodalbg__title">Details</p>
-                                <ImCross
-                                  className="carouselCard__category--icons--crossicon"
-                                  onClick={handleClose}
-                                />
-                              </div>
-                              <div className="userdetails">
-                                <p className="topic">User Details</p>
-                                <div
-                                  className="d-flex justify-content-between align-items-center"
-                                  style={{
-                                    borderBottom: "0.6px solid #E0E0E0",
-                                    paddingBottom: "11px",
-                                  }}
-                                >
-                                  <p className="username">
-                                    {/* {orders?.orders?.shippingInfo.user
-                                      ? orders?.orders?.shippingInfo.user
-                                      : "nop"} */}
-                                    {order?.order?.shippingInfo.user}
-                                  </p>
-                                  <div>
-                                    <select
-                                      onChange={(e) =>
-                                        setModalSelected(e.target.value)
-                                      }
-                                    >
-                                      <option selected>To be delivered</option>
-                                      <option> To be delivered </option>
-                                      <option>In Progress</option>
-                                      <option>Completed</option>
-                                      <option>Cancelled</option>
-                                    </select>
-                                  </div>
-                                </div>
-                                <table>
-                                  <tr>
-                                    <td className="maindata">Billing Name:</td>
-                                    <td className="descdata">Self</td>
-                                  </tr>
-                                  <tr>
-                                    <td className="maindata">Email:</td>
-                                    <td className="descdata">
-                                      sagarchhetri981@gmail.com
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="maindata">Phone Number:</td>
-                                    <td className="descdata">
-                                      {order?.order?.shippingInfo.phonenumber}
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="maindata">Address:</td>
-                                    <td className="descdata">
-                                      {order?.order?.shippingInfo.address}
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="maindata">Date:</td>
-                                    <td className="descdata">
-                                      <Moment format="DD/MM/YYYY">
-                                        {order?.order?.createdAt}
-                                      </Moment>
-                                    </td>
-                                  </tr>
-                                </table>
-                              </div>
-                              <div className="userdetails">
-                                <p className="topic">Order Details</p>
-                                <div className="orderwrapper__background--headingrow modalheading">
-                                  <Row>
-                                    <Col md={4}>Product Name</Col>
-                                    <Col md={4}>Quantity</Col>
-                                    <Col md={4}>Price</Col>
-                                  </Row>
-                                </div>
-                                <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                  <Col md={4}>
-                                    {console.log(order?.order?.orderItems)}
-                                  </Col>
-                                  <Col md={4}></Col>
-                                  <Col md={4}></Col>
-                                </Row>
-                                {/* <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                  <Col md={4}>Lemon Pickle</Col>
-                                  <Col md={4}>2</Col>
-                                  <Col md={4}>Rs.120</Col>
-                                </Row>
-                                <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                                  <Col md={4}>Honey</Col>
-                                  <Col md={4}>4</Col>
-                                  <Col md={4}>Rs.500</Col>
-                                </Row>*/}
-
-                                <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
-                                  <Col md={4}>Shipping Price</Col>
-                                  <Col md={4}></Col>
-                                  <Col md={4}>
-                                    {order?.order?.shippingPrice}
-                                  </Col>
-                                </Row>
-                                <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
-                                  <Col md={4}>Total</Col>
-                                  <Col md={4}></Col>
-                                  <Col md={4}>{order?.order?.totalPrice}</Col>
-                                </Row>
-                              </div>
-                              <div className="categorywrapper__addcategorywrapper--buttons">
-                                <button
-                                  className="btn-discard"
-                                  onClick={handleClose}
-                                >
-                                  Cancel
-                                </button>
-
-                                <button
-                                  className="btn-addcategory"
-                                  onClick={handleClose}
-                                >
-                                  Save
-                                </button>
-                              </div>
-                            </div>
-                          </Modal.Body>
-                        </Modal>
                       </Row>
                     );
                   })
-              : ""}
-          </div>
-          <div className="mt-5">
-            <PaginationComp />
+              : orders &&
+                orders.orders
+                  .filter((i) => i.orderStatus === filterTerm)
+                  .map((i, index) => {
+                    return (
+                      <Row
+                        className="productlistwrapper__productlistwrapper--listitem"
+                        key={index}
+                      >
+                        <Col md={1}>
+                          <p>{index + 1}</p>
+                        </Col>
+                        <Col md={1}>
+                          <p>
+                            {i.shippingInfo && i.shippingInfo.fullname
+                              ? i.shippingInfo.fullname
+                              : ""}
+                          </p>
+                        </Col>
+                        <Col md={2}>
+                          <p>
+                            {i.shippingInfo && i.shippingInfo.phonenumber
+                              ? i.shippingInfo.phonenumber
+                              : "no"}
+                          </p>
+                        </Col>
+                        <Col md={1}>
+                          <p>{i.totalPrice ? i.totalPrice : "no"}</p>
+                        </Col>
+                        <Col md={1}>
+                          <p>
+                            {i.paymentInfo && i.paymentInfo.method
+                              ? i.paymentInfo.method
+                              : "no"}
+                          </p>
+                        </Col>
+
+                        <Col md={2}>
+                          <p
+                            style={{
+                              color:
+                                i.orderStatus === "Completed"
+                                  ? "#063865"
+                                  : i.orderStatus === "Cancelled"
+                                  ? "#920000"
+                                  : i.orderStatus === "In Progress"
+                                  ? "#495058"
+                                  : "#FFA500",
+                              background:
+                                i.orderStatus === "Completed"
+                                  ? "#C4DCF2"
+                                  : i.orderStatus === "Cancelled"
+                                  ? "#FCDCD2"
+                                  : i.orderStatus === "In Progress"
+                                  ? "#DDEEC5"
+                                  : "#FFEDCC",
+                              borderRadius: "28px",
+                              padding: "5px 10px",
+                              textAlign: "center",
+                            }}
+                          >
+                            {i.orderStatus ? i.orderStatus : "no"}
+                          </p>
+                        </Col>
+                        <Col md={2}>
+                          <p>
+                            <Moment format="DD/MM/YYYY">
+                              {i.createdAt ? i.createdAt : ""}
+                            </Moment>
+                          </p>
+                        </Col>
+
+                        <Col md={2}>
+                          <button
+                            className="editbtn"
+                            onClick={() => {
+                              setViewId(i._id);
+                              handleView(i._id);
+                              handleShow();
+                            }}
+                          >
+                            View Details
+                          </button>
+                        </Col>
+                      </Row>
+                    );
+                  })}
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Body>
+                <div className="ordermodalbg">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <p className="ordermodalbg__title">Details</p>
+                    <ImCross
+                      className="carouselCard__category--icons--crossicon"
+                      onClick={handleClose}
+                    />
+                  </div>
+                  <div className="userdetails">
+                    <p className="topic">User Details</p>
+                    <div
+                      className="d-flex justify-content-between align-items-center"
+                      style={{
+                        borderBottom: "0.6px solid #E0E0E0",
+                        paddingBottom: "11px",
+                      }}
+                    >
+                      <p className="username">
+                        {order?.order?.shippingInfo.fullname}
+                      </p>
+                      <div>
+                        <select
+                          onChange={(e) => setModalSelected(e.target.value)}
+                        >
+                          <option selected>To be delivered</option>
+                          <option value="To be Delivered">
+                            {" "}
+                            To be delivered{" "}
+                          </option>
+                          <option value="Processing">In Progress</option>
+                          <option value="Delivered">Completed</option>
+                          <option value="Cancelled">Cancelled</option>
+                        </select>
+                      </div>
+                    </div>
+                    <table>
+                      <tr>
+                        <td className="maindata">Billing Name:</td>
+                        <td className="descdata">Self</td>
+                      </tr>
+                      <tr>
+                        <td className="maindata">Email:</td>
+                        <td className="descdata">sagarchhetri981@gmail.com</td>
+                      </tr>
+                      <tr>
+                        <td className="maindata">Phone Number:</td>
+                        <td className="descdata">
+                          {order?.order?.shippingInfo.phonenumber}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="maindata">Address:</td>
+                        <td className="descdata">
+                          {order?.order?.shippingInfo.address}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="maindata">Date:</td>
+                        <td className="descdata">
+                          <Moment format="DD/MM/YYYY">
+                            {order?.order?.createdAt}
+                          </Moment>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div className="userdetails">
+                    <p className="topic">Order Details</p>
+                    <div className="orderwrapper__background--headingrow modalheading">
+                      <Row>
+                        <Col md={4}>Product Name</Col>
+                        <Col md={4}>Quantity</Col>
+                        <Col md={4}>Price</Col>
+                      </Row>
+                    </div>
+                    <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                      <Col md={4}>
+                        {/* {console.log(order?.order?.orderItems)} */}
+                      </Col>
+                      <Col md={4}></Col>
+                      <Col md={4}></Col>
+                    </Row>
+
+                    <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
+                      <Col md={4}>Shipping Price</Col>
+                      <Col md={4}></Col>
+                      <Col md={4}>{order?.order?.shippingPrice}</Col>
+                    </Row>
+                    <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
+                      <Col md={4}>Total</Col>
+                      <Col md={4}></Col>
+                      <Col md={4}>{order?.order?.totalPrice}</Col>
+                    </Row>
+                  </div>
+                  <div className="categorywrapper__addcategorywrapper--buttons">
+                    <button className="btn-discard" onClick={handleClose}>
+                      Cancel
+                    </button>
+
+                    <button className="btn-addcategory" onClick={EditStatus}>
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </Modal.Body>
+            </Modal>
           </div>
         </div>
+        {!paginationLoading ? (
+          <>
+            <div className="mt-5">
+              <Paginate
+                pages={pages}
+                page={page}
+                list="order"
+                history={history}
+              />
+            </div>
+          </>
+        ) : (
+          <Loader />
+        )}
       </div>
     </>
   );

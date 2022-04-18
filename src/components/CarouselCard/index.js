@@ -18,78 +18,67 @@ import {
   updateCarousel,
 } from "../../actions/carouselAction";
 import Loader from "../Loader";
+import { CAROUSEL_RESET } from "../../constants/carouselConstants";
 
 const CarouselCard = ({
   carousel: { title, link, description, image, _id },
 }) => {
   const [deleteid, setDeleteId] = useState(0);
-  const [updateId, setUpdateId] = useState(0);
 
   const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [edittitle, setEditTitle] = useState(title);
+  const [editlink, setEditLink] = useState(link);
+  const [editdescription, setEditDescription] = useState(description);
+  const [editimage, setEditImage] = useState(image);
 
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
-
-  const handleInputChange = (e) => {
-    let { name, value } = e.target;
-    setUpdateCaroo({ ...updateCaroo, [name]: value });
-  };
-
-  const [updateCaroo, setUpdateCaroo] = useState({
-    title: "",
-    description: "",
-    link: "",
-  });
-
-  // const { title, desc, link } = updateCaroo;
-
-  const { loading } = useSelector((state) => state.carouselDelete);
-  // const { success: carouselDeleteSuccess } = useSelector(
-  //   (state) => state.carouselDelete
-  // );
 
   const deleteCaro = (id) => {
     dispatch(deleteCarousel(id));
     handleClose1();
   };
 
-  const updateCaro = (id) => {
-    // console.log(id, "carouselcard");
-    dispatch(updateCarousel(id));
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(
+      updateCarousel(
+        {
+          title: edittitle,
+          link: editlink,
+          description: editdescription,
+          image: editimage,
+        },
+        _id
+      )
+    );
     handleClose();
   };
 
   let { id } = useParams();
   const { carousel } = useSelector((state) => state.carouselDetails);
+  console.log(image);
 
-  useEffect(() => {
-    dispatch(listCarouselDetails(id));
-  }, []);
-
-  useEffect(() => {
-    if (carousel) {
-      setUpdateCaroo({ ...carousel });
-    }
-  }, [carousel]);
+  // useEffect(() => {
+  //   if (carouselUpdateSuccess) {
+  //     dispatch(listCarousel());
+  //   }
+  // }, [carouselUpdateSuccess]);
   return (
     <>
       <div className="carouselCard">
         <div className="carouselCard__category d-flex justify-content-between">
-          <div className="carouselCard__category--name">
-            Paicho Lemon Pickle
-          </div>
+          <div className="carouselCard__category--name">{title}</div>
           <div className="carouselCard__category--icons d-flex justify-content-between">
             <FiEdit
               className="carouselCard__category--icons--editicon"
               onClick={() => {
-                setUpdateId(_id);
                 handleShow();
-                console.log(_id, "updateid");
               }}
             />
             <ImCross
@@ -105,16 +94,16 @@ const CarouselCard = ({
           <Modal show={show} onHide={handleClose}>
             <Modal.Body className="edit__body">
               <div className="title">Edit carousel</div>
-              <Form>
+              <Form onSubmit={handleSubmit}>
                 <div className="mt-4">
                   <label htmlFor="">Title</label> <br />
                   <InputGroup>
                     <FormControl
                       type="text"
-                      name="Title"
+                      name="title"
                       placeholder="Get 10% off with Paicho Lemon Pickle "
-                      value={title}
-                      onChange={handleInputChange}
+                      value={edittitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
                       required
                     />
                   </InputGroup>
@@ -125,9 +114,9 @@ const CarouselCard = ({
                     class="form-control"
                     id="description"
                     rows="5"
-                    value={description}
+                    value={editdescription}
                     placeholder="Organic Fresh Fruits"
-                    onChange={handleInputChange}
+                    onChange={(e) => setEditDescription(e.target.value)}
                   ></textarea>
                 </div>
                 <div className="mt-3">
@@ -136,8 +125,8 @@ const CarouselCard = ({
                     <FormControl
                       name="Link"
                       placeholder="https;//paichopasal.com/productpage/pickle "
-                      value={link}
-                      onChange={handleInputChange}
+                      value={editlink}
+                      onChange={(e) => setEditLink(e.target.value)}
                       required
                     />
                   </InputGroup>
@@ -148,7 +137,7 @@ const CarouselCard = ({
                     <FiAlertTriangle />
                     <span>Please choose image below 5 mb</span>
                   </p>
-                  <Previews />
+                  <Previews image={image} setImage={setEditImage} />
                 </div>
 
                 <div className="mt-3 d-flex justify-content-end">
@@ -160,9 +149,9 @@ const CarouselCard = ({
                   </button>
                   <button
                     className="carouselwrapper__background__btn--add"
-                    onClick={() => {
-                      updateCaro(updateId);
-                    }}
+                    // onClick={(e) => {
+                    //   updateCaro(e);
+                    // }}
                   >
                     Update Product
                   </button>
@@ -208,25 +197,27 @@ const CarouselCard = ({
           <div className="carouselCard__image--name">Images: </div>
           <div className="carouselCard__image--img">
             <img
-              src={`http://localhost:5000${image}`}
+              // src={`http://localhost:5000${image}`}
+              src={`${image}`}
               // src={image}
               alt="card"
+              name="image"
               className="img-fluid"
             />
           </div>
         </div>
-        <div className="carouselCard__title d-flex">
+        {/* <div className="carouselCard__title d-flex">
           <div className="carouselCard__title--name">Title:</div>
           <p>{title} </p>
-        </div>
+        </div> */}
         <div className="carouselCard__desc d-flex">
           <div className="carouselCard__desc--name">Description:</div>
           <p>{description} </p>
         </div>
-        <div className="carouselCard__link d-flex">
+        <div className="carouselCard__link d-flex mt-2">
           <div className="carouselCard__link--name">Link: </div>
-          <a href={link}>
-            <p>paichopasal.com/productpage/pickle </p>
+          <a href={link} title="paichopasal.com/productpage/pickle">
+            paichopasal.com/productpage/pickle
           </a>
         </div>
       </div>

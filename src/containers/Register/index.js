@@ -7,12 +7,12 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
-
+import Paginate from "../../components/PaginationComp";
 // import DragAndDrop from "../../components/DragAndDrop";
 import {
   listUsers,
@@ -37,7 +37,12 @@ const Register = () => {
   // const [image, setImage] = useState(
   //   "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
   // );
-  const { users } = useSelector((state) => state.userList);
+  const {
+    users,
+    pages,
+    page,
+    loading: paginationLoading,
+  } = useSelector((state) => state.userList);
   const { userInfo } = useSelector((state) => state.userLogin);
   const { success, loading, error } = useSelector(
     (state) => state.userRegister
@@ -53,7 +58,8 @@ const Register = () => {
   const { success: userDeleteSuccess } = useSelector(
     (state) => state.userDelete
   );
-  const navigate = useNavigate();
+  const { pageNumber } = useParams();
+  const history = useNavigate();
   const dispatch = useDispatch();
 
   const handleDelete = (id) => {
@@ -107,18 +113,17 @@ const Register = () => {
       setLname("");
       setEmail("");
       setPassword("");
-      // setMessage("");
-      // setMessage1("");
-      // setMessage2("");
-      // setMessage3("");
     }
   };
 
   useEffect(() => {
     if (!userInfo) {
-      navigate("/login");
+      history("/login");
     }
   }, [userInfo]);
+  useEffect(() => {
+    dispatch(listUsers(pageNumber));
+  }, [pageNumber]);
 
   useEffect(() => {
     dispatch(listUsers());
@@ -126,7 +131,7 @@ const Register = () => {
 
   useEffect(() => {
     if (!userInfo) {
-      navigate("/login");
+      history("/login");
     }
   }, [userInfo]);
 
@@ -227,7 +232,7 @@ const Register = () => {
             </div>
           </Col>
           <Col md={7}>
-            <div className="registerwrapper__background">
+            <div className="registerwrapper__background mb-4">
               <p className="registerwrapper__righttitle">Admin List</p>
               <Row className="catetgorylist-heading adminlistheading">
                 <Col md={1}>SN</Col>
@@ -267,7 +272,7 @@ const Register = () => {
                               className="editicon"
                               onClick={() => {
                                 // handleUpdate(curElm._id);
-                                navigate(`/updateregisteracc/${curElm._id}`);
+                                history(`/updateregisteracc/${curElm._id}`);
                               }}
                             />
                             {/* </Link> */}
@@ -319,6 +324,18 @@ const Register = () => {
                   })}
               </div>
             </div>
+            {!paginationLoading ? (
+              <>
+                <Paginate
+                  pages={pages}
+                  page={page}
+                  list="register"
+                  history={history}
+                />
+              </>
+            ) : (
+              <Loader />
+            )}
           </Col>
         </Row>
       </div>
