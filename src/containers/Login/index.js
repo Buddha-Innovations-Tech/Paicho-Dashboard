@@ -60,6 +60,7 @@ const Login = () => {
                 <div className="passwordinputdiv">
                   <InputGroup>
                     <FormControl
+                      type="password"
                       placeholder="password"
                       required
                       value={password}
@@ -82,7 +83,7 @@ const Login = () => {
                 <Toast
                   onClose={() => setShowA(false)}
                   show={showA}
-                  delay={3000}
+                  delay={10000}
                   autohide
                 >
                   <Toast.Body>

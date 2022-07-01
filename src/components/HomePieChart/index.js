@@ -20,7 +20,7 @@ import "react-circular-progressbar/dist/styles.css";
 //     ],
 //   };
 const HomePieChart = ({ income }) => {
-  const percentage = income.Earning;
+  const percentage = `${(income?.Earning)?.toFixed(2)} %` ;
   return (
     <>
       {/* <CircularProgressbar value={percentage} text={`${percentage}%`} /> */}
@@ -38,13 +38,6 @@ const HomePieChart = ({ income }) => {
           />
         </div>
       )}
-      {/* <CircularProgressbar
-        value={percentage}
-        text={`${percentage}%`}
-        strokeWidth={5}
-      /> */}
-
-      {/* <Pie data={data} /> */}
     </>
   );
 };

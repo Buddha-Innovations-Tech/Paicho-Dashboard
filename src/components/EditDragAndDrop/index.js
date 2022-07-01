@@ -45,7 +45,7 @@ const img = {
   height: "100%",
 };
 
-const EditDragAndDrop = ({ imgarray, setImgArray }) => {
+const Previews = ({ imgarray, setImgArray }) => {
   const [imagePath, setImagePath] = useState([]);
   const [files, setFiles] = useState([]);
   const {
@@ -101,7 +101,7 @@ const EditDragAndDrop = ({ imgarray, setImgArray }) => {
         </div>
       </div>
 
-      <div className="d-flex  align-items-center mt-4">
+      {/* <div className="d-flex  align-items-center mt-4">
         {imagePath.length > 0 &&
           imagePath.map((curElm) => {
             return (
@@ -127,9 +127,9 @@ const EditDragAndDrop = ({ imgarray, setImgArray }) => {
               </div>
             );
           })}
-      </div>
+      </div> */}
     </section>
   );
 };
 
-export default EditDragAndDrop;
+export default Previews;

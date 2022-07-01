@@ -104,26 +104,26 @@ const Home = () => {
               <Col md={6}>
                 <div className="tobedelivered">
                   <HomeOrder
-                    number={dash.Tobedelivered}
+                    number={dash?.Tobedelivered}
                     order="To be delivered "
                   />
                 </div>
               </Col>
               <Col md={6}>
                 <div className="inprogress">
-                  <HomeOrder order="In Progress" number={dash.InProgress} />
+                  <HomeOrder order="In Progress" number={dash?.InProgress} />
                 </div>
               </Col>
               <Col md={6}>
                 <div className="cancelledorder">
-                  <HomeOrder order="Canceled Orders " number={dash.Cancelled} />
+                  <HomeOrder order="Canceled Orders " number={dash?.Cancelled} />
                 </div>
               </Col>
               <Col md={6}>
                 <div className="completedorder">
                   <HomeOrder
                     order="Completed Orders "
-                    number={dash.Completed}
+                    number={dash?.Completed}
                   />
                 </div>
               </Col>
@@ -134,7 +134,6 @@ const Home = () => {
               {dashboard && (
                 <HomeBarGraph
                   title="Revenue"
-                  topic="Last 7 days"
                   bargraphEarning={dashboardEarning}
                 />
               )}
@@ -181,19 +180,19 @@ const Home = () => {
                           <span
                             style={{
                               color:
-                                curElm.orderStatus === "Completed"
+                                curElm.orderStatus === "Delivered"
                                   ? "#063865"
                                   : curElm.orderStatus === "Cancelled"
                                   ? "#920000"
-                                  : curElm.orderStatus === "In Progress"
+                                  : curElm.orderStatus === "Processing"
                                   ? "#495058"
                                   : "#FFA500",
                               background:
-                                curElm.orderStatus === "Completed"
+                                curElm.orderStatus === "Processing"
                                   ? "#C4DCF2"
                                   : curElm.orderStatus === "Cancelled"
                                   ? "#FCDCD2"
-                                  : curElm.orderStatus === "In Progress"
+                                  : curElm.orderStatus === "Delivered"
                                   ? "#DDEEC5"
                                   : "#FFEDCC",
                               borderRadius: "28px",
@@ -340,12 +339,15 @@ const Home = () => {
                   <p className="revenuewrapper__earning">Earning</p>
                   <span className="revenuewrapper__revenue">Total Revenue</span>
                 </div>
-                <p className="revenuewrapper__total">{dash.TotalRevenue}</p>
+                <p className="revenuewrapper__total">
+                  {(dash && dash.TotalRevenue?.toFixed(2))}
+                </p>
               </div>
               <div className="mt-3">
                 <HomePieChart income={earningdash} />
                 <p className="revenuewrapper__piechartconclusion mt-2">
-                  Sell is {earningdash.Earning} % more than last Month
+                  Sell is {earningdash && earningdash.Earning} % more than last
+                  Month
                 </p>
               </div>
             </div>

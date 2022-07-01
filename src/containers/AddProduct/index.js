@@ -1,6 +1,6 @@
 import { FiAlertTriangle } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
-import { Row, Col, FormControl, Form } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
+import { Row, Col, FormControl, Form, Toast } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
@@ -9,14 +9,17 @@ import InputField from "../../components/InputField";
 import Previews from "../../components/DragAndDrop";
 import { createProduct } from "../../actions/productAction";
 import { listCategories } from "../../actions/categoryAction";
+import { listProducts } from "../../actions/productAction";
+
 import Loader from "../../components/Loader";
 
 const AddProduct = () => {
   const [image, setImage] = useState("");
+  const [imgarray, setImgArray] = useState([]);
   const [name, setProduct] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubCategory] = useState([]);
-  const [subcategorystate, setSubCategoryState] = useState("");
+  const [subcategories, setSubcategories] = useState("");
   const [description, setDescription] = useState("");
   const [countInStock, setCount] = useState("");
   const [discount, setDiscount] = useState("");
@@ -27,35 +30,40 @@ const AddProduct = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [dltsimilarpdct, setDltSimilarPdct] = useState([]);
   const [seo, setSeo] = useState([]);
+  const [showA, setShowA] = useState(false);
+
   // const [product, setProduct] = useState("");
   const { userInfo } = useSelector((state) => state.userLogin);
   const { categories } = useSelector((state) => state.categoryList);
 
-  const { loading: addProductLoading } = useSelector(
+  const { loading: addProductLoading, error } = useSelector(
     (state) => state.createProduct
   );
-
+  const { products } = useSelector((state) => state.productList);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(listProducts());
+  }, [dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
       createProduct({
         name,
-        image,
+        image: imgarray.map((i) => i),
         description,
         countInStock,
         discount,
         price,
-        keywords,
-        ingredient,
+        seokeyword: seo.map((i) => i),
+        ingredient: subCategories.map((i) => i),
         category,
-        subcategory,
-        similar,
+        subcategories,
+        similar: dltsimilarpdct.map((i) => i._id),
       })
     );
-    setImage("");
+    setShowA(true);
     setProduct("");
     setDescription("");
     setCount("");
@@ -64,7 +72,11 @@ const AddProduct = () => {
     setKeyword("");
     setIngredient("");
     setSimilarProduct("");
-    navigate("/productlist");
+    if (error) {
+      navigate("/addproduct");
+    } else {
+      navigate("/productlist");
+    }
   };
 
   useEffect(() => {
@@ -115,32 +127,32 @@ const AddProduct = () => {
                         <option value="" selected>
                           Select a Category
                         </option>
-                        {categories.map((curElm, index) => {
-                          return (
-                            <option value={curElm._id} key={index}>
-                              {curElm.name}
-                            </option>
-                          );
-                        })}
-                        {/* <option value="">Processing Item</option>
-                        <option value="">Grains & Pulses</option>
-                        <option value="">Indenginous Product</option>
-                        <option value="">Dry Foods</option>
-                        <option value="">Ketchup & Sauces</option>
-                        <option value="">Organic Vegatable</option> */}
+                        {categories &&
+                          categories?.map((curElm, index) => {
+                            return (
+                              <option value={curElm._id} key={index}>
+                                {curElm.name}
+                              </option>
+                            );
+                          })}
                       </select>
                     </Col>
                     <Col md={6}>
                       <label htmlFor="">Sub Category</label>
+
                       <select
                         id="subcategory"
                         name="subcategory"
-                        onChange={(e) => setSubCategoryState(e.target.value)}
+                        onChange={(e) => {
+                          console.log(e.target.value);
+                          setSubcategories(e.target.value);
+                          console.log(subcategories);
+                        }}
                       >
                         <option selected>Select a Sub-Category</option>
                         {subcategory.map((curElm, index) => {
                           return (
-                            <option value={curElm._id} key={index}>
+                            <option value={curElm.name} key={index}>
                               {curElm.name}
                             </option>
                           );
@@ -176,7 +188,7 @@ const AddProduct = () => {
                       />
                     </Col>
                     <Col md={4}>
-                      <label htmlFor="">Discount(Optional)</label>
+                      <label htmlFor="">Discount In %(Optional)</label>
                       <FormControl
                         type="text"
                         name="discount"
@@ -256,7 +268,7 @@ const AddProduct = () => {
                   <span>Please choose image below 5 mb</span>
                 </p>
                 <div className="addproduct-dragdrop">
-                  <Previews image={image} setImage={setImage} />
+                  <Previews imgarray={imgarray} setImgArray={setImgArray} />
                 </div>
               </Col>
             </Row>
@@ -337,16 +349,51 @@ const AddProduct = () => {
                     <Col md={2}>
                       <button
                         className="addproductwrapper__addbtn"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          !dltsimilarpdct.find((i) => i === similar) &&
-                            similar.trim() !== "" &&
-                            setDltSimilarPdct([similar, ...dltsimilarpdct]);
-                        }}
+                        // onClick={(e) => {
+                        //   e.preventDefault();
+                        //   !dltsimilarpdct.find((i) => i === similar) &&
+                        //     similar.trim() !== "" &&
+                        //     setDltSimilarPdct([similar, ...dltsimilarpdct]);
+                        // }}
                       >
                         Add
                       </button>
                     </Col>
+                    <ul className="categorywrapper__addcategorywrapper--unorderlist mt-3 overflowaddproduct">
+                      {products &&
+                        products
+                          ?.filter((i) =>
+                            i.name.toLowerCase().includes(similar)
+                          )
+                          .map((curElm, index) => {
+                            return (
+                              <li
+                                className="d-flex align-items-center justify-content-between"
+                                key={index}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  // !dltsimilarpdct.find((i) => i === similar) &&
+                                  //   similar.trim() !== "" &&
+                                  setDltSimilarPdct([
+                                    curElm,
+                                    ...dltsimilarpdct,
+                                  ]);
+                                }}
+                              >
+                                <p>{curElm.name}</p>
+                                {/* <ImCross
+                                  className="crossicon"
+                                  onClick={(e) =>
+                                    setDltSimilarPdct(
+                                      dltsimilarpdct.filter((i) => i !== curElm)
+                                    )
+                                  }
+                                /> */}
+                              </li>
+                            );
+                          })}
+                    </ul>
+
                     <ul className="categorywrapper__addcategorywrapper--unorderlist mt-3">
                       {dltsimilarpdct &&
                         dltsimilarpdct.map((curElm, index) => {
@@ -355,7 +402,8 @@ const AddProduct = () => {
                               className="d-flex align-items-center justify-content-between"
                               key={index}
                             >
-                              <p>{curElm}</p>
+                              <p>{curElm.name}</p>
+
                               <ImCross
                                 className="crossicon"
                                 onClick={(e) =>
@@ -376,7 +424,9 @@ const AddProduct = () => {
             {/* {!addProductLoading ? ( */}
             <>
               <div className="categorywrapper__addcategorywrapper--buttons">
-                <button className="btn-discard">Discard</button>
+                <Link to="" className="btn-discard">
+                  Discard
+                </Link>
                 <button className="btn-addcategory" onClick={handleSubmit}>
                   Add Product
                 </button>
@@ -386,6 +436,19 @@ const AddProduct = () => {
             {/* <Loader /> */}
             {/* )} */}
           </div>
+          {error && (
+            <Toast
+              onClose={() => setShowA(false)}
+              show={showA}
+              delay={10000}
+              autohide
+              className="mt-3"
+            >
+              <Toast.Body>
+                <p>{error}</p>
+              </Toast.Body>
+            </Toast>
+          )}
         </Form>
       </div>
     </>

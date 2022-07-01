@@ -19,7 +19,7 @@ import Order from "../Order";
 import Home from "../Home";
 
 const App = () => {
-  axios.defaults.baseURL = "https://evening-ravine-71797.herokuapp.com/";
+  axios.defaults.baseURL = "https://paicho.herokuapp.com/";
   // axios.defaults.baseURL = "http://localhost:5000/";
   return (
     <div>
@@ -37,6 +37,7 @@ const App = () => {
             <Route path="/productlist" element={<ProductList />} />
             <Route path="/productlist/:pageNumber" element={<ProductList />} />
             <Route path="/transaction" element={<Transaction />} />
+            <Route path="/transaction/:pageNumber" element={<Transaction />} />
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/category" element={<Category />} />
             <Route path="/category/:pageNumber" element={<Category />} />

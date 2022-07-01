@@ -7,6 +7,9 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
+  PRODUCT_ARCHIVELIST_REQUEST,
+  PRODUCT_ARCHIVELIST_SUCCESS,
+  PRODUCT_ARCHIVELIST_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
@@ -23,6 +26,7 @@ import {
 } from "../constants/productConstants";
 
 export const createProduct = (category) => async (dispatch, getState) => {
+  console.log(category);
   try {
     dispatch({
       type: PRODUCT_CREATE_REQUEST,
@@ -49,9 +53,9 @@ export const createProduct = (category) => async (dispatch, getState) => {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
       payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+        error.response && error.response.data.msg
+          ? error.response.data.msg
+          : error.msg,
     });
   }
 };
@@ -74,6 +78,37 @@ export const listProducts = (pageNumber) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const listArchiveProducts = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_ARCHIVELIST_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/products/list/archive/`, config);
+    console.log(data);
+    dispatch({
+      type: PRODUCT_ARCHIVELIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_ARCHIVELIST_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
@@ -147,6 +182,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
 
 export const updateProduct = (product) => async (dispatch, getState) => {
   try {
+    console.log(product);
     dispatch({
       type: PRODUCT_UPDATE_REQUEST,
     });

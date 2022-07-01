@@ -91,9 +91,9 @@ export const register =
       dispatch({
         type: USER_REGISTER_FAIL,
         payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
+          error.response && error.response.data.msg
+            ? error.response.data.msg
+            : error.msg,
       });
     }
   };

@@ -34,44 +34,7 @@ const labels = [
   "November",
   "December",
 ];
-const datatata = [
-  {
-    asd: 14500,
-  },
-  {
-    asd: 14500,
-  },
-  {
-    asd: 14500,
-  },
-  {
-    asd: 14500,
-  },
-  {
-    asd: 14500,
-  },
-  {
-    asd: 14500,
-  },
-  {
-    asd: 14500,
-  },
-  {
-    asd: 14500,
-  },
-  {
-    asd: 14500,
-  },
-  {
-    asd: 14500,
-  },
-  {
-    asd: 14500,
-  },
-  {
-    asd: 1450,
-  },
-];
+
 // let newdata = [];
 // datatata.map((i, index) => {
 //   newdata.push({

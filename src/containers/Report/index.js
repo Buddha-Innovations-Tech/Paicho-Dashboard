@@ -74,7 +74,7 @@ const Report = () => {
                 {dashboard && (
                   <MonthlyBarGraph
                     title="Revenue graph"
-                    topic="Rs 25,00,00,000"
+                    // topic="Rs 25,00,00,000"
                     // filteritem={dashboard}
                     bargraphEarning={dashboard}
                   />
@@ -107,7 +107,6 @@ const Report = () => {
                   className="orderwrapper__background--selectstatus"
                   onChange={handleChange}
                 >
-                  <option value="Monthly Report">Month</option>
                   <option value="1">January </option>
                   <option value="2">February </option>
                   <option value="3">March </option>

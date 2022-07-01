@@ -101,7 +101,7 @@ export const subscriberListReducer = (state = { subscribers: [] }, action) => {
 export const subscriberDeleteReducer = (state = {}, action) => {
   switch (action.type) {
     case SUBSCRIBER_DELETE_REQUEST:
-      return { ...state, loading: true };
+      return { loading: true };
     case SUBSCRIBER_DELETE_SUCCESS:
       return { loading: false, success: true };
     case SUBSCRIBER_DELETE_FAIL:

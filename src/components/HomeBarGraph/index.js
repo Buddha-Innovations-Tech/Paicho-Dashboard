@@ -9,7 +9,6 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import faker from "faker";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -34,13 +33,12 @@ const labels = [
 ];
 
 const HomeBarGraph = ({ title, topic, bargraphEarning }) => {
-  const list = Object.values(bargraphEarning);
+  const list = Object?.values(bargraphEarning);
   const data = {
     labels,
     datasets: [
       {
-        // label: "Dataset 1",
-        data: list.map((i) => i),
+        data: list && list.map((i) => i),
         backgroundColor: "#005AAB",
       },
     ],

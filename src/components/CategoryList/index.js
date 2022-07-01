@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import { BiPlus } from "react-icons/bi";
 import { ImCross } from "react-icons/im";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   listCategories,
   listCategoryDetails,
@@ -49,6 +49,7 @@ const CategoryList = ({ index, _id, name, subcategories, product }) => {
         return { name: i };
       }),
     };
+
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +60,9 @@ const CategoryList = ({ index, _id, name, subcategories, product }) => {
       await axios.put(`/api/categories/archive/${category._id}`, {}, config);
     } else {
       dispatch(updateCategory(data, _id));
+      setTest("");
     }
+
     handleClose();
   };
 
@@ -141,6 +144,7 @@ const CategoryList = ({ index, _id, name, subcategories, product }) => {
                   !subCategories.find((i) => i === test) &&
                     test.trim() !== "" &&
                     setSubCategories([test, ...subCategories]);
+                  setTest("");
                 }}
               />
             </div>
@@ -182,12 +186,13 @@ const CategoryList = ({ index, _id, name, subcategories, product }) => {
             {!loading ? (
               <>
                 <div className="mt-3 d-flex justify-content-end">
-                  <button
-                    className="carouselwrapper__background__btn--discard"
+                  <Link
+                    to=""
+                    className="carouselwrapper__background__btn--discard editcategorydiscard"
                     onClick={handleClose}
                   >
                     Discard
-                  </button>
+                  </Link>
                   <button
                     className="carouselwrapper__background__btn--add"
                     onClick={() => handleSubmit}

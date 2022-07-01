@@ -1,5 +1,7 @@
 .sidebarwrapper {
   position: fixed;
+  overflow-y: scroll;
+  height: 620px;
   &__logo {
     padding: 20px 110px;
   }

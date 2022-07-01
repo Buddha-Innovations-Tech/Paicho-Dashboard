@@ -1,5 +1,5 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { Row, Col, Form } from "react-bootstrap";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { Row, Col, Form, Toast } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { BiPlus } from "react-icons/bi";
@@ -9,22 +9,26 @@ import PaginationComp from "../../components/PaginationComp";
 import CategoryList from "../../components/CategoryList";
 import { listCategories, createCategory } from "../../actions/categoryAction";
 import Loader from "../../components/Loader";
+import { BiSearch } from "react-icons/bi";
 
 const Category = () => {
+  const [showA, setShowA] = useState(false);
   const [name, setName] = useState("");
   const [test, setTest] = useState("");
   const [checked, setChecked] = useState(false);
 
   const { userInfo } = useSelector((state) => state.userLogin);
-  const history = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pageNumber } = useParams();
   const { categories, pages, page, loading } = useSelector(
     (state) => state.categoryList
   );
-  const { success } = useSelector((state) => state.createCategory);
+  const { success, error } = useSelector((state) => state.createCategory);
   const { success: categoryUpdateSuccess, loading: categoryUpdateLoading } =
     useSelector((state) => state.categoryUpdate);
+  const [searchInput, setSearchInput] = useState("");
+
   const [subCategories, setSubCategories] = useState([]);
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,13 +45,18 @@ const Category = () => {
       },
     };
     dispatch(createCategory(data));
+    setShowA(true);
+    setName("");
+    setSubCategories([]);
+  };
+  const handleDiscard = () => {
     setName("");
     setSubCategories([]);
   };
   // console.log(categories);
   useEffect(() => {
     if (!userInfo) {
-      history("/login");
+      navigate("/login");
     }
   }, [userInfo]);
   useEffect(() => {
@@ -71,6 +80,7 @@ const Category = () => {
     <>
       <div className="categorywrapper">
         <p className="categorywrapper__title">Categories</p>
+
         <div className="categorywrapper__addcategorywrapper">
           <Row>
             <Col md={4}>
@@ -133,7 +143,13 @@ const Category = () => {
                   {!loading ? (
                     <>
                       <div className="categorywrapper__addcategorywrapper--buttons">
-                        <button className="btn-discard">Discard</button>
+                        <Link
+                          to=""
+                          className="btn-discard"
+                          onClick={handleDiscard}
+                        >
+                          Discard
+                        </Link>
 
                         <button
                           className="btn-addcategory"
@@ -146,6 +162,19 @@ const Category = () => {
                   ) : (
                     <Loader />
                   )}
+                  {error && (
+                    <Toast
+                      onClose={() => setShowA(false)}
+                      show={showA}
+                      delay={3000}
+                      autohide
+                      className="mt-3"
+                    >
+                      <Toast.Body>
+                        <p>{error}</p>
+                      </Toast.Body>
+                    </Toast>
+                  )}
                 </Form>
               </div>
             </Col>
@@ -155,6 +184,15 @@ const Category = () => {
                   <p className="categorywrapper__addcategorywrapper--categorylist">
                     Categories List
                   </p>
+                  <div className="categorywrapper__addcategorywrapper--searchinput">
+                    <BiSearch className="searchicon" />
+                    <input
+                      type="text"
+                      placeholder="Search Category"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                    />
+                  </div>
                 </div>
                 <Row className="catetgorylist-heading">
                   <Col md={2}>
@@ -174,9 +212,15 @@ const Category = () => {
                   </Col>
                 </Row>
                 {categories &&
-                  categories.map((data, index) => {
-                    return <CategoryList key={index} index={index} {...data} />;
-                  })}
+                  categories
+                    .filter((category) =>
+                      category.name.toLowerCase().includes(searchInput)
+                    )
+                    .map((data, index) => {
+                      return (
+                        <CategoryList key={index} index={index} {...data} />
+                      );
+                    })}
               </div>
               {!loading ? (
                 <div className="mt-5">
@@ -184,7 +228,7 @@ const Category = () => {
                     pages={pages}
                     page={page}
                     list="category"
-                    history={history}
+                    history={navigate}
                   />
                 </div>
               ) : (

@@ -37,6 +37,7 @@ import {
   productDeleteReducer,
   productUpdateReducer,
   createSimilarProductReducer,
+  archiveProductListReducer,
 } from "./reducers/productReducers";
 
 import {
@@ -88,6 +89,7 @@ const reducer = combineReducers({
   productDelete: productDeleteReducer,
   productUpdate: productUpdateReducer,
   createSimilarProduct: createSimilarProductReducer,
+  archiveProductList: archiveProductListReducer,
 
   createOrder: orderCreateReducers,
   orderDetails: orderDetailsReducers,

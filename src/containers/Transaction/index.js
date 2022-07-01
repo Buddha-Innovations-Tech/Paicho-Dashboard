@@ -1,79 +1,43 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import Paginate from "../../components/PaginationComp";
+import { listOrders } from "../../actions/orderAction";
+import moment from "moment";
+import Loader from "../../components/Loader";
+import Moment from "react-moment";
 
-import PaginationComp from "../../components/PaginationComp";
-
-const transactionList = [
-  {
-    name: "Sindhu ",
-    address: "Butwal 10, Sukhanagr",
-    method: "Esewa",
-    date: "02/01/2020",
-    amount: "Rs.50000",
-  },
-  {
-    name: "Sindhu Aryal",
-    address: "Butwal 10, Sukhanagr",
-    method: "Mobile Banking",
-    date: "02/01/2020",
-    amount: "Rs.45000",
-  },
-  {
-    name: "Uday Tiwari",
-    address: "Butwal 15, Belbas",
-    method: "Phone Pay",
-    date: "02/01/2020",
-    amount: "Rs.45000",
-  },
-  {
-    name: "Sagar Gc",
-    address: "Butwal 11, Murgiya",
-    method: "Cash on delivery",
-    date: "02/01/2020",
-    amount: "Rs.45000",
-  },
-  {
-    name: "Sindhu ",
-    address: "Butwal 10, Sukhanagr",
-    method: "Esewa",
-    date: "02/01/2020",
-    amount: "Rs.50000",
-  },
-  {
-    name: "Sindhu Aryal",
-    address: "Butwal 10, Sukhanagr",
-    method: "Mobile Banking",
-    date: "02/01/2020",
-    amount: "Rs.45000",
-  },
-  {
-    name: "Uday Tiwari",
-    address: "Butwal 15, Belbas",
-    method: "Phone Pay",
-    date: "02/01/2020",
-    amount: "Rs.45000",
-  },
-  {
-    name: "Sagar Gc",
-    address: "Butwal 11, Murgiya",
-    method: "Cash on delivery",
-    date: "02/01/2020",
-    amount: "Rs.45000",
-  },
-];
 const Transaction = () => {
+  const {
+    orders,
+    pages,
+    page,
+    loading: paginationLoading,
+  } = useSelector((state) => state.orderList);
   const { userInfo } = useSelector((state) => state.userLogin);
-  console.log(userInfo);
+  const { order } = useSelector((state) => state.orderDetails);
+  const { success: orderUpdateSuccess } = useSelector(
+    (state) => state.orderUpdate
+  );
+  const dispatch = useDispatch();
+  const [searchedFrom, setSearchedFrom] = useState(null);
+  const [searchedTo, setSearchedTo] = useState(null);
+  const [searched, setSearched] = useState(null);
+  const [display, setDisplay] = useState([]);
   const navigate = useNavigate();
-
+  const { pageNumber } = useParams();
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
     }
   }, [userInfo]);
-
+  useEffect(() => {
+    dispatch(listOrders(pageNumber));
+  }, [pageNumber]);
+  useEffect(() => {
+    dispatch(listOrders());
+  }, [dispatch]);
   const [filterdate, setFilterDate] = useState("Day");
   const [date, setDate] = useState(true);
   const [dates, setDates] = useState(false);
@@ -84,7 +48,41 @@ const Transaction = () => {
     filterdate === "Day" ? setDate(true) : setDate(false);
     filterdate === "Dates" ? setDates(true) : setDates(false);
   }, [filterdate]);
-
+  const handleDate = (e) => {
+    setSearched(e.target.value);
+  };
+  useEffect(() => {
+    if (searched !== null) {
+      setDisplay(
+        orders?.orders?.filter((i) => {
+          return (
+            moment(new Date(i.paidAt)).format("L") ===
+            moment(new Date(searched)).format("L")
+          );
+        })
+      );
+    }
+  }, [searched]);
+  useEffect(() => {
+    if (searchedFrom !== null && searchedTo !== null) {
+      setDisplay(
+        orders?.orders?.filter((i) => {
+          return (
+            moment(new Date(i.paidAt)).format("L") >=
+              moment(new Date(searchedFrom)).format("L") &&
+            moment(new Date(i.paidAt)).format("L") <=
+              moment(new Date(searchedTo)).format("L")
+          );
+        })
+      );
+    }
+  }, [searchedFrom, searchedTo]);
+  const clearDate = () => {
+    setDisplay(orders.orders);
+    setSearched(null);
+    setSearchedFrom(null);
+    setSearchedTo(null);
+  };
   return (
     <>
       <div className="transactionwrapper">
@@ -94,9 +92,9 @@ const Transaction = () => {
             <div>
               <select className="orderwrapper__background--selectstatus">
                 <option selected>Method</option>
-                <option>Esewa</option>
+                {/* <option>Esewa</option>
                 <option>Phone Pay</option>
-                <option>Mobile Banking</option>
+                <option>Mobile Banking</option> */}
                 <option>Cash on delivery</option>
               </select>
             </div>
@@ -115,7 +113,7 @@ const Transaction = () => {
                 {date && (
                   <div className="d-flex orderwrapper__background--datecalender ms-3 me-3">
                     {/* <AiOutlineCalendar className="calendericon" /> */}
-                    <input type="date" placeholder="03/23/2020" />
+                    <input type="date" value={searched} onChange={handleDate} />
                   </div>
                 )}
                 {dates && (
@@ -124,59 +122,173 @@ const Transaction = () => {
                       <div className="reportwrapper__background--right-title inputabsolute">
                         From
                       </div>
-                      <input type="date" placeholder="03/23/2020" />
+                      <input
+                        type="date"
+                        placeholder="03/23/2020"
+                        value={searchedFrom}
+                        onChange={(e) => setSearchedFrom(e.target.value)}
+                      />
                     </div>
                     <div className="d-flex orderwrapper__background--datecalender ms-3 me-3 inputreletive">
                       <div className="reportwrapper__background--right-title inputabsolute">
                         To
                       </div>
-                      <input type="date" placeholder="03/23/2020" />
+                      <input
+                        type="date"
+                        placeholder="03/23/2020"
+                        value={searchedTo}
+                        onChange={(e) => setSearchedTo(e.target.value)}
+                      />
                     </div>
                   </>
                 )}
+                <button
+                  className="me-3 pe-3 ps-3"
+                  style={{ border: "none", borderRadius: "3px" }}
+                  onClick={clearDate}
+                >
+                  Clear
+                </button>
               </div>
             </div>
           </div>
 
           <div className="orderwrapper__background--headingrow transactionlistheading">
             <Row>
-              <Col md={3}>User Name</Col>
+              <Col md={2}>User Name</Col>
               <Col md={3}>Address</Col>
               <Col md={2}>Method</Col>
-              <Col md={2}>Date</Col>
+              <Col md={3}>Date</Col>
               <Col md={2}>Amount</Col>
             </Row>
           </div>
           <div>
-            {transactionList.map((curElm, index) => {
-              return (
-                <Row
-                  className="productlistwrapper__productlistwrapper--listitem transactionlistleft"
-                  key={index}
-                >
-                  <Col md={3}>
-                    <p>{curElm.name}</p>
-                  </Col>
-                  <Col md={3}>
-                    <p>{curElm.address}</p>
-                  </Col>
-                  <Col md={2}>
-                    <p>{curElm.method}</p>
-                  </Col>
-                  <Col md={2}>
-                    <p>{curElm.date}</p>
-                  </Col>
-                  <Col md={2}>
-                    <p>{curElm.amount}</p>
-                  </Col>
-                </Row>
-              );
-            })}
+            {searched === null &&
+            searchedFrom === null &&
+            searchedTo === null ? (
+              <>
+                {orders &&
+                  orders.orders &&
+                  orders?.orders
+                    ?.filter(
+                      (x) => x.paymentInfo.paymentmethod === "Cash on Delivery"
+                    )
+                    .map((curElm, index) => {
+                      return (
+                        <Row
+                          className="productlistwrapper__productlistwrapper--listitem transactionlistleft"
+                          key={index}
+                        >
+                          <Col md={2}>
+                            <p>
+                              {curElm.shippingInfo &&
+                              curElm.shippingInfo.fullname
+                                ? curElm.shippingInfo.fullname
+                                : "no"}
+                            </p>
+                          </Col>
+                          <Col md={3}>
+                            <p>
+                              {curElm.shippingInfo &&
+                              curElm.shippingInfo.address
+                                ? curElm.shippingInfo.address
+                                : "no"}
+                            </p>
+                          </Col>
+                          <Col md={2}>
+                            <p>
+                              {curElm.paymentInfo &&
+                              curElm.paymentInfo.paymentmethod
+                                ? curElm.paymentInfo.paymentmethod
+                                : ""}
+                            </p>
+                          </Col>
+                          <Col md={3}>
+                            <p>
+                              <Moment format="DD/MM/YYYY">
+                                {curElm.paidAt && curElm.paidAt
+                                  ? curElm.paidAt
+                                  : ""}
+                              </Moment>
+                            </p>
+                          </Col>
+                          <Col md={2}>
+                            <p> Rs.{curElm.totalPrice}</p>
+                          </Col>
+                        </Row>
+                      );
+                    })}
+              </>
+            ) : (
+              <>
+                {display &&
+                  display
+                    ?.filter(
+                      (x) => x.paymentInfo.paymentmethod === "Cash on Delivery"
+                    )
+                    .map((curElm, index) => {
+                      return (
+                        <Row
+                          className="productlistwrapper__productlistwrapper--listitem transactionlistleft"
+                          key={index}
+                        >
+                          <Col md={2}>
+                            <p>
+                              {curElm.shippingInfo &&
+                              curElm.shippingInfo.fullname
+                                ? curElm.shippingInfo.fullname
+                                : "no"}
+                            </p>
+                          </Col>
+                          <Col md={3}>
+                            <p>
+                              {curElm.shippingInfo &&
+                              curElm.shippingInfo.address
+                                ? curElm.shippingInfo.address
+                                : "no"}
+                            </p>
+                          </Col>
+                          <Col md={2}>
+                            <p>
+                              {curElm.paymentInfo &&
+                              curElm.paymentInfo.paymentmethod
+                                ? curElm.paymentInfo.paymentmethod
+                                : ""}
+                            </p>
+                          </Col>
+                          <Col md={3}>
+                            <p>
+                              <Moment format="DD/MM/YYYY">
+                                {curElm.createdAt
+                                  ? moment(new Date(curElm.paidAt)).format("L")
+                                  : ""}
+                              </Moment>
+                            </p>
+                          </Col>
+                          <Col md={2}>
+                            <p> Rs.{curElm.totalPrice}</p>
+                          </Col>
+                        </Row>
+                      );
+                    })}
+              </>
+            )}
           </div>
         </div>
-        <div className="mt-5">
-          <PaginationComp />
-        </div>
+        {!paginationLoading ? (
+          <>
+            <div className="mt-5">
+              <Paginate
+                pages={pages}
+                page={page}
+                list="order"
+                history={navigate}
+              />
+            </div>
+          </>
+        ) : (
+          <Loader />
+        )}
       </div>
     </>
   );

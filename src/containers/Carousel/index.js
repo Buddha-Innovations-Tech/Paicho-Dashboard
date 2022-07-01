@@ -18,8 +18,9 @@ const Carousel = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [link, setLink] = useState("");
-  const [show, setShow] = useState(false);
   const [image, setImage] = useState("");
+  const [imgarray, setImgArray] = useState([]);
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -37,7 +38,14 @@ const Carousel = () => {
 
   const addCategoryComp = async (e) => {
     e.preventDefault();
-    dispatch(createCarousel({ title, link, description, image }));
+    dispatch(
+      createCarousel({
+        title,
+        link,
+        description,
+        image: imgarray.map((i) => i),
+      })
+    );
     handleClose();
     setTitle("");
     setDescription("");
@@ -152,7 +160,7 @@ const Carousel = () => {
                     <FiAlertTriangle />
                     <span>Please choose image below 5 mb</span>
                   </p>
-                  <Previews image={image} setImage={setImage} />
+                  <Previews imgarray={imgarray} setImgArray={setImgArray} />
                 </div>
 
                 <div className="mt-3 d-flex justify-content-end">
