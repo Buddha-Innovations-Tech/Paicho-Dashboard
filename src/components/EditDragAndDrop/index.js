@@ -46,7 +46,7 @@ const img = {
 };
 
 const Previews = ({ imgarray, setImgArray }) => {
-  const [imagePath, setImagePath] = useState([]);
+ 
   const [files, setFiles] = useState([]);
   const {
     getRootProps,
@@ -84,7 +84,7 @@ const Previews = ({ imgarray, setImgArray }) => {
         },
       };
       const { data } = await axios.post("/api/uploads/", formData, config);
-      imagePath.push(data.image);
+      // imagePath.push(data.image);
       setImgArray([data.image, ...imgarray]);
     } catch (error) {
       console.error(error);
@@ -101,33 +101,7 @@ const Previews = ({ imgarray, setImgArray }) => {
         </div>
       </div>
 
-      {/* <div className="d-flex  align-items-center mt-4">
-        {imagePath.length > 0 &&
-          imagePath.map((curElm) => {
-            return (
-              <div>
-                <img
-                  src={`${curElm}`}
-                  alt="card"
-                  name="image"
-                  className="img-fluid"
-                  style={{
-                    position: "relative",
-                    width: "60px",
-                    height: "60px",
-                  }}
-                />
-                <ImCross
-                  style={{ position: "absolute", fontSize: "12px" }}
-                  className="crossicon"
-                  onClick={(e) =>
-                    setImagePath(imagePath.filter((i) => i !== curElm))
-                  }
-                />
-              </div>
-            );
-          })}
-      </div> */}
+      
     </section>
   );
 };

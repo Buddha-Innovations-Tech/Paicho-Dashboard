@@ -10,7 +10,9 @@ import { listSubscribers } from "../../actions/subscriberActions";
 import { listOrders } from "../../actions/orderAction";
 import Paginate from "../../components/PaginationComp";
 import Loader from "../../components/Loader";
-
+import SideBar from "../../components/SideBar";
+import NavBar from "../../components/NavBar";
+import { Helmet } from "react-helmet";
 const Customer = () => {
   const [sortType, setSortType] = useState("Orders");
   const [searchInput, setSearchInput] = useState("");
@@ -32,9 +34,9 @@ const Customer = () => {
     page,
     loading: paginationLoading,
   } = useSelector((state) => state.subscriberList);
-  useEffect(() => {
-    dispatch(listSubscribers());
-  }, [success]);
+  // useEffect(() => {
+  //   dispatch(listSubscribers());
+  // }, []);
 
   useEffect(() => {
     dispatch(listSubscribers(pageNumber));
@@ -79,24 +81,9 @@ const Customer = () => {
         changeSort();
   }, [sortType]);
 
-  // const sorted = sorting?.sort((a, b) => {
-  //   if (sortType === "Orders") {
-  //     return sorting;
-  //   } else if (sortType === "Highest Orders") {
-  //     return b.orders.length - a.orders.length;
-  //   } else if (sortType === "Lowest Orders") {
-  //     return a.orders.length - b.orders.length;
-  //   }else if(sortType==="No Orders"){
-  //     return sorting.filter((i) => i.orders.length === 0)
-  //   }
-  //   setSorting(sorted);
-  // });
-
-
-  
-
   return (
     <>
+      <Helmet>Paicho-Customer</Helmet>
       <div className="customerwrapper">
         <div className="d-flex justify-content-between align-items-center">
           <p className="customerwrapper__title">Customer</p>

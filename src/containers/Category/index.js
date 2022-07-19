@@ -10,6 +10,9 @@ import CategoryList from "../../components/CategoryList";
 import { listCategories, createCategory } from "../../actions/categoryAction";
 import Loader from "../../components/Loader";
 import { BiSearch } from "react-icons/bi";
+import SideBar from "../../components/SideBar";
+import NavBar from "../../components/NavBar";
+import { Helmet } from "react-helmet";
 
 const Category = () => {
   const [showA, setShowA] = useState(false);
@@ -78,6 +81,9 @@ const Category = () => {
   }, [pageNumber]);
   return (
     <>
+    <Helmet>
+      <title>Paicho-Category</title>
+    </Helmet>
       <div className="categorywrapper">
         <p className="categorywrapper__title">Categories</p>
 

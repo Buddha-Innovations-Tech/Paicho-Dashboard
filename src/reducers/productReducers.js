@@ -6,6 +6,9 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
+  PRODUCTALL_LIST_REQUEST,
+  PRODUCTALL_LIST_SUCCESS,
+  PRODUCTALL_LIST_FAIL,
   PRODUCT_ARCHIVELIST_REQUEST,
   PRODUCT_ARCHIVELIST_SUCCESS,
   PRODUCT_ARCHIVELIST_FAIL,
@@ -51,6 +54,23 @@ export const productListReducer = (state = { products: [] }, action) => {
         page: parseInt(action.payload.page),
       };
     case PRODUCT_LIST_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+export const productALLListReducer = (state = { products: [] }, action) => {
+  switch (action.type) {
+    case PRODUCTALL_LIST_REQUEST:
+      return { loading: true, products: [] };
+    case PRODUCTALL_LIST_SUCCESS:
+      return {
+        loading: false,
+        products: action.payload.products,
+        //   pages: action.payload.pages,
+        //   page: parseInt(action.payload.page),
+      };
+    case PRODUCTALL_LIST_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

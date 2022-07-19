@@ -1,7 +1,7 @@
 .sidebarwrapper {
   position: fixed;
   overflow-y: scroll;
-  height: 620px;
+  height: 650px;
   &__logo {
     padding: 20px 110px;
   }
@@ -28,7 +28,7 @@
     color: #888888;
     font-size: 25px;
   }
-  .active-link.active {
+  .activeSidebar {
     background-color: #719f31;
     border-radius: 4px;
     color: #fff;
@@ -57,7 +57,7 @@
     color: #383e50;
     font-size: 14px;
     font-weight: 400;
-    padding: 0;
+    padding: 8px;
   }
   .product-li {
     .product {
@@ -70,4 +70,13 @@
       padding: 13px 10px 13px 60px;
     }
   }
+}
+.activesubSidebar{
+  background-color: #719f31;
+  border-radius: 4px;
+  color: #fff !important;
+  display: block;
+}
+.subnavitem li a{
+  padding: 10px 30px !important;
 }

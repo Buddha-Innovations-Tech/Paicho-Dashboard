@@ -15,6 +15,9 @@ import {
 import Loader from "../../components/Loader";
 import axios from "axios";
 import moment from "moment";
+import SideBar from "../../components/SideBar";
+import NavBar from "../../components/NavBar";
+import { Helmet } from "react-helmet";
 
 const Order = () => {
   const [searchinput, setSearchInput] = useState("");
@@ -40,6 +43,8 @@ const Order = () => {
   };
   const { pageNumber } = useParams();
   // const history = useNavigate();
+
+  var discountInBill = 0;
 
   const {
     orders,
@@ -124,12 +129,24 @@ const Order = () => {
   }, [searchedFrom, searchedTo]);
   const clearDate = () => {
     setDisplay(orders.orders);
-    setSearched(null);
-    setSearchedFrom(null);
-    setSearchedTo(null);
+    setSearched("");
+    setSearchedFrom("");
+    setSearchedTo("");
+
   };
+  // useEffect(()=>{
+  //   if(searched==="" || searchedFrom==="" || searchedTo===""){
+  //     setDisplay(orders.orders);
+
+  //   }
+  // })
+
   return (
     <>
+
+    <Helmet>
+      <title>Paicho-Order</title>
+    </Helmet>
       <div className="orderwrapper">
         <p className="orderwrapper__title">Order</p>
         <div className="orderwrapper__background">
@@ -246,10 +263,9 @@ const Order = () => {
                             </Col>
                             <Col md={1}>
                               <p>
-                                {curElm.shippingInfo &&
-                                curElm.shippingInfo.fullname
-                                  ? curElm.shippingInfo.fullname
-                                  : "no"}
+                                {curElm.user
+                                  ? `${curElm.user?.firstname} ${curElm.user?.lastname}`
+                                  : ""}
                               </p>
                             </Col>
                             <Col md={2}>
@@ -267,8 +283,9 @@ const Order = () => {
                             </Col>
                             <Col md={1}>
                               <p>
-                                {curElm.paymentInfo && curElm.paymentInfo.method
-                                  ? curElm.paymentInfo.method
+                                {curElm.paymentInfo &&
+                                curElm.paymentInfo.paymentmethod
+                                  ? curElm.paymentInfo.paymentmethod
                                   : "no"}
                               </p>
                             </Col>
@@ -341,9 +358,12 @@ const Order = () => {
                             </Col>
                             <Col md={1}>
                               <p>
-                                {i.shippingInfo && i.shippingInfo.fullname
-                                  ? i.shippingInfo.fullname
+                                {i.user
+                                  ? `${i.user?.firstname} ${i.user?.lastname}`
                                   : ""}
+                                {/* {i.shippingInfo && i.shippingInfo.fullname
+                                  ? i.shippingInfo.fullname
+                                  : ""} */}
                               </p>
                             </Col>
                             <Col md={2}>
@@ -422,9 +442,7 @@ const Order = () => {
                     display &&
                     display
                       ?.filter((order) =>
-                        order.shippingInfo.fullname
-                          .toLowerCase()
-                          .includes(searchinput)
+                        order.user?.firstname.toLowerCase().includes(searchinput)
                       )
                       .map((curElm, index) => {
                         return (
@@ -437,10 +455,13 @@ const Order = () => {
                             </Col>
                             <Col md={1}>
                               <p>
-                                {curElm.shippingInfo &&
+                                {curElm.user
+                                  ? `${curElm.user?.firstname} ${curElm.user?.lastname}`
+                                  : ""}
+                                {/* {curElm.shippingInfo &&
                                 curElm.shippingInfo.fullname
                                   ? curElm.shippingInfo.fullname
-                                  : "no"}
+                                  : "no"} */}
                               </p>
                             </Col>
                             <Col md={2}>
@@ -532,8 +553,11 @@ const Order = () => {
                             </Col>
                             <Col md={1}>
                               <p>
-                                {i.shippingInfo && i.shippingInfo.fullname
+                                {/* {i.shippingInfo && i.shippingInfo.fullname
                                   ? i.shippingInfo.fullname
+                                  : ""} */}
+                                {i.user
+                                  ? `${i.user?.firstname} ${i.user?.lastname}`
                                   : ""}
                               </p>
                             </Col>
@@ -628,19 +652,19 @@ const Order = () => {
                       }}
                     >
                       <p className="username">
-                        {order?.order?.shippingInfo.fullname}
+                        {`${order?.order.user?.firstname} ${order?.order.user?.lastname}`}
                       </p>
                       <div>
                         <select
                           onChange={(e) => setModalSelected(e.target.value)}
                         >
-                          <option selected>To be delivered</option>
+                          <option selected>{order?.order.orderStatus}</option>
                           <option value="To be Delivered">
                             {" "}
                             To be delivered{" "}
                           </option>
                           <option value="Processing">In Progress</option>
-                          <option value="Delivered">Completed</option>
+                          <option value="Delivered">Delivered</option>
                           <option value="Cancelled">Cancelled</option>
                         </select>
                       </div>
@@ -648,7 +672,12 @@ const Order = () => {
                     <table>
                       <tr>
                         <td className="maindata">Billing Name:</td>
-                        <td className="descdata">Self</td>
+                        <td className="descdata">
+                          {" "}
+                          {`${order?.order.user?.firstname} ${order?.order.user?.lastname}`===order?.order?.shippingInfo?.fullname
+                            ? "Self"
+                            : order?.order?.shippingInfo?.fullname}{" "}
+                        </td>
                       </tr>
                       <tr>
                         <td className="maindata">Email:</td>
@@ -700,6 +729,18 @@ const Order = () => {
                       })}
 
                     <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
+                      <Col md={4}>Discount</Col>
+                      <Col md={4}></Col>
+                      <Col md={4}>
+                        {order?.order?.orderItems.map((data) => {
+                            discountInBill +=
+                              (data.discount / 100) * data.price * data.qty
+                          
+                        })}
+                        {discountInBill}
+                      </Col>
+                    </Row>
+                    <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
                       <Col md={4}>Shipping Price</Col>
                       <Col md={4}></Col>
                       <Col md={4}>{order?.order?.shippingprice}</Col>
@@ -745,59 +786,4 @@ const Order = () => {
 
 export default Order;
 
-// orderList
-//                   .filter((i) => i.status === filterTerm)
-//                   .map((i) => (
-//                     <Row className="productlistwrapper__productlistwrapper--listitem">
-//                       <Col md={1}>
-//                         <p>{i.id}</p>
-//                       </Col>
-//                       <Col md={1}>
-//                         <p>{i.username}</p>
-//                       </Col>
-//                       <Col md={2}>
-//                         <p>{i.Phone}</p>
-//                       </Col>
-//                       <Col md={1}>
-//                         <p>{i.total}</p>
-//                       </Col>
-//                       <Col md={1}>
-//                         <p>{i.payment}</p>
-//                       </Col>
 
-//                       <Col md={2}>
-//                         <p
-//                           style={{
-//                             color:
-//                               i.status === "Completed"
-//                                 ? "#063865"
-//                                 : i.status === "Cancelled"
-//                                 ? "#920000"
-//                                 : i.status === "In Progress"
-//                                 ? "#495058"
-//                                 : "#FFA500",
-//                             background:
-//                               i.status === "Completed"
-//                                 ? "#C4DCF2"
-//                                 : i.status === "Cancelled"
-//                                 ? "#FCDCD2"
-//                                 : i.status === "In Progress"
-//                                 ? "#DDEEC5"
-//                                 : "#FFEDCC",
-//                             borderRadius: "28px",
-//                             padding: "5px 10px",
-//                             textAlign: "center",
-//                           }}
-//                         >
-//                           {i.status}
-//                         </p>
-//                       </Col>
-//                       <Col md={2}>
-//                         <p>{i.date}</p>
-//                       </Col>
-
-//                       <Col md={2}>
-//                         <button className="editbtn">View Details</button>
-//                       </Col>
-//                     </Row>
-//                   ))}

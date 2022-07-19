@@ -6,6 +6,8 @@ import { ImCross } from "react-icons/im";
 import HomeBarGraph from "../../components/HomeBarGraph";
 import HomePieChart from "../../components/HomePieChart";
 import HomeOrder from "../../components/HomeOrder";
+import NavBar from "../../components/NavBar";
+import SideBar from "../../components/SideBar";
 import {
   getOrderDetails,
   listOrders,
@@ -41,6 +43,7 @@ const Home = () => {
   const { success: orderUpdateSuccess } = useSelector(
     (state) => state.orderUpdate
   );
+  var discountInBill = 0;
 
   const { income, loading: incomeLoading } = useSelector(
     (state) => state.dashboardIncome
@@ -93,6 +96,8 @@ const Home = () => {
 
   return (
     <>
+
+          
       <div className="homedashboardwrapper">
         <p className="homedashboardwrapper__heading">Dashboard</p>
         <span className="homedashboardwrapper__subheading">
@@ -166,9 +171,8 @@ const Home = () => {
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>
-                          {curElm.shippingInfo && curElm.shippingInfo.fullname
-                            ? curElm.shippingInfo.fullname
-                            : "no"}
+                        {curElm.user ? `${curElm.user?.firstname} ${curElm.user?.lastname}`
+                                  : ""}
                         </td>
                         <td>
                           {curElm.shippingInfo &&
@@ -242,13 +246,13 @@ const Home = () => {
                     }}
                   >
                     <p className="username">
-                      {order?.order?.shippingInfo.fullname}
+                    {`${order?.order.user?.firstname} ${order?.order.user?.lastname}`}
                     </p>
                     <div>
                       <select
                         onChange={(e) => setModalSelected(e.target.value)}
                       >
-                        <option selected>To be delivered</option>
+                        <option selected>{order?.order.orderStatus}</option>
                         <option value="To be Delivered">
                           {" "}
                           To be delivered{" "}
@@ -262,11 +266,14 @@ const Home = () => {
                   <table>
                     <tr>
                       <td className="maindata">Billing Name:</td>
-                      <td className="descdata">Self</td>
+                      <td className="descdata">{`${order?.order.user?.firstname} ${order?.order.user?.lastname}`===order?.order?.shippingInfo?.fullname
+                            ? "Self"
+                            : order?.order?.shippingInfo?.fullname}{" "}</td>
                     </tr>
                     <tr>
                       <td className="maindata">Email:</td>
-                      <td className="descdata">sagarchhetri981@gmail.com</td>
+                      <td className="descdata"> {order?.order?.shippingInfo.email}
+</td>
                     </tr>
                     <tr>
                       <td className="maindata">Phone Number:</td>
@@ -299,26 +306,38 @@ const Home = () => {
                       <Col md={4}>Price</Col>
                     </Row>
                   </div>
-                  <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                    <Col md={4}>Mix Achar</Col>
-                    <Col md={4}>5</Col>
-                    <Col md={4}>Rs.240</Col>
-                  </Row>
-                  <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                    <Col md={4}>Lemon Pickle</Col>
-                    <Col md={4}>2</Col>
-                    <Col md={4}>Rs.120</Col>
-                  </Row>
-                  <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                    <Col md={4}>Honey</Col>
-                    <Col md={4}>4</Col>
-                    <Col md={4}>Rs.500</Col>
-                  </Row>
+                  {order?.order?.orderItems &&
+                      order?.order?.orderItems?.map((curElm) => {
+                        return (
+                          <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                            <Col md={4}>{curElm.name}</Col>
+                            <Col md={4}>{curElm.qty}</Col>
+                            <Col md={4}>{curElm.price}</Col>
+                          </Row>
+                        );
+                      })}
                   <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
-                    <Col md={4}>Total</Col>
-                    <Col md={4}></Col>
-                    <Col md={4}>Rs.1000</Col>
-                  </Row>
+                      <Col md={4}>Discount</Col>
+                      <Col md={4}></Col>
+                      <Col md={4}>
+                        {order?.order?.orderItems.map((data) => {
+                            discountInBill +=
+                              (data.discount / 100) * data.price * data.qty
+                          
+                        })}
+                        {discountInBill}
+                      </Col>
+                    </Row>
+                    <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
+                      <Col md={4}>Shipping Price</Col>
+                      <Col md={4}></Col>
+                      <Col md={4}>{order?.order?.shippingprice}</Col>
+                    </Row>
+                    <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
+                      <Col md={4}>Total</Col>
+                      <Col md={4}></Col>
+                      <Col md={4}>{order?.order?.totalPrice}</Col>
+                    </Row>
                 </div>
                 <div className="categorywrapper__addcategorywrapper--buttons">
                   <button className="btn-discard" onClick={handleClose}>

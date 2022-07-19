@@ -14,6 +14,8 @@ import { RiDeleteBin7Line } from "react-icons/ri";
 import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
 import Paginate from "../../components/PaginationComp";
+import SideBar from "../../components/SideBar";
+import NavBar from "../../components/NavBar";
 // import DragAndDrop from "../../components/DragAndDrop";
 import {
   listUsers,
@@ -22,6 +24,7 @@ import {
   updateUser,
 } from "../../actions/userActions";
 import Loader from "../../components/Loader";
+import { Helmet } from "react-helmet";
 
 const Register = () => {
   const [show1, setShow1] = useState(false);
@@ -142,6 +145,9 @@ const Register = () => {
   }, [userDeleteSuccess]);
   return (
     <>
+    <Helmet>
+      <title>Paicho-Register</title>
+    </Helmet>
       <div className="registerwrapper">
         <Row>
           <Col md={5}>

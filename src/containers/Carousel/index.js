@@ -10,7 +10,9 @@ import InputField from "../../components/InputField";
 import Previews from "../../components/DragAndDrop";
 import { listCarousel, createCarousel } from "../../actions/carouselAction";
 import Loader from "../../components/Loader";
-
+import SideBar from "../../components/SideBar";
+import NavBar from "../../components/NavBar";
+import { Helmet } from "react-helmet";
 const Carousel = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
   const navigate = useNavigate();
@@ -79,12 +81,14 @@ const Carousel = () => {
     }
   }, [carouselDeleteSuccess]);
 
-  // useEffect(() => {
-  //   dispatch(listCarousel());
-  // }, [dispatch]);
+  
 
   return (
     <>
+    <Helmet>
+      <title>Paicho-Carousel</title>
+    </Helmet>
+
       <div className="carouselwrapper">
         <p className="carouselwrapper__title">Carousel</p>
 
@@ -206,6 +210,7 @@ const Carousel = () => {
           )}
         </div>
       </div>
+       
     </>
   );
 };

@@ -7,6 +7,9 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
+  PRODUCTALL_LIST_REQUEST,
+  PRODUCTALL_LIST_SUCCESS,
+  PRODUCTALL_LIST_FAIL,
   PRODUCT_ARCHIVELIST_REQUEST,
   PRODUCT_ARCHIVELIST_SUCCESS,
   PRODUCT_ARCHIVELIST_FAIL,
@@ -62,6 +65,7 @@ export const createProduct = (category) => async (dispatch, getState) => {
 
 export const listProducts = (pageNumber) => async (dispatch, getState) => {
   try {
+    console.log(pageNumber);
     dispatch({
       type: PRODUCT_LIST_REQUEST,
     });
@@ -78,6 +82,31 @@ export const listProducts = (pageNumber) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const listProductsALL = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCTALL_LIST_REQUEST,
+    });
+    // const {
+    //   userLogin: { userInfo },
+    // } = getState();
+
+    const { data } = await axios.get(`/api/products/all/`);
+
+    dispatch({
+      type: PRODUCTALL_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCTALL_LIST_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

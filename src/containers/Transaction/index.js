@@ -7,7 +7,9 @@ import { listOrders } from "../../actions/orderAction";
 import moment from "moment";
 import Loader from "../../components/Loader";
 import Moment from "react-moment";
-
+import SideBar from "../../components/SideBar";
+import NavBar from "../../components/NavBar";
+import { Helmet } from "react-helmet";
 const Transaction = () => {
   const {
     orders,
@@ -85,6 +87,9 @@ const Transaction = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>Paicho-Transaction</title>
+      </Helmet>
       <div className="transactionwrapper">
         <p className="transactionwrapper__title">Transaction</p>
         <div className="transactionwrapper__background">
@@ -206,8 +211,8 @@ const Transaction = () => {
                           <Col md={3}>
                             <p>
                               <Moment format="DD/MM/YYYY">
-                                {curElm.paidAt && curElm.paidAt
-                                  ? curElm.paidAt
+                                {curElm.createdAt && curElm.createdAt
+                                  ? curElm.createdAt
                                   : ""}
                               </Moment>
                             </p>

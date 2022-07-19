@@ -5,14 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 import JanuaryReport from "../../components/JanuaryReport";
 import MonthlyBarGraph from "../../components/MonthlyBarGraph";
-
+import SideBar from "../../components/SideBar";
+import NavBar from "../../components/NavBar";
 import { listReports } from "../../actions/orderAction";
 import {
   earningDashboard,
   incomeDashboard,
 } from "../../actions/dashboardAction";
+import { Helmet } from "react-helmet";
 
 const Report = () => {
+  
   const [earningdash, setEarningDash] = useState([]);
   const { reports } = useSelector((state) => state.reportList);
   const { userInfo } = useSelector((state) => state.userLogin);
@@ -58,6 +61,9 @@ const Report = () => {
   };
   return (
     <>
+     <Helmet>
+      <title>Paicho-Report</title>
+     </Helmet>
       <div className="reportwrapper">
         <div className="d-flex justify-content-between align-items-center">
           <p className="reportwrapper__title">Report</p>

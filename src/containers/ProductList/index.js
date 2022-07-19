@@ -9,24 +9,31 @@ import PaginationComp from "../../components/PaginationComp";
 import { listProducts, listArchiveProducts } from "../../actions/productAction";
 import Paginate from "../../components/PaginationComp";
 import Loader from "../../components/Loader";
+import SideBar from "../../components/SideBar";
+import NavBar from "../../components/NavBar";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 const ProductList = () => {
   const [searchinput, setSearchInput] = useState("");
-  const { pageNumber } = useParams();
+  let { pageNumber } = useParams();
+
+  
 
   const history = useNavigate();
 
   const { userInfo } = useSelector((state) => state.userLogin);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  // pageNumber = pageNumber || 1;
   const {
     products,
     pages,
     page,
     loading: paginationLoading,
   } = useSelector((state) => state.productList);
+  const {success:productUpdateSuccess}=useSelector((state)=>state.productUpdate);
+
   const { archiveproducts } = useSelector((state) => state.archiveProductList);
   const handleChange = async (e) => {
     setFilterTerm(e.target.value);
@@ -40,27 +47,42 @@ const ProductList = () => {
     //   await axios.get(`/api/products/list/archive/`, config);
     // }
   };
-  useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(listProducts(pageNumber));
+  // }, [dispatch, pageNumber]);
 
-  useEffect(() => {
-    dispatch(listArchiveProducts());
-  }, [dispatch]);
-
+  // useEffect(() => {
+  //   dispatch(listArchiveProducts());
+  // }, [dispatch]);
+  useEffect(()=>{
+      dispatch(listProducts());
+  },[dispatch])
+  useEffect(()=>{
+    if(productUpdateSuccess){
+      dispatch(listProducts());
+    }
+  },[productUpdateSuccess])
+  useEffect(()=>{
+    
+      dispatch(listProducts(pageNumber));
+    
+  },[pageNumber])
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
     }
   }, [userInfo]);
 
-  useEffect(() => {
-    dispatch(listProducts(pageNumber));
-  }, [pageNumber]);
+
 
   const [filterTerm, setFilterTerm] = useState("Stock");
   return (
     <>
+    <Helmet>
+      <title>
+      Paicho-Product List
+      </title>
+    </Helmet>
       <div className="productlistwrapper">
         <p className="productlistwrapper__title">Product list</p>
         <div className="productlistwrapper__productlistwrapper">
@@ -116,7 +138,7 @@ const ProductList = () => {
             {filterTerm === "Stock" &&
               products &&
               products
-                ?.filter((i) => i.name.toLowerCase().includes(searchinput))
+                ?.filter((i) => i.category?.name.toLowerCase().includes(searchinput))
                 ?.map((curElm, index) => {
                   return (
                     <Row
@@ -329,10 +351,7 @@ const ProductList = () => {
                   </Row>
                 ))}
             {filterTerm === "Archived" &&
-              archiveproducts &&
-              archiveproducts
-                ?.filter((i) => i.removeStatus === true)
-                ?.map((i, index) => {
+              archiveproducts.archiveproducts.map((i, index) => {
                   return (
                     <Row
                       className="productlistwrapper__productlistwrapper--listitem"

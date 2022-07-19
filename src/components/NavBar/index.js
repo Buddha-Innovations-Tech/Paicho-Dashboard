@@ -31,7 +31,7 @@ const NavBar = () => {
     <>
       <div className="navbarwrapper">
         <div className="d-flex justify-content-end">
-          <div>
+          {/* <div>
             <IoMdNotificationsOutline
               className="navbarwrapper__notification"
               onClick={handleShow}
@@ -207,13 +207,13 @@ const NavBar = () => {
               </Modal>
             </div>
             <div className="navbarwrapper__notification--circle"></div>
-          </div>
+          </div> */}
           <div className="d-flex navbarwrapper__profile">
-            <figure>
+            {/* <figure>
               <img src={profile} alt="" />
-            </figure>
+            </figure> */}
             <span className="navbarwrapper__profile--name">
-              {userInfo ? userInfo.firstname : " "}
+              {userInfo ? `${userInfo.firstname} ${userInfo.lastname}` : " "}
             </span>
           </div>
           <div>

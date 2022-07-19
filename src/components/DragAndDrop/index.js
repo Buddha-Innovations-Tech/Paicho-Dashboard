@@ -45,7 +45,7 @@ const img = {
   height: "100%",
 };
 
-const EditDragAndDrop = ({ imgarray, setImgArray }) => {
+const EditDragAndDrop = ({ imgarray, setImgArray,imageErr }) => {
   const [imagePath, setImagePath] = useState([]);
   const [files, setFiles] = useState([]);
   const {
@@ -100,25 +100,24 @@ const EditDragAndDrop = ({ imgarray, setImgArray }) => {
           <p>Drag and drop images or click to upload media</p>
         </div>
       </div>
-
+      {imageErr && imgarray.length<1 && <p style={{color:"red",fontSize:"15px",marginTop:"20px"}}>Image is required.</p>}
       <div className="d-flex  align-items-center mt-4">
         {imagePath.length > 0 &&
           imagePath.map((curElm) => {
             return (
-              <div>
+              <div style={{position: "relative",margin:"0 20px"}}>
                 <img
                   src={`${curElm}`}
                   alt="card"
                   name="image"
                   className="img-fluid"
                   style={{
-                    position: "relative",
                     width: "60px",
                     height: "60px",
                   }}
                 />
                 <ImCross
-                  style={{ position: "absolute", fontSize: "12px" }}
+                  style={{ position: "absolute", fontSize: "12px",color:"red" }}
                   className="crossicon"
                   onClick={(e) =>
                     setImagePath(imagePath.filter((i) => i !== curElm))
