@@ -216,7 +216,6 @@ const AddProduct = () => {
 
                             !seo.find((i) => i === keywords) &&
                               keywords.trim() !== "" &&
-                              // !subCategories.find((i) => i === similarproduct) &&
                               setSeo([keywords, ...seo]);
                           }}
                         >
