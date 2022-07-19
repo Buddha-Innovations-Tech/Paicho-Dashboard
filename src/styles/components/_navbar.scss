@@ -114,9 +114,10 @@
     margin: 0 25px;
 
     &--name {
-      color: #888888;
-      font-size: 12px;
-      margin: 8px;
+      color: #383e50;
+      font-size: 20px;
+      font-weight: 600;
+      text-transform: capitalize;
     }
   }
   &__logoutbtn {

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { BiSearch } from "react-icons/bi";
 import { ImCross } from "react-icons/im";
 import Moment from "react-moment";
-
+import { Link } from "react-router-dom";
 import Paginate from "../../components/PaginationComp";
 import {
   getOrderDetails,
@@ -13,11 +13,15 @@ import {
   updateOrder,
 } from "../../actions/orderAction";
 import Loader from "../../components/Loader";
+import axios from "axios";
+import moment from "moment";
+import SideBar from "../../components/SideBar";
+import NavBar from "../../components/NavBar";
+import { Helmet } from "react-helmet";
 
 const Order = () => {
   const [searchinput, setSearchInput] = useState("");
   const { userInfo } = useSelector((state) => state.userLogin);
-
   const [filterdate, setFilterDate] = useState("Day");
   const [date, setDate] = useState(true);
   const [dates, setDates] = useState(false);
@@ -26,6 +30,11 @@ const Order = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [orderStatus, setModalSelected] = useState("");
+  const [searched, setSearched] = useState(null);
+  const [searchedFrom, setSearchedFrom] = useState(null);
+  const [searchedTo, setSearchedTo] = useState(null);
+  const [display, setDisplay] = useState([]);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,7 +42,9 @@ const Order = () => {
     setFilterDate(e.target.value);
   };
   const { pageNumber } = useParams();
-  const history = useNavigate();
+  // const history = useNavigate();
+
+  var discountInBill = 0;
 
   const {
     orders,
@@ -87,8 +98,55 @@ const Order = () => {
     filterdate === "Dates" ? setDates(true) : setDates(false);
   }, [filterdate]);
 
+  const handleDate = (e) => {
+    setSearched(e.target.value);
+  };
+  useEffect(() => {
+    if (searched !== null) {
+      setDisplay(
+        orders?.orders?.filter((i) => {
+          return (
+            moment(new Date(i.createdAt)).format("L") ===
+            moment(new Date(searched)).format("L")
+          );
+        })
+      );
+    }
+  }, [searched]);
+  useEffect(() => {
+    if (searchedFrom !== null && searchedTo !== null) {
+      setDisplay(
+        orders?.orders?.filter((i) => {
+          return (
+            moment(new Date(i.createdAt)).format("L") >=
+              moment(new Date(searchedFrom)).format("L") &&
+            moment(new Date(i.createdAt)).format("L") <=
+              moment(new Date(searchedTo)).format("L")
+          );
+        })
+      );
+    }
+  }, [searchedFrom, searchedTo]);
+  const clearDate = () => {
+    setDisplay(orders.orders);
+    setSearched("");
+    setSearchedFrom("");
+    setSearchedTo("");
+
+  };
+  // useEffect(()=>{
+  //   if(searched==="" || searchedFrom==="" || searchedTo===""){
+  //     setDisplay(orders.orders);
+
+  //   }
+  // })
+
   return (
     <>
+
+    <Helmet>
+      <title>Paicho-Order</title>
+    </Helmet>
       <div className="orderwrapper">
         <p className="orderwrapper__title">Order</p>
         <div className="orderwrapper__background">
@@ -116,26 +174,43 @@ const Order = () => {
               {date && (
                 <div className="d-flex orderwrapper__background--datecalender ms-3 me-3">
                   {/* <AiOutlineCalendar className="calendericon" /> */}
-                  <input type="date" placeholder="03/23/2020" />
+                  <input type="date" value={searched} onChange={handleDate} />
                 </div>
               )}
+
               {dates && (
                 <>
                   <div className="d-flex orderwrapper__background--datecalender ms-3 me-3 inputreletive">
                     <div className="reportwrapper__background--right-title inputabsolute">
                       From
                     </div>
-                    <input type="date" placeholder="03/23/2020" />
+                    <input
+                      type="date"
+                      placeholder="03/23/2020"
+                      value={searchedFrom}
+                      onChange={(e) => setSearchedFrom(e.target.value)}
+                    />
                   </div>
                   <div className="d-flex orderwrapper__background--datecalender ms-3 me-3 inputreletive">
                     <div className="reportwrapper__background--right-title inputabsolute">
                       To
                     </div>
-                    <input type="date" placeholder="03/23/2020" />
+                    <input
+                      type="date"
+                      placeholder="03/23/2020"
+                      value={searchedTo}
+                      onChange={(e) => setSearchedTo(e.target.value)}
+                    />
                   </div>
                 </>
               )}
-
+              <button
+                className="me-3 pe-3 ps-3"
+                style={{ border: "none", borderRadius: "3px" }}
+                onClick={clearDate}
+              >
+                Clear
+              </button>
               <div>
                 <select
                   className="orderwrapper__background--selectstatus"
@@ -163,187 +238,400 @@ const Order = () => {
             </Row>
           </div>
           <div>
-            {filterTerm === "Status"
-              ? orders &&
-                orders.orders &&
-                orders?.orders
-                  ?.filter((order) =>
-                    order.shippingInfo.fullname
-                      .toLowerCase()
-                      .includes(searchinput)
-                  )
-                  .map((curElm, index) => {
-                    return (
-                      <Row
-                        className="productlistwrapper__productlistwrapper--listitem"
-                        key={index}
-                      >
-                        <Col md={1}>
-                          <p>{index + 1}</p>
-                        </Col>
-                        <Col md={1}>
-                          <p>
-                            {curElm.shippingInfo && curElm.shippingInfo.fullname
-                              ? curElm.shippingInfo.fullname
-                              : ""}
-                          </p>
-                        </Col>
-                        <Col md={2}>
-                          <p>
-                            {curElm.shippingInfo &&
-                            curElm.shippingInfo.phonenumber
-                              ? curElm.shippingInfo.phonenumber
-                              : "no"}
-                          </p>
-                        </Col>
-                        <Col md={1}>
-                          <p>{curElm.totalPrice ? curElm.totalPrice : "no"}</p>
-                        </Col>
-                        <Col md={1}>
-                          <p>
-                            {curElm.paymentInfo && curElm.paymentInfo.method
-                              ? curElm.paymentInfo.method
-                              : "no"}
-                          </p>
-                        </Col>
-
-                        <Col md={2}>
-                          <p
-                            style={{
-                              color:
-                                curElm.orderStatus === "Completed"
-                                  ? "#063865"
-                                  : curElm.orderStatus === "Cancelled"
-                                  ? "#920000"
-                                  : curElm.orderStatus === "In Progress"
-                                  ? "#495058"
-                                  : "#FFA500",
-                              background:
-                                curElm.orderStatus === "Completed"
-                                  ? "#C4DCF2"
-                                  : curElm.orderStatus === "Cancelled"
-                                  ? "#FCDCD2"
-                                  : curElm.orderStatus === "In Progress"
-                                  ? "#DDEEC5"
-                                  : "#FFEDCC",
-                              borderRadius: "28px",
-                              padding: "5px 10px",
-                              textAlign: "center",
-                            }}
+            {/* <p>{orders && JSON.stringify(orders.orders)} </p> */}
+            {searched === null &&
+            searchedFrom === null &&
+            searchedTo === null ? (
+              <>
+                {filterTerm === "Status"
+                  ? orders &&
+                    orders.orders &&
+                    orders?.orders
+                      ?.filter((order) =>
+                        order.shippingInfo.fullname
+                          .toLowerCase()
+                          .includes(searchinput)
+                      )
+                      .map((curElm, index) => {
+                        return (
+                          <Row
+                            className="productlistwrapper__productlistwrapper--listitem"
+                            key={index}
                           >
-                            {curElm.orderStatus ? curElm.orderStatus : "no"}
-                          </p>
-                        </Col>
-                        <Col md={2}>
-                          <p>
-                            <Moment format="DD/MM/YYYY">
-                              {curElm.createdAt ? curElm.createdAt : ""}
-                            </Moment>
-                          </p>
-                        </Col>
+                            <Col md={1}>
+                              <p>{index + 1}</p>
+                            </Col>
+                            <Col md={1}>
+                              <p>
+                                {curElm.user
+                                  ? `${curElm.user?.firstname} ${curElm.user?.lastname}`
+                                  : ""}
+                              </p>
+                            </Col>
+                            <Col md={2}>
+                              <p>
+                                {curElm.shippingInfo &&
+                                curElm.shippingInfo.phonenumber
+                                  ? curElm.shippingInfo.phonenumber
+                                  : "no"}
+                              </p>
+                            </Col>
+                            <Col md={1}>
+                              <p>
+                                {curElm.totalPrice ? curElm.totalPrice : "no"}
+                              </p>
+                            </Col>
+                            <Col md={1}>
+                              <p>
+                                {curElm.paymentInfo &&
+                                curElm.paymentInfo.paymentmethod
+                                  ? curElm.paymentInfo.paymentmethod
+                                  : "no"}
+                              </p>
+                            </Col>
 
-                        <Col md={2}>
-                          <button
-                            className="editbtn"
-                            onClick={() => {
-                              setViewId(curElm._id);
-                              handleView(curElm._id);
-                              handleShow();
-                            }}
-                          >
-                            View Details
-                          </button>
-                        </Col>
-                      </Row>
-                    );
-                  })
-              : orders &&
-                orders.orders
-                  .filter((i) => i.orderStatus === filterTerm)
-                  .map((i, index) => {
-                    return (
-                      <Row
-                        className="productlistwrapper__productlistwrapper--listitem"
-                        key={index}
-                      >
-                        <Col md={1}>
-                          <p>{index + 1}</p>
-                        </Col>
-                        <Col md={1}>
-                          <p>
-                            {i.shippingInfo && i.shippingInfo.fullname
-                              ? i.shippingInfo.fullname
-                              : ""}
-                          </p>
-                        </Col>
-                        <Col md={2}>
-                          <p>
-                            {i.shippingInfo && i.shippingInfo.phonenumber
-                              ? i.shippingInfo.phonenumber
-                              : "no"}
-                          </p>
-                        </Col>
-                        <Col md={1}>
-                          <p>{i.totalPrice ? i.totalPrice : "no"}</p>
-                        </Col>
-                        <Col md={1}>
-                          <p>
-                            {i.paymentInfo && i.paymentInfo.method
-                              ? i.paymentInfo.method
-                              : "no"}
-                          </p>
-                        </Col>
+                            <Col md={2}>
+                              <p
+                                style={{
+                                  color:
+                                    curElm.orderStatus === "Delivered"
+                                      ? "#063865"
+                                      : curElm.orderStatus === "Cancelled"
+                                      ? "#920000"
+                                      : curElm.orderStatus === "Processing"
+                                      ? "#495058"
+                                      : "#FFA500",
+                                  background:
+                                    curElm.orderStatus === "Processing"
+                                      ? "#C4DCF2"
+                                      : curElm.orderStatus === "Cancelled"
+                                      ? "#FCDCD2"
+                                      : curElm.orderStatus === "Delivered"
+                                      ? "#DDEEC5"
+                                      : "#FFEDCC",
+                                  borderRadius: "28px",
+                                  padding: "5px 10px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {curElm.orderStatus ? curElm.orderStatus : "no"}
+                              </p>
+                            </Col>
+                            <Col md={2}>
+                              <p>
+                                <Moment format="YYYY-MM-DD">
+                                  {curElm.createdAt
+                                    ? moment(new Date(curElm.createdAt)).format(
+                                        "L"
+                                      )
+                                    : ""}
+                                </Moment>
+                              </p>
+                            </Col>
 
-                        <Col md={2}>
-                          <p
-                            style={{
-                              color:
-                                i.orderStatus === "Completed"
-                                  ? "#063865"
-                                  : i.orderStatus === "Cancelled"
-                                  ? "#920000"
-                                  : i.orderStatus === "In Progress"
-                                  ? "#495058"
-                                  : "#FFA500",
-                              background:
-                                i.orderStatus === "Completed"
-                                  ? "#C4DCF2"
-                                  : i.orderStatus === "Cancelled"
-                                  ? "#FCDCD2"
-                                  : i.orderStatus === "In Progress"
-                                  ? "#DDEEC5"
-                                  : "#FFEDCC",
-                              borderRadius: "28px",
-                              padding: "5px 10px",
-                              textAlign: "center",
-                            }}
+                            <Col md={2}>
+                              <button
+                                className="editbtn"
+                                onClick={() => {
+                                  setViewId(curElm._id);
+                                  handleView(curElm._id);
+                                  handleShow();
+                                }}
+                              >
+                                View Details
+                              </button>
+                            </Col>
+                          </Row>
+                        );
+                      })
+                  : orders &&
+                    orders.orders
+                      .filter((i) => i.orderStatus === filterTerm)
+                      .map((i, index) => {
+                        return (
+                          <Row
+                            className="productlistwrapper__productlistwrapper--listitem"
+                            key={index}
                           >
-                            {i.orderStatus ? i.orderStatus : "no"}
-                          </p>
-                        </Col>
-                        <Col md={2}>
-                          <p>
-                            <Moment format="DD/MM/YYYY">
-                              {i.createdAt ? i.createdAt : ""}
-                            </Moment>
-                          </p>
-                        </Col>
+                            <Col md={1}>
+                              <p>{index + 1}</p>
+                            </Col>
+                            <Col md={1}>
+                              <p>
+                                {i.user
+                                  ? `${i.user?.firstname} ${i.user?.lastname}`
+                                  : ""}
+                                {/* {i.shippingInfo && i.shippingInfo.fullname
+                                  ? i.shippingInfo.fullname
+                                  : ""} */}
+                              </p>
+                            </Col>
+                            <Col md={2}>
+                              <p>
+                                {i.shippingInfo && i.shippingInfo.phonenumber
+                                  ? i.shippingInfo.phonenumber
+                                  : "no"}
+                              </p>
+                            </Col>
+                            <Col md={1}>
+                              <p>{i.totalPrice ? i.totalPrice : "no"}</p>
+                            </Col>
+                            <Col md={1}>
+                              <p>
+                                {i.paymentInfo && i.paymentInfo.paymentmethod
+                                  ? i.paymentInfo.paymentmethod
+                                  : ""}
+                              </p>
+                            </Col>
 
-                        <Col md={2}>
-                          <button
-                            className="editbtn"
-                            onClick={() => {
-                              setViewId(i._id);
-                              handleView(i._id);
-                              handleShow();
-                            }}
+                            <Col md={2}>
+                              <p
+                                style={{
+                                  color:
+                                    i.orderStatus === "Completed"
+                                      ? "#063865"
+                                      : i.orderStatus === "Cancelled"
+                                      ? "#920000"
+                                      : i.orderStatus === "In Progress"
+                                      ? "#495058"
+                                      : "#FFA500",
+                                  background:
+                                    i.orderStatus === "Completed"
+                                      ? "#C4DCF2"
+                                      : i.orderStatus === "Cancelled"
+                                      ? "#FCDCD2"
+                                      : i.orderStatus === "In Progress"
+                                      ? "#DDEEC5"
+                                      : "#FFEDCC",
+                                  borderRadius: "28px",
+                                  padding: "5px 10px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {i.orderStatus ? i.orderStatus : "no"}
+                              </p>
+                            </Col>
+                            <Col md={2}>
+                              <p>
+                                <Moment format="DD/MM/YYYY">
+                                  {i.createdAt ? i.createdAt : ""}
+                                </Moment>
+                              </p>
+                            </Col>
+
+                            <Col md={2}>
+                              <button
+                                className="editbtn"
+                                onClick={() => {
+                                  setViewId(i._id);
+                                  handleView(i._id);
+                                  handleShow();
+                                }}
+                              >
+                                View Details
+                              </button>
+                            </Col>
+                          </Row>
+                        );
+                      })}
+              </>
+            ) : (
+              <>
+                {filterTerm === "Status"
+                  ? display &&
+                    display &&
+                    display
+                      ?.filter((order) =>
+                        order.user?.firstname.toLowerCase().includes(searchinput)
+                      )
+                      .map((curElm, index) => {
+                        return (
+                          <Row
+                            className="productlistwrapper__productlistwrapper--listitem"
+                            key={index}
                           >
-                            View Details
-                          </button>
-                        </Col>
-                      </Row>
-                    );
-                  })}
+                            <Col md={1}>
+                              <p>{index + 1}</p>
+                            </Col>
+                            <Col md={1}>
+                              <p>
+                                {curElm.user
+                                  ? `${curElm.user?.firstname} ${curElm.user?.lastname}`
+                                  : ""}
+                                {/* {curElm.shippingInfo &&
+                                curElm.shippingInfo.fullname
+                                  ? curElm.shippingInfo.fullname
+                                  : "no"} */}
+                              </p>
+                            </Col>
+                            <Col md={2}>
+                              <p>
+                                {curElm.shippingInfo &&
+                                curElm.shippingInfo.phonenumber
+                                  ? curElm.shippingInfo.phonenumber
+                                  : "no"}
+                              </p>
+                            </Col>
+                            <Col md={1}>
+                              <p>
+                                {curElm.totalPrice ? curElm.totalPrice : "no"}
+                              </p>
+                            </Col>
+                            <Col md={1}>
+                              <p>
+                                {curElm.paymentInfo && curElm.paymentInfo.method
+                                  ? curElm.paymentInfo.method
+                                  : "no"}
+                              </p>
+                            </Col>
+
+                            <Col md={2}>
+                              <p
+                                style={{
+                                  color:
+                                    curElm.orderStatus === "Delivered"
+                                      ? "#063865"
+                                      : curElm.orderStatus === "Cancelled"
+                                      ? "#920000"
+                                      : curElm.orderStatus === "Processing"
+                                      ? "#495058"
+                                      : "#FFA500",
+                                  background:
+                                    curElm.orderStatus === "Processing"
+                                      ? "#C4DCF2"
+                                      : curElm.orderStatus === "Cancelled"
+                                      ? "#FCDCD2"
+                                      : curElm.orderStatus === "Delivered"
+                                      ? "#DDEEC5"
+                                      : "#FFEDCC",
+                                  borderRadius: "28px",
+                                  padding: "5px 10px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {curElm.orderStatus ? curElm.orderStatus : "no"}
+                              </p>
+                            </Col>
+                            <Col md={2}>
+                              <p>
+                                <Moment format="YYYY-MM-DD">
+                                  {curElm.createdAt
+                                    ? moment(new Date(curElm.createdAt)).format(
+                                        "L"
+                                      )
+                                    : ""}
+                                </Moment>
+                              </p>
+                            </Col>
+
+                            <Col md={2}>
+                              <button
+                                className="editbtn"
+                                onClick={() => {
+                                  setViewId(curElm._id);
+                                  handleView(curElm._id);
+                                  handleShow();
+                                }}
+                              >
+                                View Details
+                              </button>
+                            </Col>
+                          </Row>
+                        );
+                      })
+                  : display &&
+                    display
+                      .filter((i) => i.orderStatus === filterTerm)
+                      .map((i, index) => {
+                        return (
+                          <Row
+                            className="productlistwrapper__productlistwrapper--listitem"
+                            key={index}
+                          >
+                            <Col md={1}>
+                              <p>{index + 1}</p>
+                            </Col>
+                            <Col md={1}>
+                              <p>
+                                {/* {i.shippingInfo && i.shippingInfo.fullname
+                                  ? i.shippingInfo.fullname
+                                  : ""} */}
+                                {i.user
+                                  ? `${i.user?.firstname} ${i.user?.lastname}`
+                                  : ""}
+                              </p>
+                            </Col>
+                            <Col md={2}>
+                              <p>
+                                {i.shippingInfo && i.shippingInfo.phonenumber
+                                  ? i.shippingInfo.phonenumber
+                                  : "no"}
+                              </p>
+                            </Col>
+                            <Col md={1}>
+                              <p>{i.totalPrice ? i.totalPrice : "no"}</p>
+                            </Col>
+                            <Col md={1}>
+                              <p>
+                                {i.paymentInfo && i.paymentInfo.paymentmethod
+                                  ? i.paymentInfo.paymentmethod
+                                  : ""}
+                              </p>
+                            </Col>
+
+                            <Col md={2}>
+                              <p
+                                style={{
+                                  color:
+                                    i.orderStatus === "Completed"
+                                      ? "#063865"
+                                      : i.orderStatus === "Cancelled"
+                                      ? "#920000"
+                                      : i.orderStatus === "In Progress"
+                                      ? "#495058"
+                                      : "#FFA500",
+                                  background:
+                                    i.orderStatus === "Completed"
+                                      ? "#C4DCF2"
+                                      : i.orderStatus === "Cancelled"
+                                      ? "#FCDCD2"
+                                      : i.orderStatus === "In Progress"
+                                      ? "#DDEEC5"
+                                      : "#FFEDCC",
+                                  borderRadius: "28px",
+                                  padding: "5px 10px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {i.orderStatus ? i.orderStatus : "no"}
+                              </p>
+                            </Col>
+                            <Col md={2}>
+                              <p>
+                                <Moment format="DD/MM/YYYY">
+                                  {i.createdAt ? i.createdAt : ""}
+                                </Moment>
+                              </p>
+                            </Col>
+
+                            <Col md={2}>
+                              <button
+                                className="editbtn"
+                                onClick={() => {
+                                  setViewId(i._id);
+                                  handleView(i._id);
+                                  handleShow();
+                                }}
+                              >
+                                View Details
+                              </button>
+                            </Col>
+                          </Row>
+                        );
+                      })}
+              </>
+            )}
+
             <Modal show={show} onHide={handleClose}>
               <Modal.Body>
                 <div className="ordermodalbg">
@@ -364,19 +652,19 @@ const Order = () => {
                       }}
                     >
                       <p className="username">
-                        {order?.order?.shippingInfo.fullname}
+                        {`${order?.order.user?.firstname} ${order?.order.user?.lastname}`}
                       </p>
                       <div>
                         <select
                           onChange={(e) => setModalSelected(e.target.value)}
                         >
-                          <option selected>To be delivered</option>
+                          <option selected>{order?.order.orderStatus}</option>
                           <option value="To be Delivered">
                             {" "}
                             To be delivered{" "}
                           </option>
                           <option value="Processing">In Progress</option>
-                          <option value="Delivered">Completed</option>
+                          <option value="Delivered">Delivered</option>
                           <option value="Cancelled">Cancelled</option>
                         </select>
                       </div>
@@ -384,11 +672,19 @@ const Order = () => {
                     <table>
                       <tr>
                         <td className="maindata">Billing Name:</td>
-                        <td className="descdata">Self</td>
+                        <td className="descdata">
+                          {" "}
+                          {`${order?.order.user?.firstname} ${order?.order.user?.lastname}`===order?.order?.shippingInfo?.fullname
+                            ? "Self"
+                            : order?.order?.shippingInfo?.fullname}{" "}
+                        </td>
                       </tr>
                       <tr>
                         <td className="maindata">Email:</td>
-                        <td className="descdata">sagarchhetri981@gmail.com</td>
+                        <td className="descdata">
+                          {" "}
+                          {order?.order?.shippingInfo.email}
+                        </td>
                       </tr>
                       <tr>
                         <td className="maindata">Phone Number:</td>
@@ -421,18 +717,33 @@ const Order = () => {
                         <Col md={4}>Price</Col>
                       </Row>
                     </div>
-                    <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
-                      <Col md={4}>
-                        {/* {console.log(order?.order?.orderItems)} */}
-                      </Col>
-                      <Col md={4}></Col>
-                      <Col md={4}></Col>
-                    </Row>
+                    {order?.order?.orderItems &&
+                      order?.order?.orderItems?.map((curElm) => {
+                        return (
+                          <Row className="productlistwrapper__productlistwrapper--listitem modal-data">
+                            <Col md={4}>{curElm.name}</Col>
+                            <Col md={4}>{curElm.qty}</Col>
+                            <Col md={4}>{curElm.price}</Col>
+                          </Row>
+                        );
+                      })}
 
+                    <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
+                      <Col md={4}>Discount</Col>
+                      <Col md={4}></Col>
+                      <Col md={4}>
+                        {order?.order?.orderItems.map((data) => {
+                            discountInBill +=
+                              (data.discount / 100) * data.price * data.qty
+                          
+                        })}
+                        {discountInBill}
+                      </Col>
+                    </Row>
                     <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
                       <Col md={4}>Shipping Price</Col>
                       <Col md={4}></Col>
-                      <Col md={4}>{order?.order?.shippingPrice}</Col>
+                      <Col md={4}>{order?.order?.shippingprice}</Col>
                     </Row>
                     <Row className="productlistwrapper__productlistwrapper--listitem modal-total">
                       <Col md={4}>Total</Col>
@@ -441,9 +752,9 @@ const Order = () => {
                     </Row>
                   </div>
                   <div className="categorywrapper__addcategorywrapper--buttons">
-                    <button className="btn-discard" onClick={handleClose}>
+                    <Link to="" className="btn-discard" onClick={handleClose}>
                       Cancel
-                    </button>
+                    </Link>
 
                     <button className="btn-addcategory" onClick={EditStatus}>
                       Save
@@ -461,7 +772,7 @@ const Order = () => {
                 pages={pages}
                 page={page}
                 list="order"
-                history={history}
+                history={navigate}
               />
             </div>
           </>
@@ -475,59 +786,4 @@ const Order = () => {
 
 export default Order;
 
-// orderList
-//                   .filter((i) => i.status === filterTerm)
-//                   .map((i) => (
-//                     <Row className="productlistwrapper__productlistwrapper--listitem">
-//                       <Col md={1}>
-//                         <p>{i.id}</p>
-//                       </Col>
-//                       <Col md={1}>
-//                         <p>{i.username}</p>
-//                       </Col>
-//                       <Col md={2}>
-//                         <p>{i.Phone}</p>
-//                       </Col>
-//                       <Col md={1}>
-//                         <p>{i.total}</p>
-//                       </Col>
-//                       <Col md={1}>
-//                         <p>{i.payment}</p>
-//                       </Col>
 
-//                       <Col md={2}>
-//                         <p
-//                           style={{
-//                             color:
-//                               i.status === "Completed"
-//                                 ? "#063865"
-//                                 : i.status === "Cancelled"
-//                                 ? "#920000"
-//                                 : i.status === "In Progress"
-//                                 ? "#495058"
-//                                 : "#FFA500",
-//                             background:
-//                               i.status === "Completed"
-//                                 ? "#C4DCF2"
-//                                 : i.status === "Cancelled"
-//                                 ? "#FCDCD2"
-//                                 : i.status === "In Progress"
-//                                 ? "#DDEEC5"
-//                                 : "#FFEDCC",
-//                             borderRadius: "28px",
-//                             padding: "5px 10px",
-//                             textAlign: "center",
-//                           }}
-//                         >
-//                           {i.status}
-//                         </p>
-//                       </Col>
-//                       <Col md={2}>
-//                         <p>{i.date}</p>
-//                       </Col>
-
-//                       <Col md={2}>
-//                         <button className="editbtn">View Details</button>
-//                       </Col>
-//                     </Row>
-//                   ))}

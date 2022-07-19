@@ -10,14 +10,17 @@ import { listSubscribers } from "../../actions/subscriberActions";
 import { listOrders } from "../../actions/orderAction";
 import Paginate from "../../components/PaginationComp";
 import Loader from "../../components/Loader";
-
+import SideBar from "../../components/SideBar";
+import NavBar from "../../components/NavBar";
+import { Helmet } from "react-helmet";
 const Customer = () => {
-  // const [sortType, setSortType] = useState("Orders");
+  const [sortType, setSortType] = useState("Orders");
   const [searchInput, setSearchInput] = useState("");
   const { userInfo } = useSelector((state) => state.userLogin);
   const navigate = useNavigate();
   const { pageNumber } = useParams();
-  const history = useNavigate();
+  let sorted = [];
+  // const history = useNavigate();
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
@@ -31,61 +34,56 @@ const Customer = () => {
     page,
     loading: paginationLoading,
   } = useSelector((state) => state.subscriberList);
-  useEffect(() => {
-    dispatch(listSubscribers());
-  }, [success]);
   // useEffect(() => {
-  //   dispatch(listOrders());
-  // }, [success]);
+  //   dispatch(listSubscribers());
+  // }, []);
+
   useEffect(() => {
     dispatch(listSubscribers(pageNumber));
   }, [pageNumber]);
 
-  const subs = subscribers.users;
-  const [sorting, setSorting] = useState(subs);
+
+
+  const subs = subscribers?.users;
+  const [sorting, setSorting] = useState(subscribers?.users);
+
+
+  useEffect(()=>{
+    if(subscribers){
+
+      setSorting(subscribers?.users);
+    }
+  },[subscribers])
   const dispatch = useDispatch();
-  // const changeSort = () => {
-  //   if (sortType.toLowerCase() === "Orders".toLowerCase()) {
-  //     setSorting(subs);
-  //   } else if (sortType.toLowerCase() === "Highest Orders".toLowerCase()) {
-  //     const sorted = subs.sort((a, b) => {
-  //       return b.order - a.order;
-  //     });
-  //     setLoading(true);
-  //     setSorting(sorted);
-  //     setLoading(false);
-  //   } else if (sortType.toLowerCase() === "Lowest Orders".toLowerCase()) {
-  //     const sorted = subs.sort((a, b) => {
-  //       return a.order - b.order;
-  //     });
-  //     setLoading(true);
-  //     setSorting(sorted);
-  //     setLoading(false);
-  //   } else {
-  //     setSorting(subs.filter((i) => i.order === 0));
-  //   }
-  // };
+  const changeSort =  async () => {
+    
+    if (sortType.toLowerCase() === "Orders".toLowerCase()) {
+      setSorting(subscribers?.users);
+    } 
+    else if (sortType.toLowerCase() === "Highest".toLowerCase()) {
+     
+       sorted = await subscribers?.users.sort((a, b) => {
+        return a.orders.length < b.orders.length ?1:-1;
+      });
+      setSorting([...sorted]);
+    } else if (sortType.toLowerCase() === "Lowest".toLowerCase()) {
+       sorted = await subscribers?.users.sort((a, b) => {
+        return a.orders.length > b.orders.length ? 1:-1;
+      });
+      
+      setSorting([...sorted]);
+    } else {
+      setSorting(subs.filter((i) => i.orders.length === 0));
+    }
+  };
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     changeSort();
-  //   }, 100);
-  // }, [sortType]);
-
-  // const sorted = sorting.sort((a, b) => {
-  //   if (sortType === "Orders") {
-  //     return sorting;
-  //   } else if (sortType === "Highest Orders") {
-  //     return b.order - a.order;
-  //     // return [...b.order-a.order,...newCustomerlistString];
-  //   } else if (sortType === "Lowest Orders") {
-  //     return a.order - b.order;
-  //   }
-  //   setSorting(sorted);
-  // });
+  useEffect(() => {
+        changeSort();
+  }, [sortType]);
 
   return (
     <>
+      <Helmet>Paicho-Customer</Helmet>
       <div className="customerwrapper">
         <div className="d-flex justify-content-between align-items-center">
           <p className="customerwrapper__title">Customer</p>
@@ -110,13 +108,13 @@ const Customer = () => {
               <select
                 className="orderwrapper__background--selectstatus"
                 onChange={(e) => {
-                  // setSortType(e.target.value);
+                  setSortType(e.target.value);
                 }}
               >
-                <option selected>Orders</option>
-                <option value="Highest Orders"> Highest Orders </option>
-                <option value="Lowest Orders">Lowest Orders</option>
-                <option value="0">No Orders</option>
+                <option value="Orders">Orders</option>
+                <option value="Highest"> Highest Orders </option>
+                <option value="Lowest">Lowest Orders</option>
+                <option value="No Orders">No Orders</option>
               </select>
             </div>
           </div>
@@ -133,12 +131,12 @@ const Customer = () => {
           </div>
 
           <div>
-            {subs &&
-              subs
-                .filter((customer) =>
+            {sorting &&
+              sorting
+                ?.filter((customer) =>
                   customer.firstname.toLowerCase().includes(searchInput)
                 )
-                .map((curElm, index) => {
+                ?.map((curElm, index) => {
                   return (
                     <Row
                       className="productlistwrapper__productlistwrapper--listitem customerlistleft"
@@ -157,19 +155,17 @@ const Customer = () => {
                         <p>{curElm.email}</p>
                       </Col>
                       <Col md={2}>
-                        <p>{curElm.address}</p>
+                        <p>{curElm?.billingaddress?.billingaddress}</p>
                       </Col>
 
                       <Col md={2}>
-                        {/* <p>{curElm.order === 0 ? "No orders" : curElm.order}</p> */}
-                        <p>{curElm.orders.length}</p>
+                        <p>{curElm.orders.length === 0 ? "No Order" : curElm.orders.length}</p>
                       </Col>
                     </Row>
                   );
                 })}
           </div>
         </div>
-
         {!paginationLoading ? (
           <>
             <div className="mt-5">
@@ -177,7 +173,7 @@ const Customer = () => {
                 pages={pages}
                 page={page}
                 list="customer"
-                history={history}
+                history={navigate}
               />
             </div>
           </>

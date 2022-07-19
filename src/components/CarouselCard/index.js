@@ -9,7 +9,7 @@ import InputField from "../../components/InputField";
 import Previews from "../../components/DragAndDrop";
 import { InputGroup, FormControl } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import {
   deleteCarousel,
@@ -19,6 +19,7 @@ import {
 } from "../../actions/carouselAction";
 import Loader from "../Loader";
 import { CAROUSEL_RESET } from "../../constants/carouselConstants";
+import EditDragAndDrop from "../../components/DragAndDrop";
 
 const CarouselCard = ({
   carousel: { title, link, description, image, _id },
@@ -34,7 +35,8 @@ const CarouselCard = ({
   const [editlink, setEditLink] = useState(link);
   const [editdescription, setEditDescription] = useState(description);
   const [editimage, setEditImage] = useState(image);
-
+  const [imgarray, setImgArray] = useState([]);
+  const [imagePath, setImagePath] = useState([]);
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
@@ -62,7 +64,6 @@ const CarouselCard = ({
 
   let { id } = useParams();
   const { carousel } = useSelector((state) => state.carouselDetails);
-  console.log(image);
 
   // useEffect(() => {
   //   if (carouselUpdateSuccess) {
@@ -137,16 +138,45 @@ const CarouselCard = ({
                     <FiAlertTriangle />
                     <span>Please choose image below 5 mb</span>
                   </p>
-                  <Previews image={image} setImage={setEditImage} />
+                  <EditDragAndDrop
+                    imgarray={imgarray}
+                    setImgArray={setEditImage}
+                  />
+                  {image &&
+                    image?.map((curElm) => {
+                      return (
+                        <>
+                          <img
+                            src={`${curElm}`}
+                            alt="card"
+                            name="image"
+                            className="img-fluid"
+                            style={{
+                              position: "relative",
+                              width: "60px",
+                              height: "60px",
+                            }}
+                          />
+                          <ImCross
+                            style={{ position: "absolute", fontSize: "12px" }}
+                            className="crossicon"
+                            onClick={() =>
+                              setImagePath(image.filter((i) => i !== curElm))
+                            }
+                          />
+                        </>
+                      );
+                    })}
                 </div>
 
                 <div className="mt-3 d-flex justify-content-end">
-                  <button
+                  <Link
+                    to=""
                     className="carouselwrapper__background__btn--discard"
                     onClick={handleClose}
                   >
                     Discard
-                  </button>
+                  </Link>
                   <button
                     className="carouselwrapper__background__btn--add"
                     // onClick={(e) => {
@@ -170,7 +200,6 @@ const CarouselCard = ({
                   onClick={handleClose1}
                 />
               </div>
-              {/* <h2 className="modal__delete">Delete</h2> */}
               <p className="modal__para">
                 Are you sure you want to delete this item ?{" "}
               </p>
@@ -198,7 +227,7 @@ const CarouselCard = ({
           <div className="carouselCard__image--img">
             <img
               // src={`http://localhost:5000${image}`}
-              src={`${image}`}
+              src={`${image[0]}`}
               // src={image}
               alt="card"
               name="image"
@@ -216,9 +245,7 @@ const CarouselCard = ({
         </div>
         <div className="carouselCard__link d-flex mt-2">
           <div className="carouselCard__link--name">Link: </div>
-          <a href={link} title="paichopasal.com/productpage/pickle">
-            paichopasal.com/productpage/pickle
-          </a>
+          <a href="">{link}</a>
         </div>
       </div>
     </>

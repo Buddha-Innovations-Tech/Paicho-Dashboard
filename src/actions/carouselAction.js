@@ -87,6 +87,7 @@ export const createCarousel = (carousel) => async (dispatch, getState) => {
       type: CAROUSEL_CREATE_SUCCESS,
       payload: data,
     });
+    console.log(data);
   } catch (error) {
     dispatch({
       type: CAROUSEL_CREATE_FAIL,

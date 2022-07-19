@@ -45,8 +45,8 @@ const img = {
   height: "100%",
 };
 
-const EditDragAndDrop = ({ imgarray, setImgArray,imageErr }) => {
-  const [imagePath, setImagePath] = useState([]);
+const Previews = ({ imgarray, setImgArray }) => {
+ 
   const [files, setFiles] = useState([]);
   const {
     getRootProps,
@@ -84,7 +84,7 @@ const EditDragAndDrop = ({ imgarray, setImgArray,imageErr }) => {
         },
       };
       const { data } = await axios.post("/api/uploads/", formData, config);
-      imagePath.push(data.image);
+      // imagePath.push(data.image);
       setImgArray([data.image, ...imgarray]);
     } catch (error) {
       console.error(error);
@@ -100,35 +100,10 @@ const EditDragAndDrop = ({ imgarray, setImgArray,imageErr }) => {
           <p>Drag and drop images or click to upload media</p>
         </div>
       </div>
-      {imageErr && imgarray.length<1 && <p style={{color:"red",fontSize:"15px",marginTop:"20px"}}>Image is required.</p>}
-      <div className="d-flex  align-items-center mt-4">
-        {imagePath.length > 0 &&
-          imagePath.map((curElm) => {
-            return (
-              <div style={{position: "relative",margin:"0 20px"}}>
-                <img
-                  src={`${curElm}`}
-                  alt="card"
-                  name="image"
-                  className="img-fluid"
-                  style={{
-                    width: "60px",
-                    height: "60px",
-                  }}
-                />
-                <ImCross
-                  style={{ position: "absolute", fontSize: "12px",color:"red" }}
-                  className="crossicon"
-                  onClick={(e) =>
-                    setImagePath(imagePath.filter((i) => i !== curElm))
-                  }
-                />
-              </div>
-            );
-          })}
-      </div>
+
+      
     </section>
   );
 };
 
-export default EditDragAndDrop;
+export default Previews;

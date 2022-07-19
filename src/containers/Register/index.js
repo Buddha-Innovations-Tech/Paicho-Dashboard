@@ -5,6 +5,7 @@ import {
   FormControl,
   Form,
   InputGroup,
+  Toast,
 } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -13,6 +14,8 @@ import { RiDeleteBin7Line } from "react-icons/ri";
 import { AiOutlineEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
 import Paginate from "../../components/PaginationComp";
+import SideBar from "../../components/SideBar";
+import NavBar from "../../components/NavBar";
 // import DragAndDrop from "../../components/DragAndDrop";
 import {
   listUsers,
@@ -20,13 +23,14 @@ import {
   deleteUser,
   updateUser,
 } from "../../actions/userActions";
-import { type } from "@testing-library/user-event/dist/type";
 import Loader from "../../components/Loader";
+import { Helmet } from "react-helmet";
 
 const Register = () => {
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
+  const [showA, setShowA] = useState(false);
 
   const [deleteId, setDeleteId] = useState(0);
 
@@ -47,6 +51,7 @@ const Register = () => {
   const { success, loading, error } = useSelector(
     (state) => state.userRegister
   );
+
   const [isValid, setIsValid] = useState(false);
   const [message, setMessage] = useState("");
   const [isValid1, setIsValid1] = useState(false);
@@ -106,7 +111,7 @@ const Register = () => {
       setIsValid(true);
       setMessage1("");
     }
-    console.log(valid);
+    setShowA(true);
     if (valid) {
       dispatch(register(firstname, lastname, email, password));
       setFname("");
@@ -140,6 +145,9 @@ const Register = () => {
   }, [userDeleteSuccess]);
   return (
     <>
+    <Helmet>
+      <title>Paicho-Register</title>
+    </Helmet>
       <div className="registerwrapper">
         <Row>
           <Col md={5}>
@@ -228,9 +236,22 @@ const Register = () => {
                 ) : (
                   <Loader />
                 )}
+                <br />
+                {error && (
+                  <Toast
+                    onClose={() => setShowA(false)}
+                    show={showA}
+                    delay={3000}
+                    autohide
+                  >
+                    <Toast.Body>
+                      <p>{error}</p>
+                    </Toast.Body>
+                  </Toast>
+                )}
               </Form>
             </div>
-          </Col>
+          </Col>{" "}
           <Col md={7}>
             <div className="registerwrapper__background mb-4">
               <p className="registerwrapper__righttitle">Admin List</p>
@@ -243,8 +264,8 @@ const Register = () => {
               </Row>
               <div>
                 {/* {adminList.map((curElm, index) => { */}
-                {users.users &&
-                  users.users.map((curElm, index) => {
+                {users?.users &&
+                  users?.users.map((curElm, index) => {
                     return (
                       <Row
                         className="productlistwrapper__productlistwrapper--listitem adminlist"
@@ -254,10 +275,10 @@ const Register = () => {
                           <p>{index + 1}</p>
                         </Col>
                         <Col md={4}>
-                          <p>{`${curElm.firstname}  ${curElm.lastname}`}</p>
+                          <p>{`${curElm?.firstname}  ${curElm?.lastname}`}</p>
                         </Col>
                         <Col md={5}>
-                          <p>{curElm.email}</p>
+                          <p>{curElm?.email}</p>
                         </Col>
                         {/* <Col md={3}>
                           <p>{curElm.password}</p>
@@ -324,6 +345,7 @@ const Register = () => {
                   })}
               </div>
             </div>
+
             {!paginationLoading ? (
               <>
                 <Paginate
