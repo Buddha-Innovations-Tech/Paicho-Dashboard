@@ -27,26 +27,22 @@ const App = () => {
   return (
     <div>
       <Helmet>
-      <title>Paicho Dashboard</title>
+        <title>Paicho Dashboard</title>
       </Helmet>
       <Row>
-        {window.location.href.includes("/login") ? (
-          ""
-        ) : (
-          <Col md={3}>
-            <SideBar />
-          </Col>
-        )}
-        {window.location.href.includes("/login") ? (
+       
           <Routes>
             <Route path="/login" element={<Login />} />
           </Routes>
-        ) : (
-          <>
+          
+       
+          
+          <Col md={3}> <SideBar/></Col>
             <Col md={9}>
               <NavBar />
               <main style={{ overflowX: "hidden" }}>
                 <Routes>
+                  <Route path="/" element={<Home />} />
                   <Route
                     path="/updateregisteracc/:id"
                     element={<UpdateRegisterAcc />}
@@ -75,13 +71,11 @@ const App = () => {
                   <Route path="/report" element={<Report />} />
                   <Route path="/order" element={<Order />} />
                   <Route path="/order/:pageNumber" element={<Order />} />
-
-                  <Route path="/" element={<Home />} />
                 </Routes>
               </main>
             </Col>
-          </>
-        )}
+          
+       
       </Row>
     </div>
   );

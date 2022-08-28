@@ -24,6 +24,7 @@ export const carouselListReducer = (state = { carousel: [] }, action) => {
     case CAROUSEL_LIST_SUCCESS:
       return {
         loading: false,
+        success: true,
         carousel: action.payload,
       };
     case CAROUSEL_LIST_FAIL:

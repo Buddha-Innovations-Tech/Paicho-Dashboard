@@ -6,7 +6,7 @@ import profile from "../../assets/images/profile.png";
 import { VscCircleFilled } from "react-icons/vsc";
 import { BsClock } from "react-icons/bs";
 import { MdOutlinePermContactCalendar } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/userActions";
 
@@ -22,9 +22,10 @@ const NavBar = () => {
 
   const { userInfo } = useSelector((state) => state.userLogin);
   // console.log(userInfo.firstname);
-
+  const navigate=useNavigate();
   const logoutHandler = () => {
     dispatch(logout());
+    navigate("/login")
   };
 
   return (

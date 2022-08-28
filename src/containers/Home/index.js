@@ -43,6 +43,9 @@ const Home = () => {
   const { success: orderUpdateSuccess } = useSelector(
     (state) => state.orderUpdate
   );
+  const {success:dashboardListSuccess}=useSelector(
+    (state)=>state.dashboardList
+  )
   var discountInBill = 0;
 
   const { income, loading: incomeLoading } = useSelector(
@@ -90,14 +93,18 @@ const Home = () => {
     dispatch(listDashboard());
   }, [dispatch]);
 
+  // useEffect(()=>{
+  //   if(dashboardListSuccess){
+  //     dispatch(listDashboard())
+  //   }
+  // },)
+
   useEffect(() => {
     dispatch(incomeDashboard(1));
-  }, []);
+  }, [dispatch]);
 
   return (
-    <>
-
-          
+    <>    
       <div className="homedashboardwrapper">
         <p className="homedashboardwrapper__heading">Dashboard</p>
         <span className="homedashboardwrapper__subheading">

@@ -76,7 +76,7 @@ const Carousel = () => {
     }
   }, [carouselUpdateSuccess]);
   useEffect(() => {
-    if (carouselDeleteSuccess) {
+    if ( carouselDeleteSuccess ) {
       dispatch(listCarousel());
     }
   }, [carouselDeleteSuccess]);

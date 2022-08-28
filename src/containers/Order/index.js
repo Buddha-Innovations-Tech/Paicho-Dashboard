@@ -377,10 +377,16 @@ const Order = () => {
                               <p>{i.totalPrice ? i.totalPrice : "no"}</p>
                             </Col>
                             <Col md={1}>
-                              <p>
+                              {/* <p>
                                 {i.paymentInfo && i.paymentInfo.paymentmethod
                                   ? i.paymentInfo.paymentmethod
                                   : ""}
+                              </p> */}
+                               <p>
+                                {i.paymentInfo &&
+                                i.paymentInfo.paymentmethod
+                                  ? i.paymentInfo.paymentmethod
+                                  : "no"}
                               </p>
                             </Col>
 
@@ -478,9 +484,10 @@ const Order = () => {
                               </p>
                             </Col>
                             <Col md={1}>
-                              <p>
-                                {curElm.paymentInfo && curElm.paymentInfo.method
-                                  ? curElm.paymentInfo.method
+                            <p>
+                                {curElm.paymentInfo &&
+                                curElm.paymentInfo.paymentmethod
+                                  ? curElm.paymentInfo.paymentmethod
                                   : "no"}
                               </p>
                             </Col>
