@@ -69,12 +69,15 @@ select {
     text-align: center;
   }
 }
-.dragzoneimg{
+.dragzoneimg {
   position: relative;
-
 }
-.dragzoneimg-icon{
+.dragzoneimg-icon {
   position: absolute;
-    color: #e62222 !important;
-    font-size: 12px;
+  color: #e62222 !important;
+  font-size: 12px;
+}
+.overflowaddproduct {
+  height: 100px;
+  overflow-y: scroll;
 }

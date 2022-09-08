@@ -100,12 +100,14 @@ export const listOrders = (pageNumber) => async (dispatch, getState) => {
 
     const config = {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
     const { data } = await axios.get(
       `/api/orders?pagenumber=${pageNumber}`,
+
       config
     );
 

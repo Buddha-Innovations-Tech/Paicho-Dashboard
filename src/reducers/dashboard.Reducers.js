@@ -19,6 +19,7 @@ export const dashboardListReducer = (state = { dashboard: [] }, action) => {
     case DASHBOARD_LIST_SUCCESS:
       return {
         loading: false,
+        success: true,
         dashboard: action.payload,
       };
     case DASHBOARD_LIST_FAIL:

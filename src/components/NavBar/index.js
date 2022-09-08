@@ -6,7 +6,7 @@ import profile from "../../assets/images/profile.png";
 import { VscCircleFilled } from "react-icons/vsc";
 import { BsClock } from "react-icons/bs";
 import { MdOutlinePermContactCalendar } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/userActions";
 
@@ -22,16 +22,17 @@ const NavBar = () => {
 
   const { userInfo } = useSelector((state) => state.userLogin);
   // console.log(userInfo.firstname);
-
+  const navigate=useNavigate();
   const logoutHandler = () => {
     dispatch(logout());
+    navigate("/login")
   };
 
   return (
     <>
       <div className="navbarwrapper">
         <div className="d-flex justify-content-end">
-          <div>
+          {/* <div>
             <IoMdNotificationsOutline
               className="navbarwrapper__notification"
               onClick={handleShow}
@@ -207,13 +208,13 @@ const NavBar = () => {
               </Modal>
             </div>
             <div className="navbarwrapper__notification--circle"></div>
-          </div>
+          </div> */}
           <div className="d-flex navbarwrapper__profile">
-            <figure>
+            {/* <figure>
               <img src={profile} alt="" />
-            </figure>
+            </figure> */}
             <span className="navbarwrapper__profile--name">
-              {userInfo ? userInfo.firstname : " "}
+              {userInfo ? `${userInfo.firstname} ${userInfo.lastname}` : " "}
             </span>
           </div>
           <div>

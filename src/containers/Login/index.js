@@ -7,18 +7,20 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../actions/userActions";
 import Loader from "../../components/Loader";
+import { Helmet } from "react-helmet";
 
 const Login = () => {
   const [showA, setShowA] = useState(false);
   const { userInfo, loading, error } = useSelector((state) => state.userLogin);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword,setShowPassword]=useState(false)
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (userInfo) {
-      navigate("/home");
+      navigate("/");
     }
   }, [userInfo]);
 
@@ -27,8 +29,14 @@ const Login = () => {
     dispatch(login(email, password));
     setShowA(true);
   };
+  const togglePassword=()=>{
+    setShowPassword(!showPassword);
+  }
   return (
     <>
+    <Helmet>
+      <title>Paicho-Login</title>
+    </Helmet>
       {/* {error && <p style={{ backgroundColor: "red" }}>{error}</p>} */}
       <div className="loginbackground">
         <div className="overlay">
@@ -60,6 +68,7 @@ const Login = () => {
                 <div className="passwordinputdiv">
                   <InputGroup>
                     <FormControl
+                      type={showPassword?"text":"password"}
                       placeholder="password"
                       required
                       value={password}
@@ -67,7 +76,7 @@ const Login = () => {
                     />
                   </InputGroup>
                 </div>
-                <AiOutlineEyeInvisible className="eye-icon" />
+                <AiOutlineEyeInvisible className="eye-icon" onClick={togglePassword}/>
               </div>
               {!loading ? (
                 <Link to="/" className="login-btn" onClick={handleSubmit}>
@@ -82,7 +91,7 @@ const Login = () => {
                 <Toast
                   onClose={() => setShowA(false)}
                   show={showA}
-                  delay={3000}
+                  delay={10000}
                   autohide
                 >
                   <Toast.Body>
