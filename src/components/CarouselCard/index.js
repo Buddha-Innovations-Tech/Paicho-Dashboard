@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Form } from "react-bootstrap";
-import { FiEdit } from "react-icons/fi";
-import { ImCross } from "react-icons/im";
-import { FiAlertTriangle } from "react-icons/fi";
-import cardImage from "../../assets/images/card--img.png";
-import Modal from "react-bootstrap/Modal";
-import InputField from "../../components/InputField";
-import Previews from "../../components/DragAndDrop";
-import { InputGroup, FormControl } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Form } from 'react-bootstrap';
+import { FiEdit } from 'react-icons/fi';
+import { ImCross } from 'react-icons/im';
+import { FiAlertTriangle } from 'react-icons/fi';
+// import cardImage from "../../assets/images/card--img.png";
+import Modal from 'react-bootstrap/Modal';
+// import InputField from "../../components/InputField";
+// import Previews from "../../components/DragAndDrop";
+import { InputGroup, FormControl } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, Link } from 'react-router-dom';
 
-import {
-  deleteCarousel,
-  listCarousel,
-  listCarouselDetails,
-  updateCarousel,
-} from "../../actions/carouselAction";
-import Loader from "../Loader";
-import { CAROUSEL_RESET } from "../../constants/carouselConstants";
-import EditDragAndDrop from "../../components/DragAndDrop";
+import { deleteCarousel, updateCarousel } from '../../actions/carouselAction';
+// import Loader from "../Loader";
+// import { CAROUSEL_RESET } from "../../constants/carouselConstants";
+import EditDragAndDrop from '../../components/DragAndDrop';
 
 const CarouselCard = ({
   carousel: { title, link, description, image, _id },
@@ -72,18 +67,18 @@ const CarouselCard = ({
   // }, [carouselUpdateSuccess]);
   return (
     <>
-      <div className="carouselCard">
-        <div className="carouselCard__category d-flex justify-content-between">
-          <div className="carouselCard__category--name">{title}</div>
-          <div className="carouselCard__category--icons d-flex justify-content-between">
+      <div className='carouselCard'>
+        <div className='carouselCard__category d-flex justify-content-between'>
+          <div className='carouselCard__category--name'>{title}</div>
+          <div className='carouselCard__category--icons d-flex justify-content-between'>
             <FiEdit
-              className="carouselCard__category--icons--editicon"
+              className='carouselCard__category--icons--editicon'
               onClick={() => {
                 handleShow();
               }}
             />
             <ImCross
-              className="carouselCard__category--icons--crossicon"
+              className='carouselCard__category--icons--crossicon'
               onClick={() => {
                 setDeleteId(_id);
                 handleShow1();
@@ -93,48 +88,48 @@ const CarouselCard = ({
 
           {/* edit modal */}
           <Modal show={show} onHide={handleClose}>
-            <Modal.Body className="edit__body">
-              <div className="title">Edit carousel</div>
+            <Modal.Body className='edit__body'>
+              <div className='title'>Edit carousel</div>
               <Form onSubmit={handleSubmit}>
-                <div className="mt-4">
-                  <label htmlFor="">Title</label> <br />
+                <div className='mt-4'>
+                  <label htmlFor=''>Title</label> <br />
                   <InputGroup>
                     <FormControl
-                      type="text"
-                      name="title"
-                      placeholder="Get 10% off with Paicho Lemon Pickle "
+                      type='text'
+                      name='title'
+                      placeholder='Get 10% off with Paicho Lemon Pickle '
                       value={edittitle}
                       onChange={(e) => setEditTitle(e.target.value)}
                       required
                     />
                   </InputGroup>
                 </div>
-                <div className="mt-3">
-                  <label htmlFor="">Description</label>
+                <div className='mt-3'>
+                  <label htmlFor=''>Description</label>
                   <textarea
-                    class="form-control"
-                    id="description"
-                    rows="5"
+                    class='form-control'
+                    id='description'
+                    rows='5'
                     value={editdescription}
-                    placeholder="Organic Fresh Fruits"
+                    placeholder='Organic Fresh Fruits'
                     onChange={(e) => setEditDescription(e.target.value)}
                   ></textarea>
                 </div>
-                <div className="mt-3">
-                  <label htmlFor="">Link</label> <br />
+                <div className='mt-3'>
+                  <label htmlFor=''>Link</label> <br />
                   <InputGroup>
                     <FormControl
-                      name="Link"
-                      placeholder="https;//paichopasal.com/productpage/pickle "
+                      name='Link'
+                      placeholder='https;//paichopasal.com/productpage/pickle '
                       value={editlink}
                       onChange={(e) => setEditLink(e.target.value)}
                       required
                     />
                   </InputGroup>
                 </div>
-                <div className="mt-3">
-                  <label htmlFor="">Images</label>
-                  <p className="addproductwrapper__background--dragdroptitle">
+                <div className='mt-3'>
+                  <label htmlFor=''>Images</label>
+                  <p className='addproductwrapper__background--dragdroptitle'>
                     <FiAlertTriangle />
                     <span>Please choose image below 5 mb</span>
                   </p>
@@ -148,18 +143,18 @@ const CarouselCard = ({
                         <>
                           <img
                             src={`${curElm}`}
-                            alt="card"
-                            name="image"
-                            className="img-fluid"
+                            alt='card'
+                            name='image'
+                            className='img-fluid'
                             style={{
-                              position: "relative",
-                              width: "60px",
-                              height: "60px",
+                              position: 'relative',
+                              width: '60px',
+                              height: '60px',
                             }}
                           />
                           <ImCross
-                            style={{ position: "absolute", fontSize: "12px" }}
-                            className="crossicon"
+                            style={{ position: 'absolute', fontSize: '12px' }}
+                            className='crossicon'
                             onClick={() =>
                               setImagePath(image.filter((i) => i !== curElm))
                             }
@@ -169,16 +164,16 @@ const CarouselCard = ({
                     })}
                 </div>
 
-                <div className="mt-3 d-flex justify-content-end">
+                <div className='mt-3 d-flex justify-content-end'>
                   <Link
-                    to=""
-                    className="carouselwrapper__background__btn--discard"
+                    to=''
+                    className='carouselwrapper__background__btn--discard'
                     onClick={handleClose}
                   >
                     Discard
                   </Link>
                   <button
-                    className="carouselwrapper__background__btn--add"
+                    className='carouselwrapper__background__btn--add'
                     // onClick={(e) => {
                     //   updateCaro(e);
                     // }}
@@ -192,26 +187,26 @@ const CarouselCard = ({
 
           {/* delete modal */}
           <Modal show={show1} onHide={handleClose1}>
-            <Modal.Body className="delete__body">
-              <div className="d-flex justify-content-between">
-                <h2 className="modal__delete">Delete</h2>
+            <Modal.Body className='delete__body'>
+              <div className='d-flex justify-content-between'>
+                <h2 className='modal__delete'>Delete</h2>
                 <ImCross
-                  className="carouselCard__category--icons--crossicon"
+                  className='carouselCard__category--icons--crossicon'
                   onClick={handleClose1}
                 />
               </div>
-              <p className="modal__para">
-                Are you sure you want to delete this item ?{" "}
+              <p className='modal__para'>
+                Are you sure you want to delete this item ?{' '}
               </p>
-              <div className="mt-3 d-flex justify-content-between">
+              <div className='mt-3 d-flex justify-content-between'>
                 <button
-                  className="carouselwrapper__background__btn--cancel"
+                  className='carouselwrapper__background__btn--cancel'
                   onClick={handleClose1}
                 >
                   Cancel
                 </button>
                 <button
-                  className="carouselwrapper__background__btn--delete"
+                  className='carouselwrapper__background__btn--delete'
                   onClick={() => {
                     deleteCaro(deleteid);
                   }}
@@ -222,16 +217,16 @@ const CarouselCard = ({
             </Modal.Body>
           </Modal>
         </div>
-        <div className="carouselCard__image d-flex align-items-center">
-          <div className="carouselCard__image--name">Images: </div>
-          <div className="carouselCard__image--img">
+        <div className='carouselCard__image d-flex align-items-center'>
+          <div className='carouselCard__image--name'>Images: </div>
+          <div className='carouselCard__image--img'>
             <img
               // src={`http://localhost:5000${image}`}
               src={`${image[0]}`}
               // src={image}
-              alt="card"
-              name="image"
-              className="img-fluid"
+              alt='card'
+              name='image'
+              className='img-fluid'
             />
           </div>
         </div>
@@ -239,13 +234,13 @@ const CarouselCard = ({
           <div className="carouselCard__title--name">Title:</div>
           <p>{title} </p>
         </div> */}
-        <div className="carouselCard__desc d-flex">
-          <div className="carouselCard__desc--name">Description:</div>
+        <div className='carouselCard__desc d-flex'>
+          <div className='carouselCard__desc--name'>Description:</div>
           <p>{description} </p>
         </div>
-        <div className="carouselCard__link d-flex mt-2">
-          <div className="carouselCard__link--name">Link: </div>
-          <a href="">{link}</a>
+        <div className='carouselCard__link d-flex mt-2'>
+          <div className='carouselCard__link--name'>Link: </div>
+          <a href=''>{link}</a>
         </div>
       </div>
     </>
