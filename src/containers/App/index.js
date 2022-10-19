@@ -22,7 +22,7 @@ import NavBar from '../../components/NavBar';
 import { Helmet } from 'react-helmet';
 
 const App = () => {
-  axios.defaults.baseURL = 'https://dashboard.paicho.com/';
+  axios.defaults.baseURL = 'https://backend.paicho.com/';
   // axios.defaults.baseURL = "http://localhost:5000/";
   return (
     <div>
