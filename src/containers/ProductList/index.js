@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // import ProductImg from "../../assets/images/ProductListImg.png";
 // import PaginationComp from "../../components/PaginationComp";
-import { listProducts } from '../../actions/productAction';
+import { listArchiveProducts, listProducts } from '../../actions/productAction';
 import Paginate from '../../components/PaginationComp';
 import Loader from '../../components/Loader';
 // import SideBar from "../../components/SideBar";
@@ -51,9 +51,9 @@ const ProductList = () => {
   //   dispatch(listProducts(pageNumber));
   // }, [dispatch, pageNumber]);
 
-  // useEffect(() => {
-  //   dispatch(listArchiveProducts());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(listArchiveProducts());
+  }, [dispatch]);
   useEffect(() => {
     dispatch(listProducts());
   }, [dispatch]);
@@ -347,7 +347,8 @@ const ProductList = () => {
                   </Row>
                 ))}
             {filterTerm === 'Archived' &&
-              archiveproducts.archiveproducts.map((i, index) => {
+              archiveproducts?.archiveproducts.length > 0 &&
+              archiveproducts?.archiveproducts?.map((i, index) => {
                 return (
                   <Row
                     className='productlistwrapper__productlistwrapper--listitem'
