@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   SUBSCRIBER_LOGIN_REQUEST,
   SUBSCRIBER_LOGIN_SUCCESS,
@@ -19,7 +19,7 @@ import {
   SUBSCRIBER_DELETE_REQUEST,
   SUBSCRIBER_DELETE_SUCCESS,
   SUBSCRIBER_DELETE_FAIL,
-} from "../constants/subscriberConstants";
+} from '../constants/subscriberConstants';
 
 export const login = (email, password, mobilenumber) => async (dispatch) => {
   try {
@@ -29,12 +29,12 @@ export const login = (email, password, mobilenumber) => async (dispatch) => {
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
 
     const { data } = await axios.post(
-      "/api/subscribers/login",
+      '/api/subscribers/login',
       { email, password, mobilenumber },
       config
     );
@@ -44,7 +44,7 @@ export const login = (email, password, mobilenumber) => async (dispatch) => {
       payload: data,
     });
 
-    localStorage.setItem("subscriberInfo", JSON.stringify(data));
+    localStorage.setItem('subscriberInfo', JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: SUBSCRIBER_LOGIN_FAIL,
@@ -57,7 +57,7 @@ export const login = (email, password, mobilenumber) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-  localStorage.removeItem("subscriberInfo");
+  localStorage.removeItem('subscriberInfo');
   dispatch({ type: SUBSCRIBER_LOGOUT });
 };
 
@@ -80,12 +80,12 @@ export const register =
 
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       };
 
       const { data } = await axios.post(
-        "/api/subscribers/Register",
+        '/api/subscribers/Register',
         {
           firstname,
           lastname,
@@ -126,7 +126,7 @@ export const getSubscriberDetails = () => async (dispatch) => {
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         // Authorization: `Bearer ${subscriberInfo.token}`,
       },
     };
@@ -161,7 +161,7 @@ export const udpateSubscriberProfile =
 
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${subscriberInfo.token}`,
         },
       };
@@ -187,20 +187,22 @@ export const udpateSubscriberProfile =
     }
   };
 
-export const listSubscribers = (pageNumber) => async (dispatch) => {
+export const listSubscribers = (pageNumber) => async (dispatch, getState) => {
   try {
     dispatch({
       type: SUBSCRIBER_LIST_REQUEST,
     });
 
-    // const {
-    //   subscriberLogin: { subscriberInfo },
-    // } = getState();
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    console.log(userInfo);
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        // Authorization: `Bearer ${subscriberInfo.token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
@@ -208,6 +210,8 @@ export const listSubscribers = (pageNumber) => async (dispatch) => {
       `/api/subscribers?pagenumber=${pageNumber}`,
       config
     );
+    console.log(data);
+
     dispatch({
       type: SUBSCRIBER_LIST_SUCCESS,
       payload: data,
